@@ -57,3 +57,8 @@
 .navbar .navbar-end .search-input label {
   line-height: 1;
 }
+
+.add-recipe {
+  background-color: #fd7269 !important;
+  margin-right: 0.5em !important;
+}
