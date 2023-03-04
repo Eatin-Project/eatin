@@ -2,7 +2,7 @@
   text-align: center;
   background-color: whitesmoke;
   color: black;
-  overflow-y: hidden;
+  overflow-y: auto;
   overflow-x: hidden;
   height: 100%;
 }
