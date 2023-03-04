@@ -1,8 +1,7 @@
-import { useContext } from 'react'
-import { AuthContext } from '../../context/auth-context'
+import {useAuth} from "../../context/auth-context";
 
 function Profile() {
-    const { currentUser, signOut } = useContext(AuthContext)
+    const { currentUser, signOut } = useAuth();
 
     return(
         // Todo: Change this page in the future

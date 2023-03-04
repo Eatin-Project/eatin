@@ -48,7 +48,7 @@ function SignUp() {
 
             if (userCredential) {
                 resetFormFields();
-                navigate('/profile');
+                navigate('/home');
             }
         } catch (error: any) {
             console.log('User Sign Up Failed', error.message);

@@ -1,7 +1,7 @@
 import {User} from "firebase/auth";
 import {useNavigate} from "react-router-dom";
-import {signOutUser, userStateListener} from "../firebase/firebase";
-import {createContext, ReactNode, useEffect, useState} from "react";
+import {auth, signOutUser, userStateListener} from "../firebase/firebase";
+import {createContext, ReactNode, useContext, useEffect, useState} from "react";
 
 interface Props {
     children?: ReactNode
@@ -13,22 +13,34 @@ export const AuthContext = createContext({
     signOut: () => {}
 });
 
+export function useAuth() {
+    return useContext(AuthContext);
+}
+
 export const AuthProvider = ({ children }: Props) => {
-    const [currentUser, setCurrentUser] = useState<User | null>(null)
-    const navigate = useNavigate()
+    const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        auth.onAuthStateChanged((user) => {
+            setCurrentUser(user);
+        });
+    }, []);
+
 
     useEffect(() => {
         return userStateListener((user) => {
             if (user) {
-                setCurrentUser(user)
+                setCurrentUser(user);
             }
         })
     }, [setCurrentUser]);
 
     const signOut = () => {
-        signOutUser()
-        setCurrentUser(null)
-        navigate('/')
+        signOutUser();
+        setCurrentUser(null);
+        navigate('/signIn');
     }
 
     const value = {

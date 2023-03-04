@@ -29,7 +29,7 @@ function SignIn() {
 
             if (userCredential) {
                 resetFormFields();
-                navigate('/profile');
+                navigate('/home');
             }
         } catch (error:any) {
             console.log('User Sign In Failed', error.message);

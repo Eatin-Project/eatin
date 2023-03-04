@@ -16,7 +16,7 @@ export const Navbar = () => {
       <div className="navbar">
         <AppLogo onClick={goToHomePage} />
         <div className="navbar-end">
-          <div className="user">
+          <div className="user" onClick={() => navigate("/profile")}>
             <Avatar className="avatar" />
             <span>User name</span>
           </div>
