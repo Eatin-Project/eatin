@@ -11,7 +11,7 @@ export interface Item {
   id: number;
   name: string;
   imageUrl: string;
-  isSaved: boolean;
+  rating: number;
   viewed: number;
   onClick?: (id: number) => void;
 }
@@ -193,12 +193,19 @@ const CarouselItem: FC<CarouselItemProps> = ({
   name,
   index,
   imageUrl,
-  isSaved,
+  rating,
   viewed,
   randomColors,
   onClick,
 }) => {
   const handleClick = useCallback(() => onClick?.(id), [id, onClick]);
+  const [savedValue, setSavedValue] = useState<number>(0);
+
+  const savedStateChanged = () => {
+    //ToDo - update the backend the the user saved a recipe
+    const newVal = savedValue === 0 ? 1 : 0;
+    setSavedValue(newVal);
+  };
 
   return (
     <div
@@ -218,18 +225,24 @@ const CarouselItem: FC<CarouselItemProps> = ({
       <div className="buttons-spread">
         <Rating
           className="is-saved"
-          name="read-only"
-          value={isSaved ? 1 : 0}
-          readOnly
-          about="1"
+          value={savedValue}
+          onChange={savedStateChanged}
           max={1}
         />
         <Button className="delete-from-list" size="large">
           <CancelIcon className="delete-from-list-icon" />
         </Button>
       </div>
-
-      <span className="viewed-number">Viewed: {viewed}</span>
+      <div className="item-info">
+        <Rating
+          className="rating-item"
+          precision={0.5}
+          value={rating}
+          readOnly
+          max={5}
+        />
+        <span className="viewed-number">{viewed}</span>
+      </div>
       <img className="item-img" src={imageUrl} />
     </div>
   );

@@ -4,3 +4,51 @@
   overflow-y: scroll;
   overflow-x: hidden;
 }
+
+.search-recipes {
+  padding-top: 1em;
+  padding-left: 5em;
+  display: flex;
+}
+
+.search-dropdown {
+  border-radius: 1em;
+  border: none !important;
+  background-color: #fd7269 !important;
+  color: white !important;
+  margin-right: 0.5em !important;
+}
+
+.search-dropdown::selection {
+  border: none;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+}
+
+.header .searchbar {
+  padding-right: 2em;
+
+  color: #fd7269 !important;
+}
+
+.searchbar .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+  color: #fd7269 !important;
+}
+
+.search-dropdown .MuiOutlinedInput-notchedOutline {
+  border: none;
+}
+
+.search-dropdown .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
+  color: black;
+  font-size: 1.2em;
+}
+
+.searchbar .MuiOutlinedInput-notchedOutline {
+  border: #fd7269 solid 1px;
+}
