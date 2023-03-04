@@ -6,7 +6,6 @@ import SignUp from "../components/accounts/sign-up";
 import RequireAuth from "../components/require-auth";
 import Profile from "../components/accounts/profile";
 import { Navigate } from "react-router-dom";
-// import WithoutNav from "./WithoutNav";
 import WithNav from "./WithNav";
 
 export const Router: FC = () => {
