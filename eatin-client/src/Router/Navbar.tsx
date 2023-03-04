@@ -1,6 +1,6 @@
 import "./Navbar.css";
 
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Avatar } from "@mui/material";
 
 import { AppLogo } from "./AppLogo";
@@ -9,7 +9,7 @@ import { useCallback } from "react";
 export const Navbar = () => {
   const navigate = useNavigate();
 
-  const goToHomePage = useCallback(() => navigate("/"), [navigate]);
+  const goToHomePage = useCallback(() => navigate("/home"), [navigate]);
 
   return (
     <>

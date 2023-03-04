@@ -1,53 +1,91 @@
-import {User} from "firebase/auth";
-import {useNavigate} from "react-router-dom";
-import {auth, signOutUser, userStateListener} from "../firebase/firebase";
-import {createContext, ReactNode, useContext, useEffect, useState} from "react";
+import { signInWithEmailAndPassword, signOut, User } from "firebase/auth";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { createUserWithEmailAndPassword } from "@firebase/auth";
+import { auth } from "../firebase/firebase-config";
 
 interface Props {
-    children?: ReactNode
+  children?: ReactNode;
 }
 
 export const AuthContext = createContext({
-    currentUser: {} as User | null,
-    setCurrentUser: (_user:User) => {},
-    signOut: () => {}
+  currentUser: {} as User | null,
+  setCurrentUser: (_user: User) => {
+  },
+  signOutUser: () => {
+  },
+  signInUser: (email: string, password: string): any => {
+  },
+  signUpUser: (
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    phone: string,
+    gender: string,
+    dateOfBirth: Date | null,
+    country: String
+  ): any => {
+  },
 });
 
-export function useAuth() {
-    return useContext(AuthContext);
-}
-
 export const AuthProvider = ({ children }: Props) => {
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      setCurrentUser(user);
+      setLoading(false);
+    });
+  }, []);
 
-    useEffect(() => {
-        auth.onAuthStateChanged((user) => {
-            setCurrentUser(user);
-        });
-    }, []);
+  function signInUser(email: string, password: string): any {
+    return signInWithEmailAndPassword(auth, email, password);
+  }
 
+  function signUpUser(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    phone: string,
+    gender: string,
+    dateOfBirth: Date | null,
+    country: String
+  ) {
+    return createUserWithEmailAndPassword(auth, email, password).then(
+      (credential) => {
+        // Todo: create user in DB
+        return credential;
+      }
+    );
+  }
 
-    useEffect(() => {
-        return userStateListener((user) => {
-            if (user) {
-                setCurrentUser(user);
-            }
-        })
-    }, [setCurrentUser]);
+  function signOutUser() {
+    signOut(auth);
+  }
 
-    const signOut = () => {
-        signOutUser();
-        setCurrentUser(null);
-        navigate('/signIn');
-    }
+  const value = {
+    currentUser,
+    setCurrentUser,
+    signOutUser,
+    signUpUser,
+    signInUser,
+  };
 
-    const value = {
-        currentUser,
-        setCurrentUser,
-        signOut
-    }
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
+};
 
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+export function useAuth() {
+  return useContext(AuthContext);
 }
