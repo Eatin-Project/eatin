@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "migrate": "flyway -c flyway.ts migrate",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -23,6 +24,8 @@
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "connection-string": "^4.3.6",
+    "node-flywaydb": "^3.0.7",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },

@@ -1,1 +1,1 @@
-drop table if exist eden;
+drop table if exists eden;
