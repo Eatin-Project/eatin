@@ -1,5 +1,5 @@
-create table if not exists Roles
+create table if not exists roles
 (
-    id   serial primary key,
+    id   uuid                DEFAULT uuid_generate_v4() primary key,
     role varchar(255) unique not null
 );
