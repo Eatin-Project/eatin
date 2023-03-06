@@ -2,19 +2,25 @@
   padding-top: 1em;
   padding-left: 5em;
   display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.search-dropdown:hover {
+  border: black 1px solid !important;
 }
 
 .search-dropdown {
   border-radius: 1em;
   border: none !important;
   background-color: #fd7269 !important;
-  color: white !important;
+  color: black !important;
   margin-right: 0.5em !important;
 }
 
 .search-dropdown
   .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
-  color: white !important;
+  color: black !important;
 }
 
 .search-dropdown::selection {

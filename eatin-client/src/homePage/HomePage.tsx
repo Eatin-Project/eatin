@@ -1,8 +1,8 @@
 import "./HomePage.css";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { RecommentedFeed } from "./RecommentedFeed";
-import { InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { Item } from "./Carousel";
 import { SearchRecipes } from "./SearchRecipes";
@@ -12,8 +12,37 @@ export const HomePage: FC = () => {
   const [genreFilterVal, setGenreFilterVal] = useState("1");
   const [difficultyFilterVal, setDifficultyFilterVal] = useState("1");
   const [ratingFilterVal, setRatingFilterVal] = useState("1");
-  const [mustIncludeFilterVal, setMustIncludeFilterVal] = useState("1");
   const [filterSearchVal, setfilterSearchVal] = useState("");
+  const [SearchResult, setSearchResult] = useState("");
+  const [currentShownRecipes, setCurrentShownRecipes] = useState<
+    {
+      name: string;
+      items: Item[];
+    }[]
+  >([]);
+
+  useEffect(() => {
+    // here will we get the current recipes to show...
+    const shownRecipes = [
+      {
+        name: "Sweets",
+        items: sweetRecipes,
+      },
+      {
+        name: "Asian",
+        items: AsianRecipes,
+      },
+      {
+        name: "Breakfast",
+        items: BreakfastRecipes,
+      },
+      {
+        name: "Pasta",
+        items: PastaRecipes,
+      },
+    ];
+    setCurrentShownRecipes(shownRecipes);
+  }, [currentShownRecipes]);
 
   // todo: bring the recipes from outside not hardcoded
   const sweetRecipes: Item[] = [
@@ -154,25 +183,6 @@ export const HomePage: FC = () => {
     },
   ];
 
-  const shownRecipes: { name: string; items: Item[] }[] = [
-    {
-      name: "Sweets",
-      items: sweetRecipes,
-    },
-    {
-      name: "Asian",
-      items: AsianRecipes,
-    },
-    {
-      name: "Breakfast",
-      items: BreakfastRecipes,
-    },
-    {
-      name: "Pasta",
-      items: PastaRecipes,
-    },
-  ];
-
   const currentFilterOptions: {
     name: string;
     options: string[];
@@ -202,38 +212,51 @@ export const HomePage: FC = () => {
     },
   ];
 
-  const checkIfNoFilterApply = () => {
-    if (
-      filterSearchVal === "" &&
-      mustIncludeFilterVal === "1" &&
-      ratingFilterVal === "1" &&
-      difficultyFilterVal === "1" &&
-      genreFilterVal === "1"
-    ) {
-      setSearchFilter(false);
-    } else {
-      setSearchFilter(true);
-    }
+  const updateSearchResult = () => {
+    setSearchResult(filterSearchVal);
+    setfilterSearchVal("");
+  };
+
+  const showMyRecipes = () => {
+    // here we will update the shown recipes....
+  };
+
+  const showSavedRecipes = () => {
+    // here we will update the shown recipes....
   };
 
   return (
     <div>
       <div className="header">
-        <TextField
-          onChange={(event) => {
-            setfilterSearchVal(event.target.value);
-          }}
-          className="searchbar"
-          title="Search"
-          variant={undefined}
-          InputProps={{ endAdornment: <SearchIcon /> }}
-          type="text"
-        />
         {<SearchRecipes searchOptions={currentFilterOptions} />}
+        <div className="searchManually">
+          <span className="searchResult">{SearchResult}</span>
+          <div className="completeSearchBar">
+            <TextField
+              onChange={(event) => {
+                setfilterSearchVal(event.target.value);
+              }}
+              className="searchbar"
+              variant={undefined}
+              type="text"
+            />
+            <Button onClick={updateSearchResult} className="searchButton">
+              <SearchIcon />
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <Button className="recipesBtn" onClick={showMyRecipes}>
+          My Recipes
+        </Button>
+        <Button className="recipesBtn" onClick={showSavedRecipes}>
+          Saved Recipes
+        </Button>
       </div>
 
       {!searchFilter ? (
-        <RecommentedFeed currentRecipes={shownRecipes} />
+        <RecommentedFeed currentRecipes={currentShownRecipes} />
       ) : (
         <div></div>
       )}
