@@ -1,3 +1,3 @@
-export const gendersEnum = {
+export const Gender = {
     Male: "Male", Female: "Female", Other: "Other"
 };

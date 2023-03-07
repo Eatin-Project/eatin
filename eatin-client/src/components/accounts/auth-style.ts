@@ -3,7 +3,6 @@ import {Dropdown} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-
 export const H1 = styled.h1`
   color: #FF473C;
 `;
@@ -24,26 +23,38 @@ export const DatePickerWrapper = styled(DatePicker)`
   border-radius: 2px;
 `;
 
+export const DropdownWrapper = styled(Dropdown)`
+  .btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
+    background-color: #F6F6F6FF;
+    border-color: #ced4da;
+  }
+`;
+
 export const DropdownToggle = styled(Dropdown.Toggle)`
   background-color: #F6F6F6FF;
   font-size: 16px;
   border-radius: 2px;
   text-align: start;
   border-color: #ced4da;
-  color: #6c757d;
   &:hover, &:active {
     background-color: #F6F6F6FF;
     border-color: #ced4da;
-    color: #212529;
   }
 `;
 
 export const DropdownMenu = styled(Dropdown.Menu)`
-  max-height: 25rem;
+  max-height: 11rem;
   overflow-y: scroll;
   color: #FD7269;
   background-color: #F6F6F6FF;
   &:hover, &:active {
+    background-color: #F6F6F6FF;
+    border-color: #ced4da;
+  }
+`;
+
+export const DropdownItem = styled(Dropdown.Item)`
+  &:active {
     background-color: #F6F6F6FF;
     border-color: #ced4da;
   }
