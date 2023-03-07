@@ -59,6 +59,7 @@
 }
 
 .add-recipe {
+  color: white !important;
   background-color: #fd7269 !important;
   margin-right: 0.5em !important;
 }

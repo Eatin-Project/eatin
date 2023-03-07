@@ -1,0 +1,26 @@
+.upload-recipe-page {
+  margin: 0.5em 2em;
+}
+
+.upload-recipe-page form {
+  display: flex;
+  flex-direction: row;
+}
+
+form > div {
+  margin: 0 0.5em;
+  width: 100%;
+}
+
+.upload-recipe-page .recipe-inputs {
+  text-align: left;
+}
+
+.upload-recipe-page .form-button {
+  position: absolute;
+  bottom: 0;
+  right: 50%;
+  transform: translateX(50%);
+  margin: 0.5em;
+  background-color: #fd7269 !important;
+}
