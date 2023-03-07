@@ -1,4 +1,4 @@
-import {ChangeEvent, FormEvent, useState} from "react";
+import {ChangeEvent, FormEvent, SetStateAction, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {
     A,
@@ -36,6 +36,7 @@ function SignUp() {
         formFields;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [searchValue, setSearchValue] = useState('');
     const {signUpUser} = useAuth();
     const resetFormFields = () => {
         return setFormFields(defaultFormFields);
@@ -96,6 +97,14 @@ function SignUp() {
     const handleCountryChange = (country: string) => {
         setFormFields({...formFields, country: country});
     };
+
+    const handleSearch = (e: { target: { value: SetStateAction<string>; }; }) => {
+        setSearchValue(e.target.value);
+    };
+
+    const filteredCountries = Object.values(Country).filter((country) =>
+        country.toString().toLowerCase().includes(searchValue.toLowerCase())
+    );
 
     return (
         <Wrapper>
@@ -187,7 +196,14 @@ function SignUp() {
                                 {!!formFields.country ? formFields.country : "Country"}
                             </DropdownToggle>
                             <DropdownMenu className="form-control">
-                                {Object.keys(Country)?.map((country) => (
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    placeholder="search"
+                                    value={searchValue}
+                                    onChange={handleSearch}
+                                />
+                                {filteredCountries?.map((country) => (
                                     <DropdownItem
                                         name="country"
                                         key={country}

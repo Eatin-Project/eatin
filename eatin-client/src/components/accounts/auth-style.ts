@@ -43,7 +43,7 @@ export const DropdownToggle = styled(Dropdown.Toggle)`
 `;
 
 export const DropdownMenu = styled(Dropdown.Menu)`
-  max-height: 7rem;
+  max-height: 11rem;
   overflow-y: scroll;
   color: #FD7269;
   background-color: #F6F6F6FF;
