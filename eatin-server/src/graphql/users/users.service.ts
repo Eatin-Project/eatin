@@ -8,7 +8,7 @@ import {Users} from "./users.model";
 export class UsersService {
     constructor(
         @InjectRepository(Users)
-        private usersRepository: Repository<Users>,
+        private usersRepository: Repository<Users>
     ) {
     }
 

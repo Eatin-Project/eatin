@@ -22,6 +22,9 @@ export class Users {
     @Column('varchar', { length: 10, nullable: false })
     gender: string;
     @Field()
+    @Column('timestamp', { nullable: false })
+    birthdate: Date;
+    @Field()
     @Column('varchar', { length: 50, nullable: false })
     country: string;
 }

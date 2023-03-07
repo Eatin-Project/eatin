@@ -17,6 +17,7 @@ import {
 import {Gender} from "./genders.enum";
 import {useAuth} from "../../context/auth-context";
 import {Country} from "./countries.enum";
+import {useCreateUserMutation} from "../../generated/graphql";
 
 const defaultFormFields = {
     firstName: "",
@@ -30,7 +31,7 @@ const defaultFormFields = {
 
 function SignUp() {
     const [formFields, setFormFields] = useState(defaultFormFields);
-    const [dateOfBirth, setDateOfBirth] = useState<Date | null>(null);
+    const [birthDate, setBirthDate] = useState<Date | null>(null);
     const {firstName, lastName, email, password, phone, gender, country} =
         formFields;
     const navigate = useNavigate();
@@ -39,28 +40,43 @@ function SignUp() {
     const resetFormFields = () => {
         return setFormFields(defaultFormFields);
     };
+    const [createUser] = useCreateUserMutation();
 
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         try {
             // TODO: validate fields
             setLoading(true);
-            const userCredential = await signUpUser(
+            signUpUser(
                 firstName,
                 lastName,
                 email,
                 password,
                 phone,
                 gender,
-                dateOfBirth,
+                birthDate,
                 country
-            );
-
-            if (userCredential) {
-                resetFormFields();
-                navigate("/home");
-            }
+            ).then((userCredential: { user: { uid: any; }; }) => {
+                if (userCredential) {
+                    createUser({
+                        variables: {
+                            id: userCredential.user.uid,
+                            firstname: firstName,
+                            lastname: lastName,
+                            email: email,
+                            phone: phone,
+                            gender: gender,
+                            birthdate: birthDate,
+                            country: country
+                        }
+                    }).then((user) => {
+                        console.log(user.data?.createUser);
+                    });
+                    resetFormFields();
+                    navigate("/home");
+                }
+            });
         } catch (error: any) {
             console.log("User Sign Up Failed", error.message);
         }
@@ -156,12 +172,12 @@ function SignUp() {
                     <div className="mb-3">
                         <DatePickerWrapper
                             required
-                            name="dateOfBirth"
-                            placeholderText="Date of birth"
+                            name="birthDate"
+                            placeholderText="Birth date"
                             className="form-control"
-                            selected={dateOfBirth}
-                            onSelect={(date: Date) => setDateOfBirth(date)}
-                            onChange={(date: Date) => setDateOfBirth(date)}
+                            selected={birthDate}
+                            onSelect={(date: Date) => setBirthDate(date)}
+                            onChange={(date: Date) => setBirthDate(date)}
                         ></DatePickerWrapper>
                     </div>
                     <div className="mb-3">
