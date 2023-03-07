@@ -1,21 +1,40 @@
 import { FC } from "react";
-import { Routes, Route } from "react-router";
-import { BrowserRouter } from "react-router-dom";
-
+import { Route, Routes } from "react-router";
 import { HomePage } from "../homePage/HomePage";
+import SignIn from "../components/accounts/sign-in";
+import SignUp from "../components/accounts/sign-up";
+import RequireAuth from "../components/require-auth";
+import Profile from "../components/accounts/profile";
+import { Navigate } from "react-router-dom";
+import WithNav from "./WithNav";
 import { UploadRecipePage } from "../uploadRecipe/UploadRecipePage";
-import { Navbar } from "./Navbar";
 
 export const Router: FC = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Navbar />}>
-          <Route index element={<HomePage />} />
-          <Route path="upload" element={<UploadRecipePage />} />
-        </Route>
-        <Route path="*" element={<h1>PAGE NOT FOUND</h1>} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Navigate to="/signIn" replace />} />
+      <Route path="signIn" element={<SignIn />} />
+      <Route path="signUp" element={<SignUp />} />
+      <Route element={<WithNav />}>
+        <Route
+          path="profile"
+          element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="home"
+          element={
+            <RequireAuth>
+              <HomePage />
+            </RequireAuth>
+          }
+        />
+        <Route path="upload" element={<UploadRecipePage />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
   );
 };
