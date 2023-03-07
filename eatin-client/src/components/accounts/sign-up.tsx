@@ -215,7 +215,7 @@ function SignUp() {
                             </DropdownMenu>
                         </DropdownWrapper>
                     </div>
-                    <div className="d-grid">
+                    <div className="d-grid mb-2">
                         <Button
                             type="submit"
                             disabled={loading}
