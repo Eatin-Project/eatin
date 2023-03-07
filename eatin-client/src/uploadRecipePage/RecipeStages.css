@@ -1,0 +1,13 @@
+.recipe-stages {
+}
+
+.recipe-stages .recipe-stage span {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.recipe-stages .recipe-stage {
+    display: flex;
+    flex-direction: row;
+    margin: 0.8em 0;
+}
