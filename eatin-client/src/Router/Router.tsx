@@ -7,34 +7,34 @@ import RequireAuth from "../components/require-auth";
 import Profile from "../components/accounts/profile";
 import { Navigate } from "react-router-dom";
 import WithNav from "./WithNav";
-import { UploadRecipePage } from "../uploadRecipe/UploadRecipePage";
+import { UploadRecipePage } from "../uploadRecipePage/UploadRecipePage";
 
 export const Router: FC = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<Navigate to="/signIn" replace />} />
-      <Route path="signIn" element={<SignIn />} />
-      <Route path="signUp" element={<SignUp />} />
-      <Route element={<WithNav />}>
-        <Route
-          path="profile"
-          element={
-            <RequireAuth>
-              <Profile />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="home"
-          element={
-            <RequireAuth>
-              <HomePage />
-            </RequireAuth>
-          }
-        />
-        <Route path="upload" element={<UploadRecipePage />} />
-      </Route>
-      <Route path="*" element={<Navigate to="/login" replace />} />
-    </Routes>
-  );
+    return (
+        <Routes>
+            <Route path="/" element={<Navigate to="/signIn" replace />} />
+            <Route path="signIn" element={<SignIn />} />
+            <Route path="signUp" element={<SignUp />} />
+            <Route element={<WithNav />}>
+                <Route
+                    path="profile"
+                    element={
+                        <RequireAuth>
+                            <Profile />
+                        </RequireAuth>
+                    }
+                />
+                <Route
+                    path="home"
+                    element={
+                        <RequireAuth>
+                            <HomePage />
+                        </RequireAuth>
+                    }
+                />
+                <Route path="upload" element={<UploadRecipePage />} />
+            </Route>
+            <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+    );
 };

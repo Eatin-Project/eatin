@@ -23,3 +23,4 @@ export const UploadImagesList: FC<Props> = ({ images }) => {
       </div>
     </div>
   );
+};
