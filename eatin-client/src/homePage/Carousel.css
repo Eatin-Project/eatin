@@ -80,10 +80,6 @@
   cursor: pointer;
 }
 
-.carousel-arrow {
-  color: #fd7269;
-}
-
 .carousel-item .item-name {
   margin: 0;
   position: absolute;
