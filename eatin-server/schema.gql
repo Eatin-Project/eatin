@@ -18,11 +18,37 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Recipes {
+  index: String!
+  recipe_title: String!
+  url: String!
+  record_health: String!
+  vote_count: String!
+  rating: String!
+  description: String!
+  cuisine: String!
+  diet: String!
+  prep_time: String!
+  cook_time: String!
+  ingredients: String!
+  instructions: String!
+  author: String!
+  tags: String!
+  category: String!
+  image: String!
+  difficulty: String!
+}
+
 type Query {
   user(id: String!): Users!
   users: [Users!]!
+  recipe(index: String!): Recipes!
+  recipes: [Recipes!]!
+  topRecipesByCategory(category: String!): [Recipes!]!
+  topRecipesByCuisine(cuisine: String!): [Recipes!]!
 }
 
 type Mutation {
   createUser(id: String!, firstname: String!, lastname: String!, email: String!, phone: String!, gender: String!, birthdate: DateTime!, country: String!): Users!
+  createRecipe(recipe_title: String!, url: String!, record_health: String!, description: String!, cuisine: String!, diet: String!, prep_time: String!, cook_time: String!, ingredients: String!, instructions: String!, author: String!, tags: String!, category: String!, image: String!, difficulty: String!): Recipes!
 }
