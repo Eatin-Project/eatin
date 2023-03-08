@@ -27,6 +27,7 @@ export type MutationCreateRecipeArgs = {
   author: Scalars['String'];
   category: Scalars['String'];
   cook_time: Scalars['String'];
+  course: Scalars['String'];
   cuisine: Scalars['String'];
   description: Scalars['String'];
   diet: Scalars['String'];
@@ -88,6 +89,7 @@ export type Recipes = {
   author: Scalars['String'];
   category: Scalars['String'];
   cook_time: Scalars['String'];
+  course: Scalars['String'];
   cuisine: Scalars['String'];
   description: Scalars['String'];
   diet: Scalars['String'];
@@ -123,6 +125,7 @@ export type CreateRecipeMutationVariables = Exact<{
   record_health: Scalars['String'];
   description: Scalars['String'];
   cuisine: Scalars['String'];
+  course: Scalars['String'];
   diet: Scalars['String'];
   prep_time: Scalars['String'];
   cook_time: Scalars['String'];
@@ -136,7 +139,7 @@ export type CreateRecipeMutationVariables = Exact<{
 }>;
 
 
-export type CreateRecipeMutation = { __typename?: 'Mutation', createRecipe: { __typename?: 'Recipes', recipe_title: string, url: string, record_health: string, description: string, cuisine: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string } };
+export type CreateRecipeMutation = { __typename?: 'Mutation', createRecipe: { __typename?: 'Recipes', recipe_title: string, url: string, record_health: string, description: string, cuisine: string, course: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string } };
 
 export type CreateUserMutationVariables = Exact<{
   id: Scalars['String'];
@@ -155,28 +158,28 @@ export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __type
 export type GetAllRecipesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipes', index: string, recipe_title: string, url: string, record_health: string, vote_count: string, rating: string, description: string, cuisine: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string }> };
+export type GetAllRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipes', index: string, recipe_title: string, url: string, record_health: string, vote_count: string, rating: string, description: string, cuisine: string, course: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string }> };
 
 export type GetRecipeByIdQueryVariables = Exact<{
   index: Scalars['String'];
 }>;
 
 
-export type GetRecipeByIdQuery = { __typename?: 'Query', recipe: { __typename?: 'Recipes', index: string, recipe_title: string, url: string, record_health: string, vote_count: string, rating: string, description: string, cuisine: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string } };
+export type GetRecipeByIdQuery = { __typename?: 'Query', recipe: { __typename?: 'Recipes', index: string, recipe_title: string, url: string, record_health: string, vote_count: string, rating: string, description: string, cuisine: string, course: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string } };
 
 export type GetTopRatedRecipesByCategoryQueryVariables = Exact<{
   category: Scalars['String'];
 }>;
 
 
-export type GetTopRatedRecipesByCategoryQuery = { __typename?: 'Query', topRecipesByCategory: Array<{ __typename?: 'Recipes', index: string, recipe_title: string, url: string, record_health: string, vote_count: string, rating: string, description: string, cuisine: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string }> };
+export type GetTopRatedRecipesByCategoryQuery = { __typename?: 'Query', topRecipesByCategory: Array<{ __typename?: 'Recipes', index: string, recipe_title: string, url: string, record_health: string, vote_count: string, rating: string, description: string, cuisine: string, course: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string }> };
 
 export type GetTopRatedRecipesByCuisineQueryVariables = Exact<{
   cuisine: Scalars['String'];
 }>;
 
 
-export type GetTopRatedRecipesByCuisineQuery = { __typename?: 'Query', topRecipesByCuisine: Array<{ __typename?: 'Recipes', index: string, recipe_title: string, url: string, record_health: string, vote_count: string, rating: string, description: string, cuisine: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string }> };
+export type GetTopRatedRecipesByCuisineQuery = { __typename?: 'Query', topRecipesByCuisine: Array<{ __typename?: 'Recipes', index: string, recipe_title: string, url: string, record_health: string, vote_count: string, rating: string, description: string, cuisine: string, course: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string }> };
 
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -192,13 +195,14 @@ export type GetUserByIdQuery = { __typename?: 'Query', user: { __typename?: 'Use
 
 
 export const CreateRecipeDocument = gql`
-    mutation createRecipe($recipe_title: String!, $url: String!, $record_health: String!, $description: String!, $cuisine: String!, $diet: String!, $prep_time: String!, $cook_time: String!, $ingredients: String!, $instructions: String!, $author: String!, $tags: String!, $category: String!, $image: String!, $difficulty: String!) {
+    mutation createRecipe($recipe_title: String!, $url: String!, $record_health: String!, $description: String!, $cuisine: String!, $course: String!, $diet: String!, $prep_time: String!, $cook_time: String!, $ingredients: String!, $instructions: String!, $author: String!, $tags: String!, $category: String!, $image: String!, $difficulty: String!) {
   createRecipe(
     recipe_title: $recipe_title
     url: $url
     record_health: $record_health
     description: $description
     cuisine: $cuisine
+    course: $course
     diet: $diet
     prep_time: $prep_time
     cook_time: $cook_time
@@ -215,6 +219,7 @@ export const CreateRecipeDocument = gql`
     record_health
     description
     cuisine
+    course
     diet
     prep_time
     cook_time
@@ -248,6 +253,7 @@ export type CreateRecipeMutationFn = Apollo.MutationFunction<CreateRecipeMutatio
  *      record_health: // value for 'record_health'
  *      description: // value for 'description'
  *      cuisine: // value for 'cuisine'
+ *      course: // value for 'course'
  *      diet: // value for 'diet'
  *      prep_time: // value for 'prep_time'
  *      cook_time: // value for 'cook_time'
@@ -335,6 +341,7 @@ export const GetAllRecipesDocument = gql`
     rating
     description
     cuisine
+    course
     diet
     prep_time
     cook_time
@@ -386,6 +393,7 @@ export const GetRecipeByIdDocument = gql`
     rating
     description
     cuisine
+    course
     diet
     prep_time
     cook_time
@@ -438,6 +446,7 @@ export const GetTopRatedRecipesByCategoryDocument = gql`
     rating
     description
     cuisine
+    course
     diet
     prep_time
     cook_time
@@ -490,6 +499,7 @@ export const GetTopRatedRecipesByCuisineDocument = gql`
     rating
     description
     cuisine
+    course
     diet
     prep_time
     cook_time

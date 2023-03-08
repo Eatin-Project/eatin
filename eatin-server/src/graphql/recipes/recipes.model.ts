@@ -29,6 +29,9 @@ export class Recipes {
     cuisine: string;
     @Field()
     @Column('text')
+    course: string;
+    @Field()
+    @Column('text')
     diet: string;
     @Field()
     @Column('text')

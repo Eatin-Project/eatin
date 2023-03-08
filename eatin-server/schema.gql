@@ -27,6 +27,7 @@ type Recipes {
   rating: String!
   description: String!
   cuisine: String!
+  course: String!
   diet: String!
   prep_time: String!
   cook_time: String!
@@ -50,5 +51,5 @@ type Query {
 
 type Mutation {
   createUser(id: String!, firstname: String!, lastname: String!, email: String!, phone: String!, gender: String!, birthdate: DateTime!, country: String!): Users!
-  createRecipe(recipe_title: String!, url: String!, record_health: String!, description: String!, cuisine: String!, diet: String!, prep_time: String!, cook_time: String!, ingredients: String!, instructions: String!, author: String!, tags: String!, category: String!, image: String!, difficulty: String!): Recipes!
+  createRecipe(recipe_title: String!, url: String!, record_health: String!, description: String!, cuisine: String!, course: String!, diet: String!, prep_time: String!, cook_time: String!, ingredients: String!, instructions: String!, author: String!, tags: String!, category: String!, image: String!, difficulty: String!): Recipes!
 }

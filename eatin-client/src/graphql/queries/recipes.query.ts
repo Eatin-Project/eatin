@@ -11,6 +11,7 @@ export const GET_ALL_RECIPES = gql`
             rating
             description
             cuisine
+            course
             diet
             prep_time
             cook_time
@@ -36,6 +37,7 @@ export const GET_RECIPE_BY_ID = gql`
             rating
             description
             cuisine
+            course
             diet
             prep_time
             cook_time
@@ -61,6 +63,7 @@ export const GET_RECIPE_BY_CATEGORY = gql`
             rating
             description
             cuisine
+            course
             diet
             prep_time
             cook_time
@@ -86,6 +89,7 @@ export const GET_RECIPE_BY_CUISINE = gql`
             rating
             description
             cuisine
+            course
             diet
             prep_time
             cook_time

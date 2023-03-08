@@ -4,6 +4,7 @@ export interface RecipesDTO {
     record_health: string,
     description: string,
     cuisine: string,
+    course: string,
     diet: string,
     prep_time: string,
     cook_time: string,
