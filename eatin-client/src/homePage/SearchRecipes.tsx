@@ -16,31 +16,31 @@ export const SearchRecipes: FC<Props> = ({ searchOptions }) => {
 
   useEffect(() => {
     const newSearchVals: string[] = [];
-    for (let index = 0; index < searchOptions.length; index++) {
+    for (let optionIndex = 0; optionIndex < searchOptions.length; optionIndex++) {
       const newVal = "0";
       newSearchVals.push(newVal);
     }
     setSearchVals(newSearchVals);
   }, []);
 
-  const setNewValues = (index: number, value: string) => {
+  const setNewValues = (optionIndex: number, value: string) => {
     const newSearchVals = searchVals;
-    newSearchVals[index] = value;
+    newSearchVals[optionIndex] = value;
     setSearchVals([...newSearchVals]);
   };
 
   return (
     <div className="search-recipes">
-      {searchOptions.map((searchOption, index) => (
+      {searchOptions.map((searchOption, optionIndex) => (
         <TextField
-          key={`${index}-${searchOption.name}`}
+          key={`${optionIndex}-${searchOption.name}`}
           className="search-dropdown"
           label={searchOption.name}
-          value={searchVals[index] || ""}
+          value={searchVals[optionIndex] || ""}
           select
           defaultValue={"0"}
           onChange={(event) => {
-            setNewValues(index, event.target.value);
+            setNewValues(optionIndex, event.target.value);
           }}
         >
           {searchOption.options.map((option, i) => (

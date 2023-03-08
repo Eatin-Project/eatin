@@ -10,23 +10,23 @@ import classNames from "classnames";
 export interface Item {
   index: string;
   recipe_title: string;
-  url: string;
-  record_health: string;
-  vote_count: string;
+  url?: string;
+  record_health?: string;
+  vote_count?: string;
   rating: string;
-  description: string;
-  cuisine: string;
-  course: string;
-  diet: string;
-  prep_time: string;
-  cook_time: string;
-  ingredients: string;
-  instructions: string;
-  author: string;
-  tags: string;
-  category: string;
+  description?: string;
+  cuisine?: string;
+  course?: string;
+  diet?: string;
+  prep_time?: string;
+  cook_time?: string;
+  ingredients?: string;
+  instructions?: string;
+  author?: string;
+  tags?: string;
+  category?: string;
   image: string;
-  difficulty: string;
+  difficulty?: string;
   onClick?: (id: string) => void;
 }
 
@@ -38,7 +38,7 @@ interface Props {
   autoSlide?: boolean;
   isLoading?: boolean;
   randomColors?: boolean;
-  onClickItem?: (id: number) => void;
+  onClickItem?: (id: string) => void;
 }
 
 type SlideDirection = "prev" | "next";
@@ -70,9 +70,9 @@ export const Carousel: FC<Props> = ({
   );
 
   const getSlideClassNames = useCallback(
-    (index: number) => {
-      const isActive = currentSlide === index;
-      const isNextSlide = nextSlide === index;
+    (itemIndex: number) => {
+      const isActive = currentSlide === itemIndex;
+      const isNextSlide = nextSlide === itemIndex;
 
       const animationClassnames = {
         ["carousel-slide-" + slideTo]: isNextSlide,
@@ -126,21 +126,21 @@ export const Carousel: FC<Props> = ({
       <div className="carousel">
         {isLoading ? (
           <div className="carousel-slide active">
-            {Array.from({ length: itemsInOneSlider }).map((_, index) => (
+            {Array.from({ length: itemsInOneSlider }).map((_, itemIndex) => (
               <Skeleton
-                key={`skeleton|${index}`}
+                key={`skeleton|${itemIndex}`}
                 className="carousel-item"
                 width={`${100 / itemsInOneSlider}%`}
               />
             ))}
           </div>
         ) : (
-          itemsMatrix.map((items, index) => (
-            <div className={getSlideClassNames(index)} key={index}>
-              {items.map((item, index) => (
+          itemsMatrix.map((items, itemIndex) => (
+            <div className={getSlideClassNames(itemIndex)} key={itemIndex}>
+              {items.map((item, itemIndex) => (
                 <CarouselItem
-                  key={item.id}
-                  index={index}
+                  key={item.index}
+                  itemIndex={itemIndex}
                   {...item}
                   width={100 / itemsInOneSlider}
                   onClick={onClickItem}
@@ -155,10 +155,10 @@ export const Carousel: FC<Props> = ({
             <CarouselArrowIcon type="prev" onClick={slideWithAnimation} />
             <CarouselArrowIcon type="next" onClick={slideWithAnimation} />
             <div className="carousel-bread-crumbs">
-              {Array.from({ length: maxSlides }).map((_, index) => (
+              {Array.from({ length: maxSlides }).map((_, itemIndex) => (
                 <CarouselBreadCrumb
-                  key={index}
-                  slide={index}
+                  key={itemIndex}
+                  slide={itemIndex}
                   onClick={slideWithAnimation}
                   isInAnimation={!!slideTo}
                   currentSlide={currentSlide}
@@ -197,22 +197,22 @@ const COLORS = [
 
 type CarouselItemProps = Item & {
   width: number;
-  index: number;
+  itemIndex: number;
   randomColors?: boolean;
 };
 
 const CarouselItem: FC<CarouselItemProps> = ({
   width,
-  id,
-  name,
   index,
-  imageUrl,
+  recipe_title,
+  itemIndex,
+  image,
   rating,
-  viewed,
+  vote_count,
   randomColors,
   onClick,
 }) => {
-  const handleClick = useCallback(() => onClick?.(id), [id, onClick]);
+  const handleClick = useCallback(() => onClick?.(index), [index, onClick]);
   const [savedValue, setSavedValue] = useState<number>(0);
 
   const savedStateChanged = () => {
@@ -226,15 +226,15 @@ const CarouselItem: FC<CarouselItemProps> = ({
       className={classNames("carousel-item", { click: !!onClick })}
       onClick={handleClick}
       style={{ width: `${width}%` }}
-      key={id}
+      key={index}
     >
       <h2
         className="item-name"
         style={
-          randomColors ? { backgroundColor: COLORS[index % 4] } : undefined
+          randomColors ? { backgroundColor: COLORS[itemIndex % 4] } : undefined
         }
       >
-        {name}
+        {recipe_title}
       </h2>
       <div className="buttons-spread">
         <Rating
@@ -251,13 +251,13 @@ const CarouselItem: FC<CarouselItemProps> = ({
         <Rating
           className="rating-item"
           precision={0.5}
-          value={rating}
+          value={parseFloat(rating)}
           readOnly
           max={5}
         />
-        <span className="viewed-number">{viewed}</span>
+        <span className="viewed-number">{vote_count}</span>
       </div>
-      <img className="item-img" src={imageUrl} />
+      <img className="item-img" src={image} />
     </div>
   );
 };
@@ -298,6 +298,6 @@ const CarouselBreadCrumb: FC<CarouselBreadCrumbProps> = ({
 const arrayToMatrix = (array: Item[], columns: number): Item[][] =>
   Array(Math.ceil(array.length / columns))
     .fill(null)
-    .reduce((prev, _, index) => {
-      return [...prev, [...array].splice(index * columns, columns)];
+    .reduce((prev, _, itemIndex) => {
+      return [...prev, [...array].splice(itemIndex * columns, columns)];
     }, []);

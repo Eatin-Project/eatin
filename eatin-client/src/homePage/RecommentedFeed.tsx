@@ -13,9 +13,9 @@ export const RecommentedFeed: FC<Props> = ({ currentRecipes }) => {
 
   return (
     <div className="genres-page">
-      {currentRecipes.map((recipe, index) => (
+      {currentRecipes.map((recipe, itemIndex) => (
         <Carousel
-          key={`${recipe.name}-${index}`}
+          key={`${recipe.name}-${itemIndex}`}
           title={recipe.name}
           items={recipe.items}
           itemsInOneSlider={3}
