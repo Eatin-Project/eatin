@@ -28,6 +28,7 @@ export const HomePage: FC = () => {
     const eggs = useGetTopRatedRecipesByCategoryQuery({variables: {category: Category.Egg}}).data?.topRecipesByCategory;
     const cakes = useGetTopRatedRecipesByCategoryQuery({variables: {category: Category.Cake}}).data?.topRecipesByCategory;
     const japanese = useGetTopRatedRecipesByCuisineQuery({variables: {cuisine: Cuisine.Japanese}}).data?.topRecipesByCuisine;
+    const greek = useGetTopRatedRecipesByCuisineQuery({variables: {cuisine: Cuisine.Greek}}).data?.topRecipesByCuisine;
 
   // This is temp
   function getItemsArray(recipes: any) {
@@ -41,10 +42,12 @@ export const HomePage: FC = () => {
         const eggItems = getItemsArray(eggs);
         const cakeItems = getItemsArray(cakes);
         const japaneseItems = getItemsArray(japanese);
+        const greekItems = getItemsArray(greek);
         setCurrentShownRecipes([{name: Category.Egg.toString(), items: eggItems},
             {name: Category.Cake.toString(), items: cakeItems},
-            {name: Cuisine.Japanese.toString(), items: japaneseItems}]);
-    }, [currentShownRecipes]);
+            {name: Cuisine.Japanese.toString(), items: japaneseItems},
+            {name: Cuisine.Greek.toString(), items: greekItems}]);
+    }, [currentShownRecipes, cakes, eggs, japanese, greek]);
 
     const currentFilterOptions: {
         name: string;
