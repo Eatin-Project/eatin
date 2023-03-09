@@ -1,17 +1,17 @@
 import "./HomePage.css";
 
-import {FC, useEffect, useState} from "react";
-import {RecommentedFeed} from "./RecommentedFeed";
-import {Button, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import { FC, useEffect, useState } from "react";
+import { RecommentedFeed } from "./RecommentedFeed";
+import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import {Item} from "./Carousel";
-import {SearchRecipes} from "./SearchRecipes";
+import { Item } from "./CategoryCarousel";
+import { SearchRecipes } from "./SearchRecipes";
 import {
     useGetTopRatedRecipesByCategoryQuery,
-    useGetTopRatedRecipesByCuisineQuery
+    useGetTopRatedRecipesByCuisineQuery,
 } from "../generated/graphql";
-import {Category} from "./categories.enum";
-import {Cuisine} from "./cuisines.enum";
+import { Category } from "./categories.enum";
+import { Cuisine } from "./cuisines.enum";
 
 export const HomePage: FC = () => {
     const [searchFilter, setSearchFilter] = useState(false);
@@ -20,33 +20,87 @@ export const HomePage: FC = () => {
     const [ratingFilterVal, setRatingFilterVal] = useState("1");
     const [filterSearchVal, setfilterSearchVal] = useState("");
     const [SearchResult, setSearchResult] = useState("");
-    const [currentShownRecipes, setCurrentShownRecipes] = useState<{
-        name: string;
-        items: Item[];
-    }[]>([]);
+    const [currentShownRecipes, setCurrentShownRecipes] = useState<
+        {
+            name: string;
+            items: Item[];
+        }[]
+    >([]);
 
-    const eggs = useGetTopRatedRecipesByCategoryQuery({variables: {category: Category.Egg}}).data?.topRecipesByCategory;
-    const cakes = useGetTopRatedRecipesByCategoryQuery({variables: {category: Category.Cake}}).data?.topRecipesByCategory;
-    const japanese = useGetTopRatedRecipesByCuisineQuery({variables: {cuisine: Cuisine.Japanese}}).data?.topRecipesByCuisine;
-    const greek = useGetTopRatedRecipesByCuisineQuery({variables: {cuisine: Cuisine.Greek}}).data?.topRecipesByCuisine;
+    const eggs = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Egg } })
+        .data?.topRecipesByCategory;
+    const cakes = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Cake } })
+        .data?.topRecipesByCategory;
+    const japanese = useGetTopRatedRecipesByCuisineQuery({
+        variables: { cuisine: Cuisine.Japanese },
+    }).data?.topRecipesByCuisine;
+    const greek = useGetTopRatedRecipesByCuisineQuery({ variables: { cuisine: Cuisine.Greek } })
+        .data?.topRecipesByCuisine;
 
-  // This is temp
-  function getItemsArray(recipes: any) {
+    // This is temp
+    function getItemsArray(recipes: any) {
         const items: Item[] = [];
-        recipes?.forEach((recipe: { index: string; recipe_title: string; url: string; record_health: string; vote_count: string; rating: string; description: string; cuisine: string; course: string; diet: string; prep_time: string; cook_time: string; ingredients: string; instructions: string; author: string; tags: string; category: string; image: string; difficulty: string; }) => items.push(new Item(recipe.index, recipe.recipe_title, recipe.url, recipe.record_health, recipe.vote_count, recipe.rating, recipe.description, recipe.cuisine, recipe.course, recipe.diet, recipe.prep_time, recipe.cook_time, recipe.ingredients, recipe.instructions, recipe.author, recipe.tags, recipe.category, recipe.image, recipe.difficulty)));
+        recipes?.forEach(
+            (recipe: {
+                index: string;
+                recipe_title: string;
+                url: string;
+                record_health: string;
+                vote_count: string;
+                rating: string;
+                description: string;
+                cuisine: string;
+                course: string;
+                diet: string;
+                prep_time: string;
+                cook_time: string;
+                ingredients: string;
+                instructions: string;
+                author: string;
+                tags: string;
+                category: string;
+                image: string;
+                difficulty: string;
+            }) =>
+                items.push(
+                    new Item(
+                        recipe.index,
+                        recipe.recipe_title,
+                        recipe.url,
+                        recipe.record_health,
+                        recipe.vote_count,
+                        recipe.rating,
+                        recipe.description,
+                        recipe.cuisine,
+                        recipe.course,
+                        recipe.diet,
+                        recipe.prep_time,
+                        recipe.cook_time,
+                        recipe.ingredients,
+                        recipe.instructions,
+                        recipe.author,
+                        recipe.tags,
+                        recipe.category,
+                        recipe.image,
+                        recipe.difficulty,
+                    ),
+                ),
+        );
         return items;
     }
 
-  // This is temp
-  useEffect(() => {
+    // This is temp
+    useEffect(() => {
         const eggItems = getItemsArray(eggs);
         const cakeItems = getItemsArray(cakes);
         const japaneseItems = getItemsArray(japanese);
         const greekItems = getItemsArray(greek);
-        setCurrentShownRecipes([{name: Category.Egg.toString(), items: eggItems},
-            {name: Category.Cake.toString(), items: cakeItems},
-            {name: Cuisine.Japanese.toString(), items: japaneseItems},
-            {name: Cuisine.Greek.toString(), items: greekItems}]);
+        setCurrentShownRecipes([
+            { name: Category.Egg.toString(), items: eggItems },
+            { name: Category.Cake.toString(), items: cakeItems },
+            { name: Cuisine.Japanese.toString(), items: japaneseItems },
+            { name: Cuisine.Greek.toString(), items: greekItems },
+        ]);
     }, [currentShownRecipes, cakes, eggs, japanese, greek]);
 
     const currentFilterOptions: {
@@ -56,14 +110,7 @@ export const HomePage: FC = () => {
     }[] = [
         {
             name: "Genre",
-            options: [
-                "None",
-                "Asian",
-                "Italian",
-                "Indian",
-                "French",
-                "Mediterranean",
-            ],
+            options: ["None", "Asian", "Italian", "Indian", "French", "Mediterranean"],
             funcToUpdate: setGenreFilterVal,
         },
         {
@@ -94,7 +141,7 @@ export const HomePage: FC = () => {
     return (
         <div>
             <div className="header">
-                {<SearchRecipes searchOptions={currentFilterOptions}/>}
+                {<SearchRecipes searchOptions={currentFilterOptions} />}
                 <div className="searchManually">
                     <span className="searchResult">{SearchResult}</span>
                     <div className="completeSearchBar">
@@ -107,7 +154,7 @@ export const HomePage: FC = () => {
                             type="text"
                         />
                         <Button onClick={updateSearchResult} className="searchButton">
-                            <SearchIcon/>
+                            <SearchIcon />
                         </Button>
                     </div>
                 </div>
@@ -121,11 +168,7 @@ export const HomePage: FC = () => {
                 </Button>
             </div>
 
-            {!searchFilter ? (
-                <RecommentedFeed currentRecipes={currentShownRecipes}/>
-            ) : (
-                <div></div>
-            )}
+            {!searchFilter ? <RecommentedFeed currentRecipes={currentShownRecipes} /> : <div></div>}
 
             <div></div>
         </div>
