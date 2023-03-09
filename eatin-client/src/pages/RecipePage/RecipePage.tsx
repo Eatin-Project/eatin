@@ -1,17 +1,19 @@
 import "./RecipePage.css";
 
-import { Avatar } from "@mui/material";
-import { FC } from "react";
+import { Avatar, Rating } from "@mui/material";
+import { FC, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetRecipeByIdQuery } from "../../generated/graphql";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
+    const [rating, setRating] = useState<number | null>(0);
     const recipe = useGetRecipeByIdQuery({ variables: { index: id || "" } }).data?.recipe;
 
-    if (!id) return <h2>Recipe not found :(</h2>;
+    if (!id || !recipe) return <h2>Recipe not found :(</h2>;
 
-    const { author, image, recipe_title, ingredients, instructions, description } = recipe || {};
+    const { author, image, recipe_title, ingredients, instructions, description } = recipe;
+
     return (
         <div className="recipe-page">
             <div className="right-side">
@@ -19,6 +21,15 @@ export const RecipePage: FC = () => {
                     <div className="user">
                         <Avatar className="avatar" />
                         <span>{author}</span>
+                        <Rating
+                            className="recipe-rating"
+                            size="large"
+                            value={rating}
+                            onChange={(event, newValue) => {
+                                setRating(newValue);
+                            }}
+                            precision={0.5}
+                        />
                     </div>
                     <img src={image} alt="recipe" />
                 </div>
