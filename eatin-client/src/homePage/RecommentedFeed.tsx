@@ -2,10 +2,11 @@ import "./RecommentedFeed.css";
 
 import { FC, useState } from "react";
 
-import { CategoryCarousel, Item } from "./CategoryCarousel";
+import { CategoryCarousel } from "./CategoryCarousel";
+import { Recipe } from "../components/types";
 
 interface Props {
-    currentRecipes: { name: string; items: Item[] }[];
+    currentRecipes: { name: string; items: Recipe[] }[];
 }
 
 export const RecommentedFeed: FC<Props> = ({ currentRecipes }) => {

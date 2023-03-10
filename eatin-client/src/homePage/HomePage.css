@@ -1,65 +1,65 @@
 .header {
-  display: flex;
-  align-items: flex-end;
-  flex-direction: row-reverse;
-  justify-content: space-around;
-  padding-top: 1em;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+    padding-top: 1em;
 }
 
 .header .searchbar {
-  color: black !important;
-  border-radius: 0.5em;
-  color: white;
+    color: black !important;
+    border-radius: 0.5em;
+    color: white;
 }
 
 .searchManually {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-around;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 .completeSearchBar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .recipesBtn {
-  background-color: #fd7269 !important;
-  color: black !important;
-  margin-right: 1em !important;
-  border-radius: 1em !important;
-  width: 10em;
-  height: 4em;
-  text-transform: capitalize !important;
+    background-color: #fd7269 !important;
+    color: black !important;
+    margin-right: 1em !important;
+    border-radius: 1em !important;
+    width: 10em;
+    height: 4em;
+    text-transform: capitalize !important;
 }
 .recipesBtn:hover {
-  border: black 1px solid !important;
+    border: black 1px solid !important;
 }
 
 .completeSearchBar .searchButton {
-  background-color: #fd7269;
-  border-right: none;
-  padding: 1.1em;
-  cursor: pointer;
-  color: black;
+    background-color: #fd7269;
+    border-right: none;
+    padding: 1.1em;
+    cursor: pointer;
+    color: black;
 }
 
 .searchButton:hover {
-  border: black 1px solid !important;
-  background-color: #fd7269 !important;
+    border: black 1px solid !important;
+    background-color: #fd7269 !important;
 }
 
 .header .searchResult {
-  font-size: 3em;
+    font-size: 3em;
 }
 
 .searchbar .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
-  color: #fd7269 !important;
+    color: #fd7269 !important;
 }
 
 .searchbar .MuiOutlinedInput-notchedOutline {
-  border: #fd7269 solid 1px;
+    border: #fd7269 solid 1px;
 }

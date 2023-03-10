@@ -4,7 +4,6 @@ import { FC, useEffect, useState } from "react";
 import { RecommentedFeed } from "./RecommentedFeed";
 import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { Item } from "./CategoryCarousel";
 import { SearchRecipes } from "./SearchRecipes";
 import {
     useGetTopRatedRecipesByCategoryQuery,
@@ -12,9 +11,9 @@ import {
 } from "../generated/graphql";
 import { Category } from "./categories.enum";
 import { Cuisine } from "./cuisines.enum";
+import { Recipe } from "../components/types";
 
 export const HomePage: FC = () => {
-    const [searchFilter, setSearchFilter] = useState(false);
     const [genreFilterVal, setGenreFilterVal] = useState("1");
     const [difficultyFilterVal, setDifficultyFilterVal] = useState("1");
     const [ratingFilterVal, setRatingFilterVal] = useState("1");
@@ -23,7 +22,7 @@ export const HomePage: FC = () => {
     const [currentShownRecipes, setCurrentShownRecipes] = useState<
         {
             name: string;
-            items: Item[];
+            items: Recipe[];
         }[]
     >([]);
 
@@ -37,73 +36,46 @@ export const HomePage: FC = () => {
     const greek = useGetTopRatedRecipesByCuisineQuery({ variables: { cuisine: Cuisine.Greek } })
         .data?.topRecipesByCuisine;
 
-    // This is temp
-    function getItemsArray(recipes: any) {
-        const items: Item[] = [];
-        recipes?.forEach(
-            (recipe: {
-                index: string;
-                recipe_title: string;
-                url: string;
-                record_health: string;
-                vote_count: string;
-                rating: string;
-                description: string;
-                cuisine: string;
-                course: string;
-                diet: string;
-                prep_time: string;
-                cook_time: string;
-                ingredients: string;
-                instructions: string;
-                author: string;
-                tags: string;
-                category: string;
-                image: string;
-                difficulty: string;
-            }) =>
-                items.push(
-                    new Item(
-                        recipe.index,
-                        recipe.recipe_title,
-                        recipe.url,
-                        recipe.record_health,
-                        recipe.vote_count,
-                        recipe.rating,
-                        recipe.description,
-                        recipe.cuisine,
-                        recipe.course,
-                        recipe.diet,
-                        recipe.prep_time,
-                        recipe.cook_time,
-                        recipe.ingredients,
-                        recipe.instructions,
-                        recipe.author,
-                        recipe.tags,
-                        recipe.category,
-                        recipe.image,
-                        recipe.difficulty,
-                    ),
-                ),
-        );
-        return items;
-    }
+    const getItemAsRecipe = (item: any) => {
+        const newItems: Recipe[] = [];
+        item?.forEach((it: any) => {
+            newItems.push({
+                index: it.index,
+                recipe_title: it.recipe_title,
+                url: it.url,
+                record_health: it.record_health,
+                vote_count: it.vote_count,
+                rating: it.rating,
+                description: it.description,
+                cuisine: it.cuisine,
+                course: it.course,
+                diet: it.diet,
+                prep_time: it.prep_time,
+                cook_time: it.cook_time,
+                ingredients: it.ingredients,
+                instructions: it.instructions,
+                author: it.author,
+                tags: it.tags,
+                category: it.category,
+                image: it.image,
+                difficulty: it.difficulty,
+            });
+        });
+        return newItems;
+    };
 
-    // This is temp
     useEffect(() => {
-        const eggItems = getItemsArray(eggs);
-        const cakeItems = getItemsArray(cakes);
-        const japaneseItems = getItemsArray(japanese);
-        const greekItems = getItemsArray(greek);
+        // TODO: get the recommented recipes
         setCurrentShownRecipes([
-            { name: Category.Egg.toString(), items: eggItems },
-            { name: Category.Cake.toString(), items: cakeItems },
-            { name: Cuisine.Japanese.toString(), items: japaneseItems },
-            { name: Cuisine.Greek.toString(), items: greekItems },
+            { name: Category.Egg.toString(), items: getItemAsRecipe(eggs) },
+            { name: Category.Cake.toString(), items: getItemAsRecipe(cakes) },
+            { name: Cuisine.Japanese.toString(), items: getItemAsRecipe(japanese) },
+            { name: Cuisine.Greek.toString(), items: getItemAsRecipe(greek) },
         ]);
     }, [currentShownRecipes, cakes, eggs, japanese, greek]);
 
     const currentFilterOptions: {
+        // TODO: for now the options are hardcoded until we get all the recommented recipes and can have the filter accordently
         name: string;
         options: string[];
         funcToUpdate: (arg0: string) => void;
@@ -131,11 +103,11 @@ export const HomePage: FC = () => {
     };
 
     const showMyRecipes = () => {
-        // here we will update the shown recipes....
+        // TODO: here we will update the shown recipes....
     };
 
     const showSavedRecipes = () => {
-        // here we will update the shown recipes....
+        // TODO: here we will update the shown recipes....
     };
 
     return (
@@ -168,7 +140,7 @@ export const HomePage: FC = () => {
                 </Button>
             </div>
 
-            {!searchFilter ? <RecommentedFeed currentRecipes={currentShownRecipes} /> : <div></div>}
+            <RecommentedFeed currentRecipes={currentShownRecipes} />
 
             <div></div>
         </div>
