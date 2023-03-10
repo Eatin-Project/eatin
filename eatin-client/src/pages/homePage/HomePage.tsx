@@ -8,10 +8,10 @@ import { SearchRecipes } from "./SearchRecipes";
 import {
     useGetTopRatedRecipesByCategoryQuery,
     useGetTopRatedRecipesByCuisineQuery,
-} from "../generated/graphql";
+} from "../../generated/graphql";
 import { Category } from "./categories.enum";
 import { Cuisine } from "./cuisines.enum";
-import { Recipe } from "../components/types";
+import { Recipe } from "../../components/types";
 
 export const HomePage: FC = () => {
     const [genreFilterVal, setGenreFilterVal] = useState("1");

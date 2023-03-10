@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { Button, Rating } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { Carousel, CarouselItem, CarouselProps } from "../components/ui/Carousel";
+import { Carousel, CarouselItem, CarouselProps } from "../../components/ui/Carousel";
 import { useNavigate } from "react-router-dom";
-import { Recipe } from "../components/types";
+import { Recipe } from "../../components/types";
 
 type Props = Omit<CarouselProps, "items"> & {
     items: Recipe[];
