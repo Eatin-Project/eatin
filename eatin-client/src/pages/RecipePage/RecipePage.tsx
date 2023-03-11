@@ -1,26 +1,49 @@
 import "./RecipePage.css";
 
-import { Avatar, Rating } from "@mui/material";
+import { Rating } from "@mui/material";
 import { FC, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetRecipeByIdQuery } from "../../generated/graphql";
+import { BookmarkButton } from "../../components/ui/BookmarkButton";
+import { Comment } from "../../components/ui/Comment";
+import { User } from "../../components/ui/User";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
+
     const [rating, setRating] = useState<number | null>(0);
+    const [isSaved, setIsSaved] = useState(false);
+
     const recipe = useGetRecipeByIdQuery({ variables: { index: id || "" } }).data?.recipe;
 
     if (!id || !recipe) return <h2>Recipe not found :(</h2>;
 
-    const { author, image, recipe_title, ingredients, instructions, description } = recipe;
+    const {
+        author,
+        image,
+        recipe_title,
+        ingredients,
+        instructions,
+        description,
+        cuisine,
+        course,
+        cook_time,
+        tags,
+        category,
+        diet,
+        difficulty,
+        record_health,
+        prep_time,
+        vote_count,
+        url,
+    } = recipe;
 
     return (
         <div className="recipe-page">
             <div className="right-side">
                 <div className="recipe-media">
-                    <div className="user">
-                        <Avatar className="avatar" />
-                        <span>{author}</span>
+                    <div className="above-image">
+                        <User name={author}>
                         <Rating
                             className="recipe-rating"
                             size="large"
@@ -30,18 +53,15 @@ export const RecipePage: FC = () => {
                             }}
                             precision={0.5}
                         />
+                            {vote_count}
+                        </User>
+                        <BookmarkButton value={isSaved} onChange={setIsSaved} size="large" />
                     </div>
                     <img src={image} alt="recipe" />
                 </div>
                 <div className="comments">
-                    {comments.map(({ content, user }) => (
-                        <div className="comment-card" key={content}>
-                            <div className="user">
-                                <Avatar className="avatar" />
-                                <span>{user}</span>
-                            </div>
-                            <p>{content}</p>
-                        </div>
+                    {comments.map((comment) => (
+                        <Comment {...comment} />
                     ))}
                 </div>
             </div>
@@ -88,7 +108,7 @@ const comments = [
     { user: "shirley", content: "cooked this at home, it was amazing!" },
     { user: "shirley", content: "too much suger for me" },
     { user: "shirley", content: "super tasty" },
-    { user: "shirley", content: "looks great!!" },
+    { user: "shirley", content: "looks great!!!" },
     {
         user: "shirley",
         content: `This cake is rich and wholesome at the same time. Once you have tasted it, you will want to make an extra one and save it for New Year's as well!`,

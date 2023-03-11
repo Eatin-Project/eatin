@@ -1,12 +1,12 @@
 import "./Navbar.css";
 
 import { Outlet, useNavigate } from "react-router-dom";
-import { Avatar } from "@mui/material";
 
 import { AppLogo } from "./AppLogo";
 import { useCallback } from "react";
 import { useGetUserByIdQuery } from "../../generated/graphql";
 import { useAuth } from "../../context/auth-context";
+import { User } from "../ui/User";
 
 export const Navbar = () => {
     const navigate = useNavigate();
@@ -22,12 +22,10 @@ export const Navbar = () => {
             <div className="navbar">
                 <AppLogo onClick={goToHomePage} />
                 <div className="navbar-end">
-                    <div className="user" onClick={() => navigate("/profile")}>
-                        <Avatar className="avatar" />
-                        <span>
-                            {!!data ? data?.user.firstname + " " + data?.user.lastname : ""}
-                        </span>
-                    </div>
+                    <User
+                        name={!!data ? data?.user.firstname + " " + data?.user.lastname : ""}
+                        onClick={() => navigate("/profile")}
+                    />
                 </div>
             </div>
             <Outlet />

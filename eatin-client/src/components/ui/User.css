@@ -1,0 +1,14 @@
+.eatin-user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.eatin-user.clickable {
+    cursor: pointer;
+}
+
+.eatin-user .avatar {
+    width: 1.5em;
+    height: 1.5em;
+    margin-right: 0.5em;
+}
