@@ -1,0 +1,8 @@
+.eatin-app {
+  text-align: center;
+  background-color: whitesmoke;
+  color: black;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+}
