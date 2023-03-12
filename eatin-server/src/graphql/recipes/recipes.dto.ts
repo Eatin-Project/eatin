@@ -6,13 +6,14 @@ export interface RecipesDTO {
     cuisine: string,
     course: string,
     diet: string,
-    prep_time: string,
-    cook_time: string,
+    prep_time: number,
+    cook_time: number,
     ingredients: string,
     instructions: string,
     author: string,
     tags: string,
     category: string,
     image: string,
-    difficulty: string
+    difficulty: string,
+    total_time: number
 }

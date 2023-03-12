@@ -5,7 +5,7 @@ import { ObjectType, Field } from '@nestjs/graphql';
 export class Recipes {
     @Field()
     @PrimaryGeneratedColumn('increment', {type: 'bigint'})
-    index: string;
+    index: number;
     @Field()
     @Column('text')
     recipe_title: string;
@@ -17,10 +17,10 @@ export class Recipes {
     record_health: string;
     @Field()
     @Column('bigint')
-    vote_count: string;
+    vote_count: number;
     @Field()
-    @Column('bigint')
-    rating: string;
+    @Column('double precision')
+    rating: number;
     @Field()
     @Column('text')
     description: string;
@@ -34,11 +34,11 @@ export class Recipes {
     @Column('text')
     diet: string;
     @Field()
-    @Column('text')
-    prep_time: string;
+    @Column('bigint')
+    prep_time: number;
     @Field()
-    @Column('text')
-    cook_time: string;
+    @Column('bigint')
+    cook_time: number;
     @Field()
     @Column('text')
     ingredients: string;
@@ -60,4 +60,7 @@ export class Recipes {
     @Field()
     @Column('text')
     difficulty: string;
+    @Field()
+    @Column('bigint')
+    total_time: number;
 }

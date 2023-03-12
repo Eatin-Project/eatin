@@ -10,7 +10,7 @@ export class RecipesResolver {
     }
 
     @Query(returns => Recipes)
-    async recipe(@Args('index') index: string): Promise<Recipes> {
+    async recipe(@Args('index') index: number): Promise<Recipes> {
         return await this.recipesService.findOne(index);
     }
 
@@ -38,15 +38,17 @@ export class RecipesResolver {
         @Args('cuisine') cuisine: string,
         @Args('course') course: string,
         @Args('diet') diet: string,
-        @Args('prep_time') prep_time: string,
-        @Args('cook_time') cook_time: string,
+        @Args('prep_time') prep_time: number,
+        @Args('cook_time') cook_time: number,
         @Args('ingredients') ingredients: string,
         @Args('instructions') instructions: string,
         @Args('author') author: string,
         @Args('tags') tags: string,
         @Args('category') category: string,
         @Args('image') image: string,
-        @Args('difficulty') difficulty: string
+        @Args('difficulty') difficulty: string,
+        @Args('total_time') total_time: number
+
     ): Promise<Recipes> {
         return await this.recipesService.create({
             recipe_title,
@@ -64,7 +66,8 @@ export class RecipesResolver {
             tags,
             category,
             image,
-            difficulty
+            difficulty,
+            total_time
         })
     }
 }

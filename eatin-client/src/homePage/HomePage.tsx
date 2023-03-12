@@ -1,8 +1,8 @@
 import "./HomePage.css";
 
 import { FC, useEffect, useState } from "react";
-import { RecommentedFeed } from "./RecommentedFeed";
-import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { RecommendedFeed } from "./RecommendedFeed";
+import { Button, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { SearchRecipes } from "./SearchRecipes";
 import {
@@ -17,7 +17,7 @@ export const HomePage: FC = () => {
     const [genreFilterVal, setGenreFilterVal] = useState("1");
     const [difficultyFilterVal, setDifficultyFilterVal] = useState("1");
     const [ratingFilterVal, setRatingFilterVal] = useState("1");
-    const [filterSearchVal, setfilterSearchVal] = useState("");
+    const [filterSearchVal, setFilterSearchVal] = useState("");
     const [SearchResult, setSearchResult] = useState("");
     const [currentShownRecipes, setCurrentShownRecipes] = useState<
         {
@@ -26,56 +26,25 @@ export const HomePage: FC = () => {
         }[]
     >([]);
 
-    const eggs = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Egg } })
-        .data?.topRecipesByCategory;
-    const cakes = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Cake } })
-        .data?.topRecipesByCategory;
-    const japanese = useGetTopRatedRecipesByCuisineQuery({
-        variables: { cuisine: Cuisine.Japanese },
-    }).data?.topRecipesByCuisine;
-    const greek = useGetTopRatedRecipesByCuisineQuery({ variables: { cuisine: Cuisine.Greek } })
-        .data?.topRecipesByCuisine;
-
-    const getItemAsRecipe = (item: any) => {
-        const newItems: Recipe[] = [];
-        item?.forEach((it: any) => {
-            newItems.push({
-                index: it.index,
-                recipe_title: it.recipe_title,
-                url: it.url,
-                record_health: it.record_health,
-                vote_count: it.vote_count,
-                rating: it.rating,
-                description: it.description,
-                cuisine: it.cuisine,
-                course: it.course,
-                diet: it.diet,
-                prep_time: it.prep_time,
-                cook_time: it.cook_time,
-                ingredients: it.ingredients,
-                instructions: it.instructions,
-                author: it.author,
-                tags: it.tags,
-                category: it.category,
-                image: it.image,
-                difficulty: it.difficulty,
-            });
-        });
-        return newItems;
-    };
+    const { data: chicken, loading: chickenLoading, error: chickenErrors } = useGetTopRatedRecipesByCategoryQuery({variables: {category: Category.Chicken}});
+    const { data: cakes, loading: cakesLoading, error: cakesErrors } = useGetTopRatedRecipesByCategoryQuery({variables: {category: Category.Cake}});
+    const { data: japanese, loading: japaneseLoading, error: japaneseErrors } = useGetTopRatedRecipesByCuisineQuery({variables: {cuisine: Cuisine.Japanese}});
+    const { data: greek, loading: greekLoading, error: greekErrors } = useGetTopRatedRecipesByCuisineQuery({variables: {cuisine: Cuisine.Greek}});
 
     useEffect(() => {
-        // TODO: get the recommented recipes
+        // TODO: get the recommended recipes
         setCurrentShownRecipes([
-            { name: Category.Egg.toString(), items: getItemAsRecipe(eggs) },
-            { name: Category.Cake.toString(), items: getItemAsRecipe(cakes) },
-            { name: Cuisine.Japanese.toString(), items: getItemAsRecipe(japanese) },
-            { name: Cuisine.Greek.toString(), items: getItemAsRecipe(greek) },
+            {name: Category.Chicken.toString(), items: chicken?.topRecipesByCategory?.length ? chicken?.topRecipesByCategory : []},
+            {name: Category.Cake.toString(), items: cakes?.topRecipesByCategory?.length ? cakes?.topRecipesByCategory : []},
+            {name: Cuisine.Japanese.toString(), items: japanese?.topRecipesByCuisine?.length ? japanese.topRecipesByCuisine : []},
+            {name: Cuisine.Greek.toString(), items: greek?.topRecipesByCuisine?.length ? greek.topRecipesByCuisine : []},
         ]);
-    }, [currentShownRecipes, cakes, eggs, japanese, greek]);
+
+        console.log(chicken);
+    }, [currentShownRecipes, chicken?.topRecipesByCategory, cakes?.topRecipesByCategory, japanese?.topRecipesByCuisine, greek?.topRecipesByCuisine]);
 
     const currentFilterOptions: {
-        // TODO: for now the options are hardcoded until we get all the recommented recipes and can have the filter accordently
+        // TODO: for now the options are hardcoded until we get all the recommended recipes and can have the filter accordingly
         name: string;
         options: string[];
         funcToUpdate: (arg0: string) => void;
@@ -99,7 +68,7 @@ export const HomePage: FC = () => {
 
     const updateSearchResult = () => {
         setSearchResult(filterSearchVal);
-        setfilterSearchVal("");
+        setFilterSearchVal("");
     };
 
     const showMyRecipes = () => {
@@ -113,20 +82,20 @@ export const HomePage: FC = () => {
     return (
         <div>
             <div className="header">
-                {<SearchRecipes searchOptions={currentFilterOptions} />}
+                {<SearchRecipes searchOptions={currentFilterOptions}/>}
                 <div className="searchManually">
                     <span className="searchResult">{SearchResult}</span>
                     <div className="completeSearchBar">
                         <TextField
                             onChange={(event) => {
-                                setfilterSearchVal(event.target.value);
+                                setFilterSearchVal(event.target.value);
                             }}
                             className="searchbar"
                             variant={undefined}
                             type="text"
                         />
                         <Button onClick={updateSearchResult} className="searchButton">
-                            <SearchIcon />
+                            <SearchIcon/>
                         </Button>
                     </div>
                 </div>
@@ -139,9 +108,7 @@ export const HomePage: FC = () => {
                     Saved Recipes
                 </Button>
             </div>
-
-            <RecommentedFeed currentRecipes={currentShownRecipes} />
-
+            <RecommendedFeed currentRecipes={currentShownRecipes}/>
             <div></div>
         </div>
     );
