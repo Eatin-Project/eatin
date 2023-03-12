@@ -26,7 +26,7 @@ export type Mutation = {
 export type MutationCreateRecipeArgs = {
   author: Scalars['String'];
   category: Scalars['String'];
-  cook_time: Scalars['String'];
+  cook_time: Scalars['Float'];
   course: Scalars['String'];
   cuisine: Scalars['String'];
   description: Scalars['String'];
@@ -35,10 +35,11 @@ export type MutationCreateRecipeArgs = {
   image: Scalars['String'];
   ingredients: Scalars['String'];
   instructions: Scalars['String'];
-  prep_time: Scalars['String'];
+  prep_time: Scalars['Float'];
   recipe_title: Scalars['String'];
   record_health: Scalars['String'];
   tags: Scalars['String'];
+  total_time: Scalars['Float'];
   url: Scalars['String'];
 };
 
@@ -66,7 +67,7 @@ export type Query = {
 
 
 export type QueryRecipeArgs = {
-  index: Scalars['String'];
+  index: Scalars['Float'];
 };
 
 
@@ -88,23 +89,24 @@ export type Recipes = {
   __typename?: 'Recipes';
   author: Scalars['String'];
   category: Scalars['String'];
-  cook_time: Scalars['String'];
+  cook_time: Scalars['Float'];
   course: Scalars['String'];
   cuisine: Scalars['String'];
   description: Scalars['String'];
   diet: Scalars['String'];
   difficulty: Scalars['String'];
   image: Scalars['String'];
-  index: Scalars['String'];
+  index: Scalars['Float'];
   ingredients: Scalars['String'];
   instructions: Scalars['String'];
-  prep_time: Scalars['String'];
-  rating: Scalars['String'];
+  prep_time: Scalars['Float'];
+  rating: Scalars['Float'];
   recipe_title: Scalars['String'];
   record_health: Scalars['String'];
   tags: Scalars['String'];
+  total_time: Scalars['Float'];
   url: Scalars['String'];
-  vote_count: Scalars['String'];
+  vote_count: Scalars['Float'];
 };
 
 export type Users = {
@@ -127,8 +129,8 @@ export type CreateRecipeMutationVariables = Exact<{
   cuisine: Scalars['String'];
   course: Scalars['String'];
   diet: Scalars['String'];
-  prep_time: Scalars['String'];
-  cook_time: Scalars['String'];
+  prep_time: Scalars['Float'];
+  cook_time: Scalars['Float'];
   ingredients: Scalars['String'];
   instructions: Scalars['String'];
   author: Scalars['String'];
@@ -136,10 +138,11 @@ export type CreateRecipeMutationVariables = Exact<{
   category: Scalars['String'];
   image: Scalars['String'];
   difficulty: Scalars['String'];
+  total_time: Scalars['Float'];
 }>;
 
 
-export type CreateRecipeMutation = { __typename?: 'Mutation', createRecipe: { __typename?: 'Recipes', recipe_title: string, url: string, record_health: string, description: string, cuisine: string, course: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string } };
+export type CreateRecipeMutation = { __typename?: 'Mutation', createRecipe: { __typename?: 'Recipes', recipe_title: string, url: string, record_health: string, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number } };
 
 export type CreateUserMutationVariables = Exact<{
   id: Scalars['String'];
@@ -158,28 +161,28 @@ export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __type
 export type GetAllRecipesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipes', index: string, recipe_title: string, url: string, record_health: string, vote_count: string, rating: string, description: string, cuisine: string, course: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string }> };
+export type GetAllRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipes', index: number, recipe_title: string, url: string, record_health: string, vote_count: number, rating: number, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number }> };
 
 export type GetRecipeByIdQueryVariables = Exact<{
-  index: Scalars['String'];
+  index: Scalars['Float'];
 }>;
 
 
-export type GetRecipeByIdQuery = { __typename?: 'Query', recipe: { __typename?: 'Recipes', index: string, recipe_title: string, url: string, record_health: string, vote_count: string, rating: string, description: string, cuisine: string, course: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string } };
+export type GetRecipeByIdQuery = { __typename?: 'Query', recipe: { __typename?: 'Recipes', index: number, recipe_title: string, url: string, record_health: string, vote_count: number, rating: number, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number } };
 
 export type GetTopRatedRecipesByCategoryQueryVariables = Exact<{
   category: Scalars['String'];
 }>;
 
 
-export type GetTopRatedRecipesByCategoryQuery = { __typename?: 'Query', topRecipesByCategory: Array<{ __typename?: 'Recipes', index: string, recipe_title: string, url: string, record_health: string, vote_count: string, rating: string, description: string, cuisine: string, course: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string }> };
+export type GetTopRatedRecipesByCategoryQuery = { __typename?: 'Query', topRecipesByCategory: Array<{ __typename?: 'Recipes', index: number, recipe_title: string, url: string, record_health: string, vote_count: number, rating: number, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number }> };
 
 export type GetTopRatedRecipesByCuisineQueryVariables = Exact<{
   cuisine: Scalars['String'];
 }>;
 
 
-export type GetTopRatedRecipesByCuisineQuery = { __typename?: 'Query', topRecipesByCuisine: Array<{ __typename?: 'Recipes', index: string, recipe_title: string, url: string, record_health: string, vote_count: string, rating: string, description: string, cuisine: string, course: string, diet: string, prep_time: string, cook_time: string, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string }> };
+export type GetTopRatedRecipesByCuisineQuery = { __typename?: 'Query', topRecipesByCuisine: Array<{ __typename?: 'Recipes', index: number, recipe_title: string, url: string, record_health: string, vote_count: number, rating: number, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number }> };
 
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -195,7 +198,7 @@ export type GetUserByIdQuery = { __typename?: 'Query', user: { __typename?: 'Use
 
 
 export const CreateRecipeDocument = gql`
-    mutation createRecipe($recipe_title: String!, $url: String!, $record_health: String!, $description: String!, $cuisine: String!, $course: String!, $diet: String!, $prep_time: String!, $cook_time: String!, $ingredients: String!, $instructions: String!, $author: String!, $tags: String!, $category: String!, $image: String!, $difficulty: String!) {
+    mutation createRecipe($recipe_title: String!, $url: String!, $record_health: String!, $description: String!, $cuisine: String!, $course: String!, $diet: String!, $prep_time: Float!, $cook_time: Float!, $ingredients: String!, $instructions: String!, $author: String!, $tags: String!, $category: String!, $image: String!, $difficulty: String!, $total_time: Float!) {
   createRecipe(
     recipe_title: $recipe_title
     url: $url
@@ -213,6 +216,7 @@ export const CreateRecipeDocument = gql`
     category: $category
     image: $image
     difficulty: $difficulty
+    total_time: $total_time
   ) {
     recipe_title
     url
@@ -230,6 +234,7 @@ export const CreateRecipeDocument = gql`
     category
     image
     difficulty
+    total_time
   }
 }
     `;
@@ -264,6 +269,7 @@ export type CreateRecipeMutationFn = Apollo.MutationFunction<CreateRecipeMutatio
  *      category: // value for 'category'
  *      image: // value for 'image'
  *      difficulty: // value for 'difficulty'
+ *      total_time: // value for 'total_time'
  *   },
  * });
  */
@@ -352,6 +358,7 @@ export const GetAllRecipesDocument = gql`
     category
     image
     difficulty
+    total_time
   }
 }
     `;
@@ -383,7 +390,7 @@ export type GetAllRecipesQueryHookResult = ReturnType<typeof useGetAllRecipesQue
 export type GetAllRecipesLazyQueryHookResult = ReturnType<typeof useGetAllRecipesLazyQuery>;
 export type GetAllRecipesQueryResult = Apollo.QueryResult<GetAllRecipesQuery, GetAllRecipesQueryVariables>;
 export const GetRecipeByIdDocument = gql`
-    query getRecipeById($index: String!) {
+    query getRecipeById($index: Float!) {
   recipe(index: $index) {
     index
     recipe_title
@@ -404,6 +411,7 @@ export const GetRecipeByIdDocument = gql`
     category
     image
     difficulty
+    total_time
   }
 }
     `;
@@ -457,6 +465,7 @@ export const GetTopRatedRecipesByCategoryDocument = gql`
     category
     image
     difficulty
+    total_time
   }
 }
     `;
@@ -510,6 +519,7 @@ export const GetTopRatedRecipesByCuisineDocument = gql`
     category
     image
     difficulty
+    total_time
   }
 }
     `;
