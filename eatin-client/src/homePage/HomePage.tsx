@@ -42,14 +42,13 @@ export const HomePage: FC = () => {
             {name: Cuisine.Japanese.toString(), items: japanese?.topRecipesByCuisine?.length ? japanese.topRecipesByCuisine : []},
             {name: Cuisine.Greek.toString(), items: greek?.topRecipesByCuisine?.length ? greek.topRecipesByCuisine : []},
         ]);
-        handleLoading();
 
     }, [currentShownRecipes, chicken?.topRecipesByCategory, cakes?.topRecipesByCategory, japanese?.topRecipesByCuisine, greek?.topRecipesByCuisine]);
 
-    function handleLoading() {
+    useEffect(() => {
         if (!chickenLoading && !cakesLoading && !japaneseLoading && !greekLoading)
             setLoading(false);
-    }
+    }, [chickenLoading, cakesLoading, japaneseLoading, greekLoading]);
 
     const currentFilterOptions: {
         // TODO: for now the options are hardcoded until we get all the recommended recipes and can have the filter accordingly
