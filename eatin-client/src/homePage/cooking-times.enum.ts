@@ -4,5 +4,6 @@ export enum CookingTime {
     FortyFive = '45',
     Sixty = '60',
     Ninety = '90',
-    HundredAndTwenty = '120'
+    HundredAndTwenty = '120',
+    ThreeHundred = '300'
 }
