@@ -70,14 +70,14 @@ export const RecipePage: FC = () => {
                 <div className="tags">
                     <h4>{recipe_title}</h4>
                     {[
-                        category,
-                        cuisine,
-                        course,
-                        record_health,
-                        prep_time,
-                        cook_time,
-                        diet,
-                        difficulty,
+                        "category: " + category,
+                        "cuisine: " + cuisine,
+                        "course: " + course,
+                        "record health: " + record_health,
+                        "prep time: " + prep_time,
+                        "cook time: " + cook_time,
+                        "diet: " + diet,
+                        "difficulty: " + difficulty,
                     ].map((tag) => (
                         <span className="tag" key={tag}>
                             {tag}
