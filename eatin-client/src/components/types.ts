@@ -20,3 +20,21 @@ export interface Recipe {
     difficulty: string;
     total_time: number;
 }
+
+export interface FilterOptions {
+    name: string;
+    options: string[];
+    setState: (arg: string) => void;
+}
+
+export interface RecipesSection {
+    name: string;
+    items: Recipe[];
+}
+
+export interface FilterWrapper {
+    field: string;
+    filter: string;
+    operator: (item: Recipe, field: string, filter: string) => void;
+}
+

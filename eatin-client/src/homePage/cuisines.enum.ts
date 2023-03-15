@@ -1,5 +1,4 @@
 export enum Cuisine {
-    null = '',
     Kongunadu = 'Kongunadu',
     Rajasthani = 'Rajasthani',
     European = 'European',
