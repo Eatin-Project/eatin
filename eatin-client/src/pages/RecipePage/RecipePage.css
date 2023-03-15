@@ -46,3 +46,33 @@
 .recipe-page ol li {
     margin-top: 0.8em;
 }
+
+.recipe-page .recipe-data .tags {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+}
+
+.recipe-page .tags h5,
+.recipe-page .tags h4 {
+    margin-right: 0.2em;
+}
+
+.recipe-page .tag {
+    margin: 0.2em;
+    padding: 0.2em 0.7em;
+    background-color: #fd7269;
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.recipe-page .recipe-data .tags .tag:hover {
+    background-color: #f94f43;
+}
+
+.recipe-page .recipe-data .url {
+    margin-top: 1em;
+}

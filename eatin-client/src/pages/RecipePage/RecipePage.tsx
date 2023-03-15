@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { useGetRecipeByIdQuery } from "../../generated/graphql";
 import { BookmarkButton } from "../../components/ui/BookmarkButton";
 import { Comment } from "../../components/ui/Comment";
+import { RecipeImageCarousel } from "./RecipeImageCarousel";
 import { User } from "../../components/ui/User";
 
 export const RecipePage: FC = () => {
@@ -44,20 +45,20 @@ export const RecipePage: FC = () => {
                 <div className="recipe-media">
                     <div className="above-image">
                         <User name={author}>
-                        <Rating
-                            className="recipe-rating"
-                            size="large"
-                            value={rating}
-                            onChange={(event, newValue) => {
-                                setRating(newValue);
-                            }}
-                            precision={0.5}
-                        />
-                            {vote_count}
+                            <Rating
+                                className="recipe-rating"
+                                size="large"
+                                value={rating}
+                                onChange={(event, newValue) => {
+                                    setRating(newValue);
+                                }}
+                                precision={0.5}
+                            />
+                            <span className="tag">{vote_count}</span>
                         </User>
                         <BookmarkButton value={isSaved} onChange={setIsSaved} size="large" />
                     </div>
-                    <img src={image} alt="recipe" />
+                    <RecipeImageCarousel images={[image, image]} />
                 </div>
                 <div className="comments">
                     {comments.map((comment) => (
@@ -66,7 +67,23 @@ export const RecipePage: FC = () => {
                 </div>
             </div>
             <div className="recipe-data">
-                <h4>{recipe_title}</h4>
+                <div className="tags">
+                    <h4>{recipe_title}</h4>
+                    {[
+                        category,
+                        cuisine,
+                        course,
+                        record_health,
+                        prep_time,
+                        cook_time,
+                        diet,
+                        difficulty,
+                    ].map((tag) => (
+                        <span className="tag" key={tag}>
+                            {tag}
+                        </span>
+                    ))}
+                </div>
                 <p>{description}</p>
                 <h5>ingredients:</h5>
                 <ul className="ingredients-list">
@@ -80,6 +97,20 @@ export const RecipePage: FC = () => {
                         <li key={instruction}>{instruction}</li>
                     ))}
                 </ol>
+                <div className="tags">
+                    <h5>Tags: </h5>
+                    {_parseStringArray(tags).map((tag) => (
+                        <span className="tag" key={tag}>
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+                <div className="url">
+                    source url:{" "}
+                    <a href={url} target="_blank" rel="noreferrer">
+                        {url}
+                    </a>
+                </div>
             </div>
         </div>
     );
