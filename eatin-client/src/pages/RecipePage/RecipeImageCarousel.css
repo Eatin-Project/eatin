@@ -1,0 +1,30 @@
+.recipe-image-carousel img {
+    height: 35em;
+    width: 35em;
+    border-radius: 20px;
+}
+
+.recipe-image-carousel {
+    margin: 0 0 1em 0;
+    height: 35em;
+    width: 35em;
+}
+.recipe-image-carousel .carousel {
+    height: 100%;
+    width: 100%;
+}
+
+.recipe-image-carousel .carousel .carousel-item {
+    margin: 0;
+}
+
+.recipe-image-carousel .carousel .carousel-item::before {
+    content: "a";
+    color: transparent;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    box-shadow: 1px 1px 1px 1px black;
+}
