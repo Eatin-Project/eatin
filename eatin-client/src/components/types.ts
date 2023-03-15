@@ -32,7 +32,7 @@ export interface RecipesSection {
     items: Recipe[];
 }
 
-export interface FilterOption {
+export interface FilterWrapper {
     field: string;
     filter: string;
     operator: (item: Recipe, field: string, filter: string) => void;

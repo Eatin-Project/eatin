@@ -11,7 +11,7 @@ import {
 } from "../generated/graphql";
 import {Category} from "./categories.enum";
 import {Cuisine} from "./cuisines.enum";
-import {FilterOption, FilterOptions, Recipe, RecipesSection} from "../components/types";
+import {FilterWrapper, FilterOptions, Recipe, RecipesSection} from "../components/types";
 import {Difficulty} from "./difficulties.enum";
 import {Diet} from "./diets.enum";
 import AsyncDataLoaderWrapper from "../components/ui/AsyncDataLoaderWrapper";
@@ -32,7 +32,7 @@ export const HomePage: FC = () => {
     const [currentShownRecipes, setCurrentShownRecipes] = useState<RecipesSection[]>([]);
     const [allRecipes, setAllRecipes] = useState<RecipesSection[]>();
 
-    const filters: FilterOption[] =
+    const filters: FilterWrapper[] =
         [{field: "category", filter: categoryFilter, operator: assertEquals},
             {field: "cuisine", filter: cuisineFilter, operator: assertEquals},
             {field: "diet", filter: dietFilter, operator: assertEquals},
