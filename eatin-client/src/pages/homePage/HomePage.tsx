@@ -4,7 +4,8 @@ import { FC, useEffect, useState } from "react";
 import { RecommendedFeed } from "./RecommendedFeed";
 import { Button, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { FilterRecipes } from "./FilterRecipes";
+import {FilterRecipes} from "./FilterRecipes";
+
 import {
     useGetTopRatedRecipesByCategoryQuery,
     useGetTopRatedRecipesByCuisineQuery,
