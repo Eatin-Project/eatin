@@ -12,6 +12,7 @@ import {
 import { Category } from "./categories.enum";
 import { Cuisine } from "./cuisines.enum";
 import { Recipe } from "../components/types";
+import AsyncDataLoaderWrapper from "../components/ui/AsyncDataLoaderWrapper";
 
 export const HomePage: FC = () => {
     const [genreFilterVal, setGenreFilterVal] = useState("1");
@@ -19,6 +20,8 @@ export const HomePage: FC = () => {
     const [ratingFilterVal, setRatingFilterVal] = useState("1");
     const [filterSearchVal, setFilterSearchVal] = useState("");
     const [SearchResult, setSearchResult] = useState("");
+    const [loading, setLoading] = useState(true);
+
     const [currentShownRecipes, setCurrentShownRecipes] = useState<
         {
             name: string;
@@ -40,8 +43,12 @@ export const HomePage: FC = () => {
             {name: Cuisine.Greek.toString(), items: greek?.topRecipesByCuisine?.length ? greek.topRecipesByCuisine : []},
         ]);
 
-        console.log(chicken);
     }, [currentShownRecipes, chicken?.topRecipesByCategory, cakes?.topRecipesByCategory, japanese?.topRecipesByCuisine, greek?.topRecipesByCuisine]);
+
+    useEffect(() => {
+        if (!chickenLoading && !cakesLoading && !japaneseLoading && !greekLoading)
+            setLoading(false);
+    }, [chickenLoading, cakesLoading, japaneseLoading, greekLoading]);
 
     const currentFilterOptions: {
         // TODO: for now the options are hardcoded until we get all the recommended recipes and can have the filter accordingly
@@ -81,6 +88,7 @@ export const HomePage: FC = () => {
 
     return (
         <div>
+            <AsyncDataLoaderWrapper loading={loading} text="loading recipes...">
             <div className="header">
                 {<SearchRecipes searchOptions={currentFilterOptions}/>}
                 <div className="searchManually">
@@ -110,6 +118,7 @@ export const HomePage: FC = () => {
             </div>
             <RecommendedFeed currentRecipes={currentShownRecipes}/>
             <div></div>
+            </AsyncDataLoaderWrapper>
         </div>
     );
 };
