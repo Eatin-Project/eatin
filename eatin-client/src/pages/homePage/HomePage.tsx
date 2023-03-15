@@ -30,7 +30,7 @@ export const HomePage: FC = () => {
     const [searchValue, setSearchValue] = useState("");
     const [loading, setLoading] = useState(true);
     const [currentShownRecipes, setCurrentShownRecipes] = useState<RecipesSection[]>([]);
-    const [allRecipes, setAllRecipes] = useState<RecipesSection[]>();
+    const [allRecipes, setAllRecipes] = useState<RecipesSection[]>([]);
 
     const filters: FilterWrapper[] = [
         { field: "category", filter: categoryFilter, operator: assertEquals },
@@ -86,16 +86,6 @@ export const HomePage: FC = () => {
     }
 
     useEffect(() => {
-        // TODO: get the recommended recipes
-        initRecipes();
-    }, [
-        chicken?.topRecipesByCategory,
-        cakes?.topRecipesByCategory,
-        japanese?.topRecipesByCuisine,
-        greek?.topRecipesByCuisine,
-    ]);
-
-    useEffect(() => {
         const tempRecipes: RecipesSection[] = _.cloneDeep(allRecipes);
         tempRecipes?.forEach((section) => (section.items = filterRecipes(section.items)));
         setCurrentShownRecipes(tempRecipes);
@@ -107,6 +97,13 @@ export const HomePage: FC = () => {
         ratingFilter,
         totalTimeFilter,
     ]);
+
+    useEffect(() => {
+        if (!chickenLoading && !cakesLoading && !japaneseLoading && !greekLoading) {
+            setLoading(false);
+            initRecipes();
+        }
+    }, [chickenLoading, cakesLoading, japaneseLoading, greekLoading]);
 
     function assertEquals(item: Recipe, field: string, filter: string) {
         return item[field as keyof Recipe] === filter;
@@ -132,11 +129,6 @@ export const HomePage: FC = () => {
 
         return items;
     }
-
-    useEffect(() => {
-        if (!chickenLoading && !cakesLoading && !japaneseLoading && !greekLoading)
-            setLoading(false);
-    }, [chickenLoading, cakesLoading, japaneseLoading, greekLoading]);
 
     const currentFilterOptions: // TODO: for now the options are hardcoded until we get all the recommended recipes and can have the filter accordingly
 
