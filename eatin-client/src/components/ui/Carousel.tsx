@@ -7,21 +7,22 @@ import { Skeleton } from "@mui/material";
 import classNames from "classnames";
 
 export interface CarouselItem<T = unknown> {
-    index: string;
+    id: string;
     image: string;
-    itemValue: T;
-    title: string;
-    renderItem: (item: T) => React.ReactNode;
+    itemValue?: T;
+    title?: string;
+    renderItem?: (item: T) => React.ReactNode;
 }
 
 export interface CarouselProps<T = unknown> {
     items: CarouselItem<T>[];
-    title: React.ReactNode;
+    title?: React.ReactNode;
     className?: string;
     itemsInOneSlider?: number;
     autoSlide?: boolean;
     isLoading?: boolean;
     randomColors?: boolean;
+    hideArrows?: boolean;
     onClickItem?: (id: string) => void;
 }
 
@@ -35,6 +36,7 @@ export function Carousel<T = unknown>({
     isLoading,
     className,
     randomColors,
+    hideArrows,
     onClickItem,
 }: CarouselProps<T>) {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -104,7 +106,7 @@ export function Carousel<T = unknown>({
 
     return (
         <div className={classNames("carousel-wrapper", className)}>
-            <h1 className="carousel-title">{title}</h1>
+            {title ? <h1 className="carousel-title">{title}</h1> : undefined}
             <div className="carousel">
                 {isLoading ? (
                     <div className="carousel-slide active">
@@ -121,7 +123,7 @@ export function Carousel<T = unknown>({
                         <div className={getSlideClassNames(itemIndex)} key={itemIndex}>
                             {items.map((item, itemIndex) => (
                                 <CarouselItem
-                                    key={item.index}
+                                    key={item.id}
                                     itemIndex={itemIndex}
                                     {...item}
                                     width={100 / itemsInOneSlider}
@@ -134,8 +136,12 @@ export function Carousel<T = unknown>({
                 )}
                 {maxSlides > 1 && (
                     <>
-                        <CarouselArrowIcon type="prev" onClick={slideWithAnimation} />
-                        <CarouselArrowIcon type="next" onClick={slideWithAnimation} />
+                        {!hideArrows ? (
+                            <>
+                                <CarouselArrowIcon type="prev" onClick={slideWithAnimation} />
+                                <CarouselArrowIcon type="next" onClick={slideWithAnimation} />
+                            </>
+                        ) : undefined}
                         <div className="carousel-bread-crumbs">
                             {Array.from({ length: maxSlides }).map((_, itemIndex) => (
                                 <CarouselBreadCrumb
@@ -186,7 +192,7 @@ type CarouselItemProps = CarouselItem & {
 
 const CarouselItem: FC<CarouselItemProps> = ({
     width,
-    index,
+    id,
     itemIndex,
     image,
     randomColors,
@@ -195,22 +201,24 @@ const CarouselItem: FC<CarouselItemProps> = ({
     itemValue,
     title,
 }) => {
-    const handleClick = useCallback(() => onClick?.(index), [index, onClick]);
+    const handleClick = useCallback(() => onClick?.(id), [id, onClick]);
 
     return (
         <div
             className={classNames("carousel-item", { click: !!onClick })}
             onClick={handleClick}
             style={{ width: `${width}%` }}
-            key={index}
+            key={id}
         >
-            <h2
-                className="item-name"
-                style={randomColors ? { backgroundColor: COLORS[itemIndex % 4] } : undefined}
-            >
-                {title}
-            </h2>
-            {renderItem(itemValue)}
+            {title ? (
+                <h2
+                    className="item-name"
+                    style={randomColors ? { backgroundColor: COLORS[itemIndex % 4] } : undefined}
+                >
+                    {title}
+                </h2>
+            ) : undefined}
+            <div className="item-content">{renderItem?.(itemValue)}</div>
             <img className="item-img" src={image} />
         </div>
     );

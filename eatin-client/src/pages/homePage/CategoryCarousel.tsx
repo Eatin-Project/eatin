@@ -15,7 +15,7 @@ export const CategoryCarousel: FC<Props> = ({ items, ...props }) => {
     const carouselItems: CarouselItem<Recipe>[] = items.map(
         ({ image, index, recipe_title }, i) => ({
             image,
-            index,
+            id: index,
             title: recipe_title,
             itemValue: items[i],
             renderItem: ({ rating, vote_count }) => (
