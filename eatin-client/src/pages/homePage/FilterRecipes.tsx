@@ -2,8 +2,8 @@ import "./FilterRecipes.css";
 
 import {MenuItem, TextField} from "@mui/material";
 import {FC, useState} from "react";
-import {FilterOptions} from "../components/types";
 import {GiTrashCan} from "react-icons/gi";
+import {FilterOptions} from "../../components/types";
 
 interface Props {
     filterOptions: FilterOptions[];

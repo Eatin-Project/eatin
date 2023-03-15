@@ -1,52 +1,89 @@
 import "./RecipePage.css";
 
-import { Avatar, Rating } from "@mui/material";
+import { Rating } from "@mui/material";
 import { FC, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetRecipeByIdQuery } from "../../generated/graphql";
+import { BookmarkButton } from "../../components/ui/BookmarkButton";
+import { Comment } from "../../components/ui/Comment";
+import { RecipeImageCarousel } from "./RecipeImageCarousel";
+import { User } from "../../components/ui/User";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
+
     const [rating, setRating] = useState<number | null>(0);
-    const recipe = useGetRecipeByIdQuery({ variables: { index: Number(id)} }).data?.recipe;
+    const [isSaved, setIsSaved] = useState(false);
+
+    const recipe = useGetRecipeByIdQuery({ variables: { index: Number(id) } }).data?.recipe;
 
     if (!id || !recipe) return <h2>Recipe not found :(</h2>;
 
-    const { author, image, recipe_title, ingredients, instructions, description } = recipe;
+    const {
+        author,
+        image,
+        recipe_title,
+        ingredients,
+        instructions,
+        description,
+        cuisine,
+        course,
+        cook_time,
+        tags,
+        category,
+        diet,
+        difficulty,
+        record_health,
+        prep_time,
+        vote_count,
+        url,
+    } = recipe;
 
     return (
         <div className="recipe-page">
             <div className="right-side">
                 <div className="recipe-media">
-                    <div className="user">
-                        <Avatar className="avatar" />
-                        <span>{author}</span>
-                        <Rating
-                            className="recipe-rating"
-                            size="large"
-                            value={rating}
-                            onChange={(event, newValue) => {
-                                setRating(newValue);
-                            }}
-                            precision={0.5}
-                        />
+                    <div className="above-image">
+                        <User name={author}>
+                            <Rating
+                                className="recipe-rating"
+                                size="large"
+                                value={rating}
+                                onChange={(event, newValue) => {
+                                    setRating(newValue);
+                                }}
+                                precision={0.5}
+                            />
+                            <span className="tag">{vote_count}</span>
+                        </User>
+                        <BookmarkButton value={isSaved} onChange={setIsSaved} size="large" />
                     </div>
-                    <img src={image} alt="recipe" />
+                    <RecipeImageCarousel images={[image, image]} />
                 </div>
                 <div className="comments">
-                    {comments.map(({ content, user }) => (
-                        <div className="comment-card" key={content}>
-                            <div className="user">
-                                <Avatar className="avatar" />
-                                <span>{user}</span>
-                            </div>
-                            <p>{content}</p>
-                        </div>
+                    {comments.map((comment) => (
+                        <Comment {...comment} />
                     ))}
                 </div>
             </div>
             <div className="recipe-data">
-                <h4>{recipe_title}</h4>
+                <div className="tags">
+                    <h4>{recipe_title}</h4>
+                    {[
+                        "category: " + category,
+                        "cuisine: " + cuisine,
+                        "course: " + course,
+                        "record health: " + record_health,
+                        "prep time: " + prep_time,
+                        "cook time: " + cook_time,
+                        "diet: " + diet,
+                        "difficulty: " + difficulty,
+                    ].map((tag) => (
+                        <span className="tag" key={tag}>
+                            {tag}
+                        </span>
+                    ))}
+                </div>
                 <p>{description}</p>
                 <h5>ingredients:</h5>
                 <ul className="ingredients-list">
@@ -60,6 +97,20 @@ export const RecipePage: FC = () => {
                         <li key={instruction}>{instruction}</li>
                     ))}
                 </ol>
+                <div className="tags">
+                    <h5>Tags: </h5>
+                    {_parseStringArray(tags).map((tag) => (
+                        <span className="tag" key={tag}>
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+                <div className="url">
+                    source url:{" "}
+                    <a href={url} target="_blank" rel="noreferrer">
+                        {url}
+                    </a>
+                </div>
             </div>
         </div>
     );

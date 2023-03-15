@@ -3,7 +3,7 @@ import "./RecommendedFeed.css";
 import { FC, useState } from "react";
 
 import { CategoryCarousel } from "./CategoryCarousel";
-import { Recipe } from "../components/types";
+import { Recipe } from "../../components/types";
 
 interface Props {
     currentRecipes: { name: string; items: Recipe[] }[];

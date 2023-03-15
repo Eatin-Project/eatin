@@ -1,24 +1,25 @@
 import "./HomePage.css";
 
-import {FC, useEffect, useState} from "react";
-import {RecommendedFeed} from "./RecommendedFeed";
-import {Button, TextField} from "@mui/material";
+import { FC, useEffect, useState } from "react";
+import { RecommendedFeed } from "./RecommendedFeed";
+import { Button, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {FilterRecipes} from "./FilterRecipes";
+
 import {
     useGetTopRatedRecipesByCategoryQuery,
     useGetTopRatedRecipesByCuisineQuery,
-} from "../generated/graphql";
-import {Category} from "./categories.enum";
-import {Cuisine} from "./cuisines.enum";
-import {FilterWrapper, FilterOptions, Recipe, RecipesSection} from "../components/types";
-import {Difficulty} from "./difficulties.enum";
-import {Diet} from "./diets.enum";
-import AsyncDataLoaderWrapper from "../components/ui/AsyncDataLoaderWrapper";
-import {Rating} from "./ratings.enum";
-import {CookingTime} from "./cooking-times.enum";
+} from "../../generated/graphql";
+import { Category } from "./categories.enum";
+import { Cuisine } from "./cuisines.enum";
+import { FilterWrapper, FilterOptions, Recipe, RecipesSection } from "../../components/types";
+import { Difficulty } from "./difficulties.enum";
+import { Diet } from "./diets.enum";
+import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
+import { Rating } from "./ratings.enum";
+import { CookingTime } from "./cooking-times.enum";
 
-const _ = require('lodash');
+const _ = require("lodash");
 
 export const HomePage: FC = () => {
     const [categoryFilter, setCategoryFilter] = useState("");
@@ -32,52 +33,53 @@ export const HomePage: FC = () => {
     const [currentShownRecipes, setCurrentShownRecipes] = useState<RecipesSection[]>([]);
     const [allRecipes, setAllRecipes] = useState<RecipesSection[]>([]);
 
-    const filters: FilterWrapper[] =
-        [{field: "category", filter: categoryFilter, operator: assertEquals},
-            {field: "cuisine", filter: cuisineFilter, operator: assertEquals},
-            {field: "diet", filter: dietFilter, operator: assertEquals},
-            {field: "difficulty", filter: difficultyFilter, operator: assertEquals},
-            {field: "rating", filter: ratingFilter, operator: assertBigger},
-            {field: "total_time", filter: totalTimeFilter, operator: assertSmaller}];
+    const filters: FilterWrapper[] = [
+        { field: "category", filter: categoryFilter, operator: assertEquals },
+        { field: "cuisine", filter: cuisineFilter, operator: assertEquals },
+        { field: "diet", filter: dietFilter, operator: assertEquals },
+        { field: "difficulty", filter: difficultyFilter, operator: assertEquals },
+        { field: "rating", filter: ratingFilter, operator: assertBigger },
+        { field: "total_time", filter: totalTimeFilter, operator: assertSmaller },
+    ];
 
     const {
         data: chicken,
         loading: chickenLoading,
-        error: chickenErrors
-    } = useGetTopRatedRecipesByCategoryQuery({variables: {category: Category.Chicken}});
+        error: chickenErrors,
+    } = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Chicken } });
     const {
         data: cakes,
         loading: cakesLoading,
-        error: cakesErrors
-    } = useGetTopRatedRecipesByCategoryQuery({variables: {category: Category.Cake}});
+        error: cakesErrors,
+    } = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Cake } });
     const {
         data: japanese,
         loading: japaneseLoading,
-        error: japaneseErrors
-    } = useGetTopRatedRecipesByCuisineQuery({variables: {cuisine: Cuisine.Japanese}});
+        error: japaneseErrors,
+    } = useGetTopRatedRecipesByCuisineQuery({ variables: { cuisine: Cuisine.Japanese } });
     const {
         data: greek,
         loading: greekLoading,
-        error: greekErrors
-    } = useGetTopRatedRecipesByCuisineQuery({variables: {cuisine: Cuisine.Greek}});
+        error: greekErrors,
+    } = useGetTopRatedRecipesByCuisineQuery({ variables: { cuisine: Cuisine.Greek } });
 
     function initRecipes() {
         const initialRecipes = [
             {
                 name: Category.Chicken.toString(),
-                items: chicken?.topRecipesByCategory?.length ? chicken?.topRecipesByCategory : []
+                items: chicken?.topRecipesByCategory?.length ? chicken?.topRecipesByCategory : [],
             },
             {
                 name: Category.Cake.toString(),
-                items: cakes?.topRecipesByCategory?.length ? cakes?.topRecipesByCategory : []
+                items: cakes?.topRecipesByCategory?.length ? cakes?.topRecipesByCategory : [],
             },
             {
                 name: Cuisine.Japanese.toString(),
-                items: japanese?.topRecipesByCuisine?.length ? japanese.topRecipesByCuisine : []
+                items: japanese?.topRecipesByCuisine?.length ? japanese.topRecipesByCuisine : [],
             },
             {
                 name: Cuisine.Greek.toString(),
-                items: greek?.topRecipesByCuisine?.length ? greek.topRecipesByCuisine : []
+                items: greek?.topRecipesByCuisine?.length ? greek.topRecipesByCuisine : [],
             },
         ];
         setCurrentShownRecipes(initialRecipes);
@@ -86,10 +88,16 @@ export const HomePage: FC = () => {
 
     useEffect(() => {
         const tempRecipes: RecipesSection[] = _.cloneDeep(allRecipes);
-        tempRecipes?.forEach(section => section.items = filterRecipes(section.items));
+        tempRecipes?.forEach((section) => (section.items = filterRecipes(section.items)));
         setCurrentShownRecipes(tempRecipes);
-
-    }, [categoryFilter, cuisineFilter, dietFilter, difficultyFilter, ratingFilter, totalTimeFilter])
+    }, [
+        categoryFilter,
+        cuisineFilter,
+        dietFilter,
+        difficultyFilter,
+        ratingFilter,
+        totalTimeFilter,
+    ]);
 
     useEffect(() => {
         if (!chickenLoading && !cakesLoading && !japaneseLoading && !greekLoading) {
@@ -111,17 +119,21 @@ export const HomePage: FC = () => {
     }
 
     function filterRecipes(items: Recipe[]) {
-        filters.forEach(filterOption => items = !!filterOption.filter ?
-            items.filter(item => filterOption.operator(item, filterOption.field, filterOption.filter)) : items);
+        filters.forEach(
+            (filterOption) =>
+                (items = !!filterOption.filter
+                    ? items.filter((item) =>
+                          filterOption.operator(item, filterOption.field, filterOption.filter),
+                      )
+                    : items),
+        );
 
         return items;
     }
 
+    const currentFilterOptions: // TODO: for now the options are hardcoded until we get all the recommended recipes and can have the filter accordingly
 
-    const currentFilterOptions:
-        // TODO: for now the options are hardcoded until we get all the recommended recipes and can have the filter accordingly
-
-        FilterOptions[] = [
+    FilterOptions[] = [
         {
             name: "Category",
             options: Object.values(Category),
@@ -151,7 +163,7 @@ export const HomePage: FC = () => {
             name: "Max Time",
             options: Object.values(CookingTime),
             setState: setTotalTimeFilter,
-        }
+        },
     ];
 
     const updateSearchResult = () => {
@@ -170,7 +182,7 @@ export const HomePage: FC = () => {
         <div>
             <AsyncDataLoaderWrapper loading={loading} text="loading recipes...">
                 <div className="header">
-                    {<FilterRecipes filterOptions={currentFilterOptions}/>}
+                    {<FilterRecipes filterOptions={currentFilterOptions} />}
                     <div className="search-manually">
                         <div className="complete-search-bar">
                             <TextField
@@ -182,7 +194,7 @@ export const HomePage: FC = () => {
                                 type="text"
                             />
                             <Button onClick={updateSearchResult} className="search-button">
-                                <SearchIcon/>
+                                <SearchIcon />
                             </Button>
                         </div>
                     </div>
@@ -195,7 +207,7 @@ export const HomePage: FC = () => {
                         </Button>
                     </div>
                 </div>
-                <RecommendedFeed currentRecipes={currentShownRecipes}/>
+                <RecommendedFeed currentRecipes={currentShownRecipes} />
             </AsyncDataLoaderWrapper>
         </div>
     );
