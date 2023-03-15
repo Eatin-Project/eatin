@@ -33,3 +33,9 @@
   color: black;
   font-size: 1.2em;
 }
+
+.trash-icon {
+  position: relative;
+  left: .5rem;
+  top: .5rem;
+}
