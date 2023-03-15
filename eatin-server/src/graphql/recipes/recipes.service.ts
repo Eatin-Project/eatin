@@ -20,7 +20,7 @@ export class RecipesService {
         return this.recipesRepository.find();
     }
 
-    findOne(index: string): Promise<Recipes> {
+    findOne(index: number): Promise<Recipes> {
         return this.recipesRepository.findOneBy({index: index});
     }
 

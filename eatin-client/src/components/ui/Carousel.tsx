@@ -7,7 +7,7 @@ import { Skeleton } from "@mui/material";
 import classNames from "classnames";
 
 export interface CarouselItem<T = unknown> {
-    id: string;
+    id: number;
     image: string;
     itemValue?: T;
     title?: string;
@@ -23,7 +23,7 @@ export interface CarouselProps<T = unknown> {
     isLoading?: boolean;
     randomColors?: boolean;
     hideArrows?: boolean;
-    onClickItem?: (id: string) => void;
+    onClickItem?: (id: number) => void;
 }
 
 type SlideDirection = "prev" | "next";
@@ -187,7 +187,7 @@ type CarouselItemProps = CarouselItem & {
     width: number;
     itemIndex: number;
     randomColors?: boolean;
-    onClick?: (id: string) => void;
+    onClick?: (id: number) => void;
 };
 
 const CarouselItem: FC<CarouselItemProps> = ({

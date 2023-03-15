@@ -12,8 +12,8 @@ export const RecipeImageCarousel: FC<Props> = ({ images }) => {
         <Carousel
             className="recipe-image-carousel"
             hideArrows
-            items={images.map((_) => ({
-                id: _,
+            items={images.map((_, i) => ({
+                id: i,
                 image: _,
             }))}
         />

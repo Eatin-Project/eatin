@@ -1,0 +1,35 @@
+.filter-recipes {
+  padding-top: 1em;
+  padding-left: 1em !important;
+  display: flex;
+}
+
+.filter-dropdown:hover {
+  border: black 1px solid !important;
+}
+
+.filter-dropdown {
+  border-radius: 1em;
+  border: none !important;
+  background-color: #fd7269 !important;
+  color: black !important;
+  margin-right: 0.5em !important;
+}
+
+.filter-dropdown .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  color: black !important;
+  min-width: 3.8rem;
+}
+
+.filter-dropdown::selection {
+  border: none;
+}
+
+.filter-dropdown .MuiOutlinedInput-notchedOutline {
+  border: none;
+}
+
+.filter-dropdown .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
+  color: black;
+  font-size: 1.2em;
+}

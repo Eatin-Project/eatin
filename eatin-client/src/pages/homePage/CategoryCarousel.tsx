@@ -30,7 +30,7 @@ export const CategoryCarousel: FC<Props> = ({ items, ...props }) => {
                         <Rating
                             className="rating-item"
                             precision={0.5}
-                            value={parseFloat(rating)}
+                            value={rating}
                             readOnly
                             max={5}
                         />
@@ -44,7 +44,7 @@ export const CategoryCarousel: FC<Props> = ({ items, ...props }) => {
     return (
         <Carousel
             {...props}
-            onClickItem={(id: string) => navigate("/recipe/" + id)}
+            onClickItem={(id: number) => navigate("/recipe/" + id)}
             items={carouselItems}
         />
     );

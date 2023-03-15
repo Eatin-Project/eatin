@@ -15,7 +15,7 @@ export const RecipePage: FC = () => {
     const [rating, setRating] = useState<number | null>(0);
     const [isSaved, setIsSaved] = useState(false);
 
-    const recipe = useGetRecipeByIdQuery({ variables: { index: id || "" } }).data?.recipe;
+    const recipe = useGetRecipeByIdQuery({ variables: { index: Number(id) } }).data?.recipe;
 
     if (!id || !recipe) return <h2>Recipe not found :(</h2>;
 

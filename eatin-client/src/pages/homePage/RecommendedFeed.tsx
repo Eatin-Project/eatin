@@ -1,4 +1,4 @@
-import "./RecommentedFeed.css";
+import "./RecommendedFeed.css";
 
 import { FC, useState } from "react";
 
@@ -9,7 +9,7 @@ interface Props {
     currentRecipes: { name: string; items: Recipe[] }[];
 }
 
-export const RecommentedFeed: FC<Props> = ({ currentRecipes }) => {
+export const RecommendedFeed: FC<Props> = ({ currentRecipes }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     return (
@@ -21,7 +21,7 @@ export const RecommentedFeed: FC<Props> = ({ currentRecipes }) => {
                     items={recipe.items}
                     itemsInOneSlider={3}
                     isLoading={isLoading}
-                    className="recommented-recipes-carousel"
+                    className="recommended-recipes-carousel"
                 />
             ))}
         </div>

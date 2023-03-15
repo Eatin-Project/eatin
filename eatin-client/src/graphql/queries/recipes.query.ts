@@ -22,12 +22,13 @@ export const GET_ALL_RECIPES = gql`
             category
             image
             difficulty
+            total_time
         }
     }
 `;
 
 export const GET_RECIPE_BY_ID = gql`
-    query getRecipeById($index: String!) {
+    query getRecipeById($index: Float!) {
         recipe(index: $index) {
             index
             recipe_title
@@ -48,6 +49,7 @@ export const GET_RECIPE_BY_ID = gql`
             category
             image
             difficulty
+            total_time
         }
     }
 `;
@@ -74,6 +76,7 @@ export const GET_RECIPE_BY_CATEGORY = gql`
             category
             image
             difficulty
+            total_time
         }
     }
 `;
@@ -100,6 +103,7 @@ export const GET_RECIPE_BY_CUISINE = gql`
             category
             image
             difficulty
+            total_time
         }
     }
 `;
