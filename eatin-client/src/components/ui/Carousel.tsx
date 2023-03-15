@@ -218,7 +218,7 @@ const CarouselItem: FC<CarouselItemProps> = ({
                     {title}
                 </h2>
             ) : undefined}
-            <div className="item-content">{renderItem?.(itemValue)}</div>
+            {renderItem?.(itemValue)}
             <img className="item-img" src={image} />
         </div>
     );

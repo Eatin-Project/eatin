@@ -1,3 +1,5 @@
+import "./CategoryCarousel.css";
+
 import { FC } from "react";
 import { Button, Rating } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
