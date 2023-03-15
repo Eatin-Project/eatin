@@ -1,8 +1,15 @@
 .carousel-wrapper {
     display: flex;
     flex-direction: column;
+    position: relative;
+    align-items: center;
     width: 100%;
     margin: 0.5em 2em;
+}
+
+.carousel-wrapper.with-arrows {
+    margin: 0.5em 0;
+    padding: 0 0.2em;
 }
 
 .carousel {
@@ -16,24 +23,35 @@
 }
 
 .carousel-title {
-    margin: 0;
+    margin: 0 0 0 1em;
     text-align: left;
     color: #fd7269;
+    align-self: flex-start;
 }
 
-.carousel .carousel-arrow {
+.carousel-wrapper .carousel-arrow {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
     cursor: pointer;
+    background: #fd7269;
+    border-radius: 50%;
+    padding: 4px;
+    height: 30px;
+    width: 30px;
+    display: flex;
 }
-.carousel .carousel-arrow.prev {
-    left: 0.2em;
+.carousel-wrapper .carousel-arrow svg {
+    padding: 4px;
 }
-.carousel .carousel-arrow.next {
-    right: 0.2em;
+.carousel-wrapper .carousel-arrow.prev {
+    padding-left: 6px;
+    left: 0.5em;
 }
-.carousel .carousel-arrow.disabled {
+.carousel-wrapper .carousel-arrow.next {
+    padding-right: 6px;
+    right: 0.5em;
+}
+.carousel-wrapper .carousel-arrow.disabled {
     pointer-events: none;
 }
 
