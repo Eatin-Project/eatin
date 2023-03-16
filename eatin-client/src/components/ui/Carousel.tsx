@@ -95,7 +95,7 @@ export function Carousel<T = unknown>({
                 setSlideTo(null);
             }, 1000);
         },
-        [getNextSlide],
+        [getNextSlide, slideTo],
     );
 
     useEffect(() => {
@@ -105,7 +105,7 @@ export function Carousel<T = unknown>({
     }, [autoSlide, slideWithAnimation]);
 
     return (
-        <div className={classNames("carousel-wrapper", className)}>
+        <div className={classNames("carousel-wrapper", className, { "with-arrows": !hideArrows })}>
             {title ? <h1 className="carousel-title">{title}</h1> : undefined}
             <div className="carousel">
                 {isLoading ? (
@@ -134,29 +134,29 @@ export function Carousel<T = unknown>({
                         </div>
                     ))
                 )}
-                {maxSlides > 1 && (
-                    <>
-                        {!hideArrows ? (
-                            <>
-                                <CarouselArrowIcon type="prev" onClick={slideWithAnimation} />
-                                <CarouselArrowIcon type="next" onClick={slideWithAnimation} />
-                            </>
-                        ) : undefined}
-                        <div className="carousel-bread-crumbs">
-                            {Array.from({ length: maxSlides }).map((_, itemIndex) => (
-                                <CarouselBreadCrumb
-                                    key={itemIndex}
-                                    slide={itemIndex}
-                                    onClick={slideWithAnimation}
-                                    isInAnimation={!!slideTo}
-                                    currentSlide={currentSlide}
-                                    nextSlide={nextSlide}
-                                />
-                            ))}
-                        </div>
-                    </>
-                )}
             </div>
+            {maxSlides > 1 && (
+                <>
+                    {!hideArrows ? (
+                        <>
+                            <CarouselArrowIcon type="prev" onClick={slideWithAnimation} />
+                            <CarouselArrowIcon type="next" onClick={slideWithAnimation} />
+                        </>
+                    ) : undefined}
+                    <div className="carousel-bread-crumbs">
+                        {Array.from({ length: maxSlides }).map((_, itemIndex) => (
+                            <CarouselBreadCrumb
+                                key={itemIndex}
+                                slide={itemIndex}
+                                onClick={slideWithAnimation}
+                                isInAnimation={!!slideTo}
+                                currentSlide={currentSlide}
+                                nextSlide={nextSlide}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     );
 }

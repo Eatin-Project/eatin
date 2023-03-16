@@ -8,6 +8,7 @@ import { BookmarkButton } from "../../components/ui/BookmarkButton";
 import { Comment } from "../../components/ui/Comment";
 import { RecipeImageCarousel } from "./RecipeImageCarousel";
 import { User } from "../../components/ui/User";
+import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
@@ -15,9 +16,11 @@ export const RecipePage: FC = () => {
     const [rating, setRating] = useState<number | null>(0);
     const [isSaved, setIsSaved] = useState(false);
 
-    const recipe = useGetRecipeByIdQuery({ variables: { index: Number(id) } }).data?.recipe;
+    const { data, loading } = useGetRecipeByIdQuery({ variables: { index: Number(id) } });
+    const recipe = data?.recipe;
 
-    if (!id || !recipe) return <h2>Recipe not found :(</h2>;
+    if (loading) return <AsyncDataLoaderWrapper loading text="loading recipe page..." />;
+    if (!recipe) return <h2>Recipe does not exist :)</h2>;
 
     const {
         author,
