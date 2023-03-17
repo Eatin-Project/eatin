@@ -93,7 +93,7 @@ export function Carousel<T = unknown>({
                 setNextSlide(-1);
                 setCurrentSlide(next);
                 setSlideTo(null);
-            }, 1000);
+            });
         },
         [getNextSlide, slideTo],
     );

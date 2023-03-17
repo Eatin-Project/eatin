@@ -142,24 +142,24 @@
 .carousel-slide-next {
     display: flex;
     position: absolute;
-    animation: slide-left 1s ease-in-out forwards;
+    animation: slide-left 0.5s ease-in-out forwards;
 }
 
 .carousel-slide-start {
     position: absolute;
-    animation: active-slide-left 1s ease-in-out forwards;
+    animation: active-slide-left 0.5s ease-in-out forwards;
 }
 
 /* new --> old */
 .carousel-slide-prev {
     display: flex;
     position: absolute;
-    animation: active-slide-left 1s ease-in-out reverse forwards;
+    animation: active-slide-left 0.5s ease-in-out reverse forwards;
 }
 
 .carousel-slide-end {
     position: absolute;
-    animation: slide-left 1s ease-in-out reverse forwards;
+    animation: slide-left 0.5s ease-in-out reverse forwards;
 }
 
 @keyframes slide-left {
