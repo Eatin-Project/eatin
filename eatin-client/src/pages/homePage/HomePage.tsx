@@ -1,25 +1,25 @@
 import "./HomePage.css";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { RecommendedFeed } from "./RecommendedFeed";
 import { Button, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import {FilterRecipes} from "./FilterRecipes";
+import { FilterRecipes } from "./FilterRecipes";
 
 import {
     useGetTopRatedRecipesByCategoryQuery,
     useGetTopRatedRecipesByCuisineQuery,
 } from "../../generated/graphql";
-import { Category } from "./categories.enum";
-import { Cuisine } from "./cuisines.enum";
-import { FilterWrapper, FilterOptions, Recipe, RecipesSection } from "../../components/types";
-import { Difficulty } from "./difficulties.enum";
-import { Diet } from "./diets.enum";
+import { Category } from "./entities/categories.enum";
+import { Cuisine } from "./entities/cuisines.enum";
+import { FilterOptions, FilterWrapper, Recipe, RecipesSection } from "../../components/types";
+import { Difficulty } from "./entities/difficulties.enum";
+import { Diet } from "./entities/diets.enum";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
-import { Rating } from "./ratings.enum";
-import { CookingTime } from "./cooking-times.enum";
-import {getSections} from "../../graphql/queries/sections.query";
-import {useAuth} from "../../context/auth-context";
+import { Rating } from "./entities/ratings.enum";
+import { CookingTime } from "./entities/cooking-times.enum";
+import { useGetSections } from "../../graphql/queries/sections.query";
+import { useAuth } from "../../context/auth-context";
 
 const _ = require("lodash");
 
@@ -32,10 +32,10 @@ export const HomePage: FC = () => {
     const [totalTimeFilter, setTotalTimeFilter] = useState("");
     const [searchValue, setSearchValue] = useState("");
     const [loading, setLoading] = useState(true);
-    const [recommendedRecipes, setRecommendedRecipes] = useState<RecipesSection[]>([]);
     const [currentShownRecipes, setCurrentShownRecipes] = useState<RecipesSection[]>([]);
     const [allRecipes, setAllRecipes] = useState<RecipesSection[]>([]);
     const { currentUser } = useAuth();
+    const { data: recommendedRecipes } = useGetSections(currentUser ? currentUser.uid : "");
 
     const filters: FilterWrapper[] = [
         { field: "category", filter: categoryFilter, operator: assertEquals },
@@ -67,8 +67,7 @@ export const HomePage: FC = () => {
         error: greekErrors,
     } = useGetTopRatedRecipesByCuisineQuery({ variables: { cuisine: Cuisine.Greek } });
 
-    function initRecipes() {
-        getSections(currentUser ? currentUser.uid: "", setRecommendedRecipes);
+    const initRecipes = useCallback(() => {
         const initialRecipes = [
             {
                 name: Category.Chicken.toString(),
@@ -85,22 +84,33 @@ export const HomePage: FC = () => {
             {
                 name: Cuisine.Greek.toString(),
                 recipes: greek?.topRecipesByCuisine?.length ? greek.topRecipesByCuisine : [],
-            }
+            },
         ];
-        recommendedRecipes.forEach(section => initialRecipes.push({name: section.name, recipes: section.recipes}));
+        recommendedRecipes?.forEach((section) =>
+            initialRecipes.push({ name: section.name, recipes: section.recipes }),
+        );
         setCurrentShownRecipes(initialRecipes);
         setAllRecipes(initialRecipes);
-    }
+    }, [
+        cakes?.topRecipesByCategory,
+        chicken?.topRecipesByCategory,
+        currentUser,
+        greek?.topRecipesByCuisine,
+        japanese?.topRecipesByCuisine,
+        recommendedRecipes,
+    ]);
 
     useEffect(() => {
         const tempRecipes: RecipesSection[] = _.cloneDeep(allRecipes);
         tempRecipes?.forEach((section) => (section.recipes = filterRecipes(section.recipes)));
         setCurrentShownRecipes(tempRecipes);
     }, [
+        allRecipes,
         categoryFilter,
         cuisineFilter,
         dietFilter,
         difficultyFilter,
+        filterRecipes,
         ratingFilter,
         totalTimeFilter,
     ]);
@@ -110,7 +120,7 @@ export const HomePage: FC = () => {
             setLoading(false);
             initRecipes();
         }
-    }, [recommendedRecipes, chickenLoading, cakesLoading, japaneseLoading, greekLoading]);
+    }, [chickenLoading, cakesLoading, japaneseLoading, greekLoading, initRecipes]);
 
     function assertEquals(item: Recipe, field: string, filter: string) {
         return item[field as keyof Recipe] === filter;

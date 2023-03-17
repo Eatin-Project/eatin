@@ -1,11 +1,19 @@
-export function getSections(userId: string, callback: (arg: any) => void) {
-    fetch(`http://localhost:8000/graphql`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            query: `query {
+import { useEffect, useState } from "react";
+
+export function useGetSections(userId: string) {
+    const [data, setData] = useState<any[]>([]);
+    const [error, setError] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    useEffect(() => {
+        setLoading(true);
+        fetch(`http://localhost:8000/graphql`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                query: `query {
                         sections(user_id: "${userId}") {
                             name
                             recipes {
@@ -31,10 +39,14 @@ export function getSections(userId: string, callback: (arg: any) => void) {
                                   vote_count
                             }
                         }
-                    }`
+                    }`,
+            }),
         })
-    })
-        .then(res => res.json())
-        .then(res => callback(res.data.sections))
-        .catch(console.error)
+            .then((res) => res.json())
+            .then((res) => setData(res.data.sections))
+            .catch((e) => setError(e))
+            .finally(() => setLoading(false));
+    }, []);
+
+    return { data, error, loading };
 }
