@@ -41,6 +41,12 @@ type Recipes {
   total_time: Float!
 }
 
+type Ratings {
+  user_id: String!
+  recipe_index: Float!
+  rating: Float!
+}
+
 type Query {
   user(id: String!): Users!
   users: [Users!]!
@@ -48,9 +54,13 @@ type Query {
   recipes: [Recipes!]!
   topRecipesByCategory(category: String!): [Recipes!]!
   topRecipesByCuisine(cuisine: String!): [Recipes!]!
+  ratingsByRecipe(index: Float!): Ratings!
+  ratingsByUser(id: String!): Ratings!
+  ratings: [Ratings!]!
 }
 
 type Mutation {
   createUser(id: String!, firstname: String!, lastname: String!, email: String!, phone: String!, gender: String!, birthdate: DateTime!, country: String!): Users!
   createRecipe(recipe_title: String!, url: String!, record_health: String!, description: String!, cuisine: String!, course: String!, diet: String!, prep_time: Float!, cook_time: Float!, ingredients: String!, instructions: String!, author: String!, tags: String!, category: String!, image: String!, difficulty: String!, total_time: Float!): Recipes!
+  createRating(user_id: String!, recipe_index: Float!, rating: Float!): Ratings!
 }
