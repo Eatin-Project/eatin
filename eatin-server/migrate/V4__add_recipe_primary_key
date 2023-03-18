@@ -1,3 +1,0 @@
-alter table recipes
-    add constraint recipes_pk
-        primary key (index);
