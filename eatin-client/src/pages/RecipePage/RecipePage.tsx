@@ -1,25 +1,26 @@
 import "./RecipePage.css";
 
-import { Rating } from "@mui/material";
-import { FC, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useGetRecipeByIdQuery } from "../../generated/graphql";
-import { BookmarkButton } from "../../components/ui/BookmarkButton";
-import { Comment } from "../../components/ui/Comment";
-import { RecipeImageCarousel } from "./RecipeImageCarousel";
-import { User } from "../../components/ui/User";
+import {Rating} from "@mui/material";
+import {FC, useState} from "react";
+import {useParams} from "react-router-dom";
+import {useGetRecipeByIdQuery, useCreateRatingMutation} from "../../generated/graphql";
+import {BookmarkButton} from "../../components/ui/BookmarkButton";
+import {Comment} from "../../components/ui/Comment";
+import {RecipeImageCarousel} from "./RecipeImageCarousel";
+import {User} from "../../components/ui/User";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
+import {useAuth} from "../../context/auth-context";
 
 export const RecipePage: FC = () => {
-    const { id } = useParams();
-
+    const {id} = useParams();
     const [rating, setRating] = useState<number | null>(0);
     const [isSaved, setIsSaved] = useState(false);
-
-    const { data, loading } = useGetRecipeByIdQuery({ variables: { index: Number(id) } });
+    const {currentUser} = useAuth();
+    const {data, loading} = useGetRecipeByIdQuery({variables: {index: Number(id)}});
     const recipe = data?.recipe;
+    const [createRating] = useCreateRatingMutation();
 
-    if (loading) return <AsyncDataLoaderWrapper loading text="loading recipe page..." />;
+    if (loading) return <AsyncDataLoaderWrapper loading text="loading recipe page..."/>;
     if (!recipe) return <h2>Recipe does not exist :)</h2>;
 
     const {
@@ -42,6 +43,18 @@ export const RecipePage: FC = () => {
         url,
     } = recipe;
 
+    function insertNewRating(newValue: number | null) {
+        if (!!newValue && currentUser?.uid) {
+            createRating({
+                variables: {
+                    user_id: currentUser?.uid,
+                    recipe_index: Number(id),
+                    rating: newValue
+                }
+            }).then((rating) => console.log(rating.data));
+        }
+    }
+
     return (
         <div className="recipe-page">
             <div className="right-side">
@@ -54,14 +67,15 @@ export const RecipePage: FC = () => {
                                 value={rating}
                                 onChange={(event, newValue) => {
                                     setRating(newValue);
+                                    insertNewRating(newValue);
                                 }}
                                 precision={0.5}
                             />
                             <span className="tag">{vote_count}</span>
                         </User>
-                        <BookmarkButton value={isSaved} onChange={setIsSaved} size="large" />
+                        <BookmarkButton value={isSaved} onChange={setIsSaved} size="large"/>
                     </div>
-                    <RecipeImageCarousel images={[image, image]} />
+                    <RecipeImageCarousel images={[image, image]}/>
                 </div>
                 <div className="comments">
                     {comments.map((comment) => (
@@ -125,12 +139,12 @@ const _parseStringArray = (str: string | undefined): string[] => {
     try {
         return JSON.parse(
             "[" +
-                str
-                    .substring(1, str.length - 1)
-                    .replaceAll('\\"', '"')
-                    .replaceAll(",/ ", "")
-                    .replaceAll("/", "") +
-                "]",
+            str
+                .substring(1, str.length - 1)
+                .replaceAll('\\"', '"')
+                .replaceAll(",/ ", "")
+                .replaceAll("/", "") +
+            "]",
         );
     } catch (e) {
         return ["problem parsing string to json", "fix is coming soon! :D"];
@@ -138,11 +152,11 @@ const _parseStringArray = (str: string | undefined): string[] => {
 };
 
 const comments = [
-    { user: "shirley", content: "looks great!!" },
-    { user: "shirley", content: "cooked this at home, it was amazing!" },
-    { user: "shirley", content: "too much suger for me" },
-    { user: "shirley", content: "super tasty" },
-    { user: "shirley", content: "looks great!!!" },
+    {user: "shirley", content: "looks great!!"},
+    {user: "shirley", content: "cooked this at home, it was amazing!"},
+    {user: "shirley", content: "too much suger for me"},
+    {user: "shirley", content: "super tasty"},
+    {user: "shirley", content: "looks great!!!"},
     {
         user: "shirley",
         content: `This cake is rich and wholesome at the same time. Once you have tasted it, you will want to make an extra one and save it for New Year's as well!`,

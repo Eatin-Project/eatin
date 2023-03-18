@@ -7,6 +7,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphqlModule } from './graphql/graphql.module';
 import { Recipes } from './graphql/recipes/recipes.model';
 import { Users } from './graphql/users/users.model';
+import {Ratings} from "./graphql/ratings/ratings.model";
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { Users } from './graphql/users/users.model';
       username: 'eatin',
       password: 'eatin',
       database: 'postgres',
-      entities: [Recipes, Users],
+      entities: [Recipes, Users, Ratings],
       synchronize: false,
     }),
     GraphqlModule,
