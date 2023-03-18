@@ -35,7 +35,9 @@ export const HomePage: FC = () => {
     const [currentShownRecipes, setCurrentShownRecipes] = useState<RecipesSection[]>([]);
     const [allRecipes, setAllRecipes] = useState<RecipesSection[]>([]);
     const { currentUser } = useAuth();
-    const { data: recommendedRecipes } = useGetSections(currentUser ? currentUser.uid : "");
+    const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSections(
+        currentUser ? currentUser.uid : "",
+    );
 
     const filters: FilterWrapper[] = [
         { field: "category", filter: categoryFilter, operator: assertEquals },
@@ -110,17 +112,29 @@ export const HomePage: FC = () => {
         cuisineFilter,
         dietFilter,
         difficultyFilter,
-        filterRecipes,
         ratingFilter,
         totalTimeFilter,
     ]);
 
     useEffect(() => {
-        if (!chickenLoading && !cakesLoading && !japaneseLoading && !greekLoading) {
+        if (
+            !chickenLoading &&
+            !cakesLoading &&
+            !japaneseLoading &&
+            !greekLoading &&
+            !recommendedRecipesLoading
+        ) {
             setLoading(false);
             initRecipes();
         }
-    }, [chickenLoading, cakesLoading, japaneseLoading, greekLoading, initRecipes]);
+    }, [
+        chickenLoading,
+        cakesLoading,
+        japaneseLoading,
+        greekLoading,
+        initRecipes,
+        recommendedRecipesLoading,
+    ]);
 
     function assertEquals(item: Recipe, field: string, filter: string) {
         return item[field as keyof Recipe] === filter;
