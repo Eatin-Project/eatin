@@ -99,7 +99,7 @@ export function Carousel<T = unknown>({
     );
 
     useEffect(() => {
-        if (autoSlide) interval.current = setInterval(() => slideWithAnimation("next"), 5000);
+        if (autoSlide) interval.current = setInterval(() => slideWithAnimation("next"), 3000);
 
         return () => clearInterval(interval.current);
     }, [autoSlide, slideWithAnimation]);
