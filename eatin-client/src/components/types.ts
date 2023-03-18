@@ -29,7 +29,7 @@ export interface FilterOptions {
 
 export interface RecipesSection {
     name: string;
-    items: Recipe[];
+    recipes: Recipe[];
 }
 
 export interface FilterWrapper {

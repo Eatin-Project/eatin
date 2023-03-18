@@ -93,13 +93,13 @@ export function Carousel<T = unknown>({
                 setNextSlide(-1);
                 setCurrentSlide(next);
                 setSlideTo(null);
-            }, 1000);
+            }, 500);
         },
         [getNextSlide, slideTo],
     );
 
     useEffect(() => {
-        if (autoSlide) interval.current = setInterval(() => slideWithAnimation("next"), 5000);
+        if (autoSlide) interval.current = setInterval(() => slideWithAnimation("next"), 3000);
 
         return () => clearInterval(interval.current);
     }, [autoSlide, slideWithAnimation]);

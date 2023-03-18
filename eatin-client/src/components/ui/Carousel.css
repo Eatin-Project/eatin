@@ -40,17 +40,21 @@
     width: 30px;
     display: flex;
 }
+
 .carousel-wrapper .carousel-arrow svg {
     padding: 4px;
 }
+
 .carousel-wrapper .carousel-arrow.prev {
     padding-left: 6px;
     left: 0.5em;
 }
+
 .carousel-wrapper .carousel-arrow.next {
     padding-right: 6px;
     right: 0.5em;
 }
+
 .carousel-wrapper .carousel-arrow.disabled {
     pointer-events: none;
 }
@@ -64,6 +68,7 @@
     left: 50%;
     transform: translateX(-50%);
 }
+
 .carousel-bread-crumbs .bread-crumb {
     width: 1.5em;
     margin: 0.2em;
@@ -73,6 +78,7 @@
     cursor: pointer;
     transition: background-color 0.5s;
 }
+
 .carousel-bread-crumbs .bread-crumb.active {
     background-color: white;
     pointer-events: none;
@@ -83,10 +89,12 @@
     width: 100%;
     height: 100%;
 }
+
 .carousel-slide.active {
     display: flex;
     flex-direction: row;
 }
+
 .carousel-item {
     position: relative;
     display: flex;
@@ -142,24 +150,24 @@
 .carousel-slide-next {
     display: flex;
     position: absolute;
-    animation: slide-left 1s ease-in-out forwards;
+    animation: slide-left 0.5s ease-in-out forwards;
 }
 
 .carousel-slide-start {
     position: absolute;
-    animation: active-slide-left 1s ease-in-out forwards;
+    animation: active-slide-left 0.5s ease-in-out forwards;
 }
 
 /* new --> old */
 .carousel-slide-prev {
     display: flex;
     position: absolute;
-    animation: active-slide-left 1s ease-in-out reverse forwards;
+    animation: active-slide-left 0.5s ease-in-out reverse forwards;
 }
 
 .carousel-slide-end {
     position: absolute;
-    animation: slide-left 1s ease-in-out reverse forwards;
+    animation: slide-left 0.5s ease-in-out reverse forwards;
 }
 
 @keyframes slide-left {
