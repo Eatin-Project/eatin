@@ -20,6 +20,12 @@ export class RatingsResolver {
         return await this.ratingsService.findByUser(id);
     }
 
+    @Query(returns => Ratings)
+    async ratingsByUserAndRecipe(@Args('id') id: string,
+                                 @Args('index') index: number): Promise<Ratings[]> {
+        return await this.ratingsService.findByUserAndRecipe(id, index);
+    }
+
     @Query(returns => [Ratings])
     async ratings(): Promise<Ratings[]> {
         return await this.ratingsService.findAll();

@@ -24,7 +24,11 @@ export class RatingsService {
         return this.ratingsRepository.findBy({recipe_index: index});
     }
 
-    findByUser(user_id: string): Promise<Ratings[]> {
-        return this.ratingsRepository.findBy({user_id: user_id});
+    findByUser(id: string): Promise<Ratings[]> {
+        return this.ratingsRepository.findBy({user_id: id});
+    }
+
+    findByUserAndRecipe(id: string, index: number): Promise<Ratings[]> {
+        return this.ratingsRepository.findBy({user_id: id, recipe_index: index});
     }
 }

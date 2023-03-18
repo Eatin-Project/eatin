@@ -68,6 +68,7 @@ export type Query = {
   ratings: Array<Ratings>;
   ratingsByRecipe: Ratings;
   ratingsByUser: Ratings;
+  ratingsByUserAndRecipe: Ratings;
   recipe: Recipes;
   recipes: Array<Recipes>;
   topRecipesByCategory: Array<Recipes>;
@@ -84,6 +85,12 @@ export type QueryRatingsByRecipeArgs = {
 
 export type QueryRatingsByUserArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryRatingsByUserAndRecipeArgs = {
+  id: Scalars['String'];
+  index: Scalars['Float'];
 };
 
 
@@ -213,6 +220,14 @@ export type GetRatingsByRecipeIndexQueryVariables = Exact<{
 
 
 export type GetRatingsByRecipeIndexQuery = { __typename?: 'Query', ratingsByRecipe: { __typename?: 'Ratings', user_id: string, recipe_index: number, rating: number } };
+
+export type GetRatingsByRecipeAndUserQueryVariables = Exact<{
+  id: Scalars['String'];
+  index: Scalars['Float'];
+}>;
+
+
+export type GetRatingsByRecipeAndUserQuery = { __typename?: 'Query', ratingsByUserAndRecipe: { __typename?: 'Ratings', user_id: string, recipe_index: number, rating: number } };
 
 export type GetAllRecipesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -539,6 +554,44 @@ export function useGetRatingsByRecipeIndexLazyQuery(baseOptions?: Apollo.LazyQue
 export type GetRatingsByRecipeIndexQueryHookResult = ReturnType<typeof useGetRatingsByRecipeIndexQuery>;
 export type GetRatingsByRecipeIndexLazyQueryHookResult = ReturnType<typeof useGetRatingsByRecipeIndexLazyQuery>;
 export type GetRatingsByRecipeIndexQueryResult = Apollo.QueryResult<GetRatingsByRecipeIndexQuery, GetRatingsByRecipeIndexQueryVariables>;
+export const GetRatingsByRecipeAndUserDocument = gql`
+    query getRatingsByRecipeAndUser($id: String!, $index: Float!) {
+  ratingsByUserAndRecipe(id: $id, index: $index) {
+    user_id
+    recipe_index
+    rating
+  }
+}
+    `;
+
+/**
+ * __useGetRatingsByRecipeAndUserQuery__
+ *
+ * To run a query within a React component, call `useGetRatingsByRecipeAndUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRatingsByRecipeAndUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRatingsByRecipeAndUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *      index: // value for 'index'
+ *   },
+ * });
+ */
+export function useGetRatingsByRecipeAndUserQuery(baseOptions: Apollo.QueryHookOptions<GetRatingsByRecipeAndUserQuery, GetRatingsByRecipeAndUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRatingsByRecipeAndUserQuery, GetRatingsByRecipeAndUserQueryVariables>(GetRatingsByRecipeAndUserDocument, options);
+      }
+export function useGetRatingsByRecipeAndUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRatingsByRecipeAndUserQuery, GetRatingsByRecipeAndUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRatingsByRecipeAndUserQuery, GetRatingsByRecipeAndUserQueryVariables>(GetRatingsByRecipeAndUserDocument, options);
+        }
+export type GetRatingsByRecipeAndUserQueryHookResult = ReturnType<typeof useGetRatingsByRecipeAndUserQuery>;
+export type GetRatingsByRecipeAndUserLazyQueryHookResult = ReturnType<typeof useGetRatingsByRecipeAndUserLazyQuery>;
+export type GetRatingsByRecipeAndUserQueryResult = Apollo.QueryResult<GetRatingsByRecipeAndUserQuery, GetRatingsByRecipeAndUserQueryVariables>;
 export const GetAllRecipesDocument = gql`
     query getAllRecipes {
   recipes {
