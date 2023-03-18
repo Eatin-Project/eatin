@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 export function useGetSections(userId: string) {
     const [data, setData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
-    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         setLoading(true);
@@ -48,5 +48,5 @@ export function useGetSections(userId: string) {
             .finally(() => setLoading(false));
     }, []);
 
-    return { data, error, loading };
+    return { data, loading, error };
 }
