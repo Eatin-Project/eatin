@@ -4,12 +4,10 @@
     position: relative;
     align-items: center;
     width: 100%;
-    margin: 0.5em 2em;
 }
 
 .carousel-wrapper.with-arrows {
-    margin: 0 0;
-    padding: 0 0.2em;
+    margin: 0 0 2em;
 }
 
 .carousel {
@@ -17,13 +15,13 @@
     display: flex;
     flex-direction: row;
     width: 95%;
-    height: 16em;
+    height: 12em;
     user-select: none;
     overflow: hidden;
 }
 
 .carousel-title {
-    margin: 0 0 0 1em;
+    margin: 0 0 0 3%;
     text-align: left;
     color: #de6861;
     align-self: flex-start;
