@@ -34,6 +34,12 @@
     font-size: 1.2em;
 }
 
+.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root, .css-1e6y48t-MuiButtonBase-root-MuiButton-root,
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input, .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root {
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: 400 !important;
+}
+
 .trash-icon {
     position: relative;
     left: 0.5rem;

@@ -3,7 +3,7 @@
     align-items: flex-end;
     flex-direction: row;
     justify-content: space-between;
-    padding-top: 1em;
+    padding: 1em 2em 1em 2em;
 }
 
 .header .search-bar {
