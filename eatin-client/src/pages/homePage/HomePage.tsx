@@ -1,25 +1,20 @@
 import "./HomePage.css";
 
-import {FC, useCallback, useEffect, useState} from "react";
-import {RecommendedFeed} from "./RecommendedFeed";
-import {Button, TextField} from "@mui/material";
+import { FC, useEffect, useState } from "react";
+import { RecommendedFeed } from "./RecommendedFeed";
+import { Button, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import {FilterRecipes} from "./FilterRecipes";
-
-import {
-    useGetTopRatedRecipesByCategoryQuery,
-    useGetTopRatedRecipesByCuisineQuery,
-} from "../../generated/graphql";
-import {Category} from "./entities/categories.enum";
-import {Cuisine} from "./entities/cuisines.enum";
-import {FilterOptions, FilterWrapper, Recipe, RecipesSection} from "../../components/types";
-import {Difficulty} from "./entities/difficulties.enum";
-import {Diet} from "./entities/diets.enum";
+import { FilterRecipes } from "./FilterRecipes";
+import { Category } from "./entities/categories.enum";
+import { Cuisine } from "./entities/cuisines.enum";
+import { FilterOptions, FilterWrapper, Recipe, RecipesSection } from "../../components/types";
+import { Difficulty } from "./entities/difficulties.enum";
+import { Diet } from "./entities/diets.enum";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
-import {Rating} from "./entities/ratings.enum";
-import {CookingTime} from "./entities/cooking-times.enum";
-import {useGetSections} from "../../graphql/queries/sections.query";
-import {useAuth} from "../../context/auth-context";
+import { Rating } from "./entities/ratings.enum";
+import { CookingTime } from "./entities/cooking-times.enum";
+import { useGetSections } from "../../graphql/queries/sections.query";
+import { useAuth } from "../../context/auth-context";
 
 const _ = require("lodash");
 
@@ -33,31 +28,28 @@ export const HomePage: FC = () => {
     const [searchValue, setSearchValue] = useState("");
     const [currentShownRecipes, setCurrentShownRecipes] = useState<RecipesSection[]>([]);
     const [allRecipes, setAllRecipes] = useState<RecipesSection[]>([]);
-    const {currentUser} = useAuth();
-    const {data: recommendedRecipes, loading: recommendedRecipesLoading} = useGetSections(
+    const { currentUser } = useAuth();
+    const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSections(
         currentUser ? currentUser.uid : "",
     );
 
     const filters: FilterWrapper[] = [
-        {field: "category", filter: categoryFilter, operator: assertEquals},
-        {field: "cuisine", filter: cuisineFilter, operator: assertEquals},
-        {field: "diet", filter: dietFilter, operator: assertEquals},
-        {field: "difficulty", filter: difficultyFilter, operator: assertEquals},
-        {field: "rating", filter: ratingFilter, operator: assertBigger},
-        {field: "total_time", filter: totalTimeFilter, operator: assertSmaller},
+        { field: "category", filter: categoryFilter, operator: assertEquals },
+        { field: "cuisine", filter: cuisineFilter, operator: assertEquals },
+        { field: "diet", filter: dietFilter, operator: assertEquals },
+        { field: "difficulty", filter: difficultyFilter, operator: assertEquals },
+        { field: "rating", filter: ratingFilter, operator: assertBigger },
+        { field: "total_time", filter: totalTimeFilter, operator: assertSmaller },
     ];
 
     useEffect(() => {
         const initialRecipes: { name: string; recipes: Recipe[] }[] = [];
-        recommendedRecipes?.forEach((section) =>
-            initialRecipes.push({name: section.name, recipes: section.recipes}),
+        recommendedRecipes?.forEach((section: { name: any; recipes: any }) =>
+            initialRecipes.push({ name: section.name, recipes: section.recipes }),
         );
         setCurrentShownRecipes(initialRecipes);
         setAllRecipes(initialRecipes);
-    }, [
-        currentUser,
-        recommendedRecipes,
-    ]);
+    }, [currentUser, recommendedRecipes]);
 
     useEffect(() => {
         const tempRecipes: RecipesSection[] = _.cloneDeep(allRecipes);
@@ -90,8 +82,8 @@ export const HomePage: FC = () => {
             (filterOption) =>
                 (items = !!filterOption.filter
                     ? items.filter((item) =>
-                        filterOption.operator(item, filterOption.field, filterOption.filter),
-                    )
+                          filterOption.operator(item, filterOption.field, filterOption.filter),
+                      )
                     : items),
         );
 
@@ -99,7 +91,7 @@ export const HomePage: FC = () => {
     }
 
     const currentFilterOptions: // TODO: for now the options are hardcoded until we get all the recommended recipes and can have the filter accordingly
-        FilterOptions[] = [
+    FilterOptions[] = [
         {
             name: "Category",
             options: Object.values(Category),
@@ -148,7 +140,7 @@ export const HomePage: FC = () => {
         <div>
             <AsyncDataLoaderWrapper loading={recommendedRecipesLoading} text="loading recipes...">
                 <div className="header">
-                    {<FilterRecipes filterOptions={currentFilterOptions}/>}
+                    {<FilterRecipes filterOptions={currentFilterOptions} />}
                     <div className="search-manually">
                         <div className="complete-search-bar">
                             <TextField
@@ -160,7 +152,7 @@ export const HomePage: FC = () => {
                                 type="text"
                             />
                             <Button onClick={updateSearchResult} className="search-button">
-                                <SearchIcon/>
+                                <SearchIcon />
                             </Button>
                         </div>
                     </div>
@@ -173,7 +165,7 @@ export const HomePage: FC = () => {
                         </Button>
                     </div>
                 </div>
-                <RecommendedFeed currentRecipes={currentShownRecipes}/>
+                <RecommendedFeed currentRecipes={currentShownRecipes} />
             </AsyncDataLoaderWrapper>
         </div>
     );
