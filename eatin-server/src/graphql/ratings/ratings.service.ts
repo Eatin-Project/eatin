@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
-import {InsertResult, Repository} from 'typeorm';
+import {Repository} from 'typeorm';
 import {Ratings} from "./ratings.model";
 import {RatingDTO} from "./ratings.dto";
 
@@ -28,7 +28,7 @@ export class RatingsService {
         return this.ratingsRepository.findBy({user_id: id});
     }
 
-    findByUserAndRecipe(id: string, index: number): Promise<Ratings[]> {
-        return this.ratingsRepository.findBy({user_id: id, recipe_index: index});
+    findByUserAndRecipe(id: string, index: number): Promise<Ratings> {
+        return this.ratingsRepository.findOne({where: {user_id: id, recipe_index: index}});
     }
 }

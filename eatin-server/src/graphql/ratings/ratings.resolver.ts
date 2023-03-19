@@ -10,19 +10,19 @@ export class RatingsResolver {
         @Inject(RatingsService) private ratingsService: RatingsService) {
     }
 
-    @Query(returns => Ratings)
+    @Query(returns => [Ratings])
     async ratingsByRecipe(@Args('index') index: number): Promise<Ratings[]> {
         return await this.ratingsService.findByRecipe(index);
     }
 
-    @Query(returns => Ratings)
+    @Query(returns => [Ratings])
     async ratingsByUser(@Args('id') id: string): Promise<Ratings[]> {
         return await this.ratingsService.findByUser(id);
     }
 
     @Query(returns => Ratings)
     async ratingsByUserAndRecipe(@Args('id') id: string,
-                                 @Args('index') index: number): Promise<Ratings[]> {
+                                 @Args('index') index: number): Promise<Ratings> {
         return await this.ratingsService.findByUserAndRecipe(id, index);
     }
 
