@@ -13,7 +13,7 @@ export class RatingsService {
     }
 
     create(details: RatingDTO): Promise<Ratings> {
-        return this.ratingsRepository.save(details);
+        return this.ratingsRepository.save(details, {reload: true});
     }
 
     findAll(): Promise<Ratings[]> {
