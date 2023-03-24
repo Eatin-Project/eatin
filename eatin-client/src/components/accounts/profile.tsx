@@ -20,7 +20,7 @@ import TabPanel from "@mui/joy/TabPanel";
 export const Profile: FC = () => {
     const [categoryFilter, setCategoryFilter] = useState("");
     const [cuisineFilter, setCuisineFilter] = useState("");
-    const { currentUser, signOutUser } = useAuth();
+    const { currentUser } = useAuth();
     const { data, error, loading } = useGetUserByIdQuery({
         variables: { id: !!currentUser?.uid ? currentUser?.uid : "" },
     });
@@ -54,11 +54,7 @@ export const Profile: FC = () => {
         <AsyncDataLoaderWrapper loading={loading} text="loading user...">
             <div className="profile-container">
                 <div className="profile-header">
-                    <User size="large" name={data?.user.firstname + " " + data?.user.lastname}>
-                        <IconButton>
-                            <SettingsIcon />
-                        </IconButton>
-                    </User>
+                    <User size="large" name={data?.user.firstname + " " + data?.user.lastname} />
                     <div className="profile-filters">
                         {<FilterRecipes filterOptions={currentFilterOptions} />}
                     </div>
@@ -87,8 +83,6 @@ export const Profile: FC = () => {
                         </TabPanel>
                     </Tabs>
                 </div>
-
-                {/* <button onClick={signOutUser}>Sign Out</button> */}
             </div>
         </AsyncDataLoaderWrapper>
     );
@@ -106,8 +100,4 @@ const Catalog: FC<Props> = ({ recipes }) => {
             ))}
         </div>
     );
-};
-
-const Filter: FC = () => {
-    return <div></div>;
 };
