@@ -29,7 +29,7 @@ export const HomePage: FC = () => {
     const [currentShownRecipes, setCurrentShownRecipes] = useState<RecipesSection[]>([]);
     const [allRecipes, setAllRecipes] = useState<RecipesSection[]>([]);
 
-    const { currentFilterOptions, filteredRecipes } = filterRecipesHook(allRecipes);
+    const { currentFilterOptions, filteredRecipes } = useFilterRecipesHook(allRecipes);
     const { currentUser } = useAuth();
     const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSections(
         currentUser ? currentUser.uid : "",
@@ -159,7 +159,7 @@ export const HomePage: FC = () => {
     );
 };
 
-function filterRecipesHook(initialRecipes: RecipesSection[]) {
+function useFilterRecipesHook(initialRecipes: RecipesSection[]) {
     const [filteredRecipes, setFilteredRecipes] = useState(initialRecipes);
     const [categoryFilter, setCategoryFilter] = useState("");
     const [cuisineFilter, setCuisineFilter] = useState("");
