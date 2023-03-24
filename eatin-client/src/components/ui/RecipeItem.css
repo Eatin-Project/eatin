@@ -1,0 +1,11 @@
+.recipe-item {
+    position: relative;
+    height: 8em;
+    width: 10em;
+}
+
+.recipe-item img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}

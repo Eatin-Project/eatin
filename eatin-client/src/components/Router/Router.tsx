@@ -7,7 +7,7 @@ import { RecipePage } from "../../pages/RecipePage/RecipePage";
 import SignIn from "../accounts/sign-in";
 import SignUp from "../accounts/sign-up";
 import RequireAuth from "../require-auth";
-import Profile from "../accounts/profile";
+import { Profile } from "../accounts/profile";
 import WithNav from "./WithNav";
 
 export const Router: FC = () => {
