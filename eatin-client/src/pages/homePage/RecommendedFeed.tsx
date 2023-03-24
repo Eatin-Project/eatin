@@ -3,10 +3,10 @@ import "./RecommendedFeed.css";
 import { FC, useState } from "react";
 
 import { CategoryCarousel } from "./CategoryCarousel";
-import { Recipe } from "../../components/types";
+import {Recipe, RecipesSection} from "../../components/types";
 
 interface Props {
-    currentRecipes: { name: string; items: Recipe[] }[];
+    currentRecipes: RecipesSection[];
 }
 
 export const RecommendedFeed: FC<Props> = ({ currentRecipes }) => {
@@ -18,8 +18,8 @@ export const RecommendedFeed: FC<Props> = ({ currentRecipes }) => {
                 <CategoryCarousel
                     key={`${recipe.name}-${itemIndex}`}
                     title={recipe.name}
-                    items={recipe.items}
-                    itemsInOneSlider={3}
+                    items={recipe.recipes}
+                    itemsInOneSlider={4}
                     isLoading={isLoading}
                     className="recommended-recipes-carousel"
                 />

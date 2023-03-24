@@ -4,20 +4,17 @@ import { FC, useEffect, useState } from "react";
 import { RecommendedFeed } from "./RecommendedFeed";
 import { Button, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import {FilterRecipes} from "./FilterRecipes";
-
-import {
-    useGetTopRatedRecipesByCategoryQuery,
-    useGetTopRatedRecipesByCuisineQuery,
-} from "../../generated/graphql";
-import { Category } from "./categories.enum";
-import { Cuisine } from "./cuisines.enum";
-import { FilterWrapper, FilterOptions, Recipe, RecipesSection } from "../../components/types";
-import { Difficulty } from "./difficulties.enum";
-import { Diet } from "./diets.enum";
+import { FilterRecipes } from "./FilterRecipes";
+import { Category } from "./entities/categories.enum";
+import { Cuisine } from "./entities/cuisines.enum";
+import { FilterOptions, FilterWrapper, Recipe, RecipesSection } from "../../components/types";
+import { Difficulty } from "./entities/difficulties.enum";
+import { Diet } from "./entities/diets.enum";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
-import { Rating } from "./ratings.enum";
-import { CookingTime } from "./cooking-times.enum";
+import { Rating } from "./entities/ratings.enum";
+import { CookingTime } from "./entities/cooking-times.enum";
+import { useGetSections } from "../../graphql/queries/sections.query";
+import { useAuth } from "../../context/auth-context";
 
 const _ = require("lodash");
 
@@ -29,9 +26,12 @@ export const HomePage: FC = () => {
     const [ratingFilter, setRatingFilter] = useState("");
     const [totalTimeFilter, setTotalTimeFilter] = useState("");
     const [searchValue, setSearchValue] = useState("");
-    const [loading, setLoading] = useState(true);
     const [currentShownRecipes, setCurrentShownRecipes] = useState<RecipesSection[]>([]);
     const [allRecipes, setAllRecipes] = useState<RecipesSection[]>([]);
+    const { currentUser } = useAuth();
+    const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSections(
+        currentUser ? currentUser.uid : "",
+    );
 
     const filters: FilterWrapper[] = [
         { field: "category", filter: categoryFilter, operator: assertEquals },
@@ -42,55 +42,21 @@ export const HomePage: FC = () => {
         { field: "total_time", filter: totalTimeFilter, operator: assertSmaller },
     ];
 
-    const {
-        data: chicken,
-        loading: chickenLoading,
-        error: chickenErrors,
-    } = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Chicken } });
-    const {
-        data: cakes,
-        loading: cakesLoading,
-        error: cakesErrors,
-    } = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Cake } });
-    const {
-        data: japanese,
-        loading: japaneseLoading,
-        error: japaneseErrors,
-    } = useGetTopRatedRecipesByCuisineQuery({ variables: { cuisine: Cuisine.Japanese } });
-    const {
-        data: greek,
-        loading: greekLoading,
-        error: greekErrors,
-    } = useGetTopRatedRecipesByCuisineQuery({ variables: { cuisine: Cuisine.Greek } });
-
-    function initRecipes() {
-        const initialRecipes = [
-            {
-                name: Category.Chicken.toString(),
-                items: chicken?.topRecipesByCategory?.length ? chicken?.topRecipesByCategory : [],
-            },
-            {
-                name: Category.Cake.toString(),
-                items: cakes?.topRecipesByCategory?.length ? cakes?.topRecipesByCategory : [],
-            },
-            {
-                name: Cuisine.Japanese.toString(),
-                items: japanese?.topRecipesByCuisine?.length ? japanese.topRecipesByCuisine : [],
-            },
-            {
-                name: Cuisine.Greek.toString(),
-                items: greek?.topRecipesByCuisine?.length ? greek.topRecipesByCuisine : [],
-            },
-        ];
+    useEffect(() => {
+        const initialRecipes: { name: string; recipes: Recipe[] }[] = [];
+        recommendedRecipes?.forEach((section: { name: any; recipes: any }) =>
+            initialRecipes.push({ name: section.name, recipes: section.recipes }),
+        );
         setCurrentShownRecipes(initialRecipes);
         setAllRecipes(initialRecipes);
-    }
+    }, [currentUser, recommendedRecipes]);
 
     useEffect(() => {
         const tempRecipes: RecipesSection[] = _.cloneDeep(allRecipes);
-        tempRecipes?.forEach((section) => (section.items = filterRecipes(section.items)));
+        tempRecipes?.forEach((section) => (section.recipes = filterRecipes(section.recipes)));
         setCurrentShownRecipes(tempRecipes);
     }, [
+        allRecipes,
         categoryFilter,
         cuisineFilter,
         dietFilter,
@@ -98,13 +64,6 @@ export const HomePage: FC = () => {
         ratingFilter,
         totalTimeFilter,
     ]);
-
-    useEffect(() => {
-        if (!chickenLoading && !cakesLoading && !japaneseLoading && !greekLoading) {
-            setLoading(false);
-            initRecipes();
-        }
-    }, [chickenLoading, cakesLoading, japaneseLoading, greekLoading]);
 
     function assertEquals(item: Recipe, field: string, filter: string) {
         return item[field as keyof Recipe] === filter;
@@ -132,7 +91,6 @@ export const HomePage: FC = () => {
     }
 
     const currentFilterOptions: // TODO: for now the options are hardcoded until we get all the recommended recipes and can have the filter accordingly
-
     FilterOptions[] = [
         {
             name: "Category",
@@ -180,7 +138,7 @@ export const HomePage: FC = () => {
 
     return (
         <div>
-            <AsyncDataLoaderWrapper loading={loading} text="loading recipes...">
+            <AsyncDataLoaderWrapper loading={recommendedRecipesLoading} text="loading recipes...">
                 <div className="header">
                     {<FilterRecipes filterOptions={currentFilterOptions} />}
                     <div className="search-manually">

@@ -3,21 +3,22 @@ import "./RecipePage.css";
 import { Rating } from "@mui/material";
 import { FC, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetRecipeByIdQuery } from "../../generated/graphql";
+import { useCreateRatingMutation, useGetRecipeByIdQuery } from "../../generated/graphql";
 import { BookmarkButton } from "../../components/ui/BookmarkButton";
 import { Comment } from "../../components/ui/Comment";
 import { RecipeImageCarousel } from "./RecipeImageCarousel";
 import { User } from "../../components/ui/User";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
+import { useAuth } from "../../context/auth-context";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
-
     const [rating, setRating] = useState<number | null>(0);
     const [isSaved, setIsSaved] = useState(false);
-
+    const { currentUser } = useAuth();
     const { data, loading } = useGetRecipeByIdQuery({ variables: { index: Number(id) } });
     const recipe = data?.recipe;
+    const [createRating] = useCreateRatingMutation();
 
     if (loading) return <AsyncDataLoaderWrapper loading text="loading recipe page..." />;
     if (!recipe) return <h2>Recipe does not exist :)</h2>;
@@ -42,6 +43,18 @@ export const RecipePage: FC = () => {
         url,
     } = recipe;
 
+    function insertNewRating(newValue: number | null) {
+        if (!!newValue && currentUser?.uid) {
+            createRating({
+                variables: {
+                    user_id: currentUser?.uid,
+                    recipe_index: Number(id),
+                    rating: newValue,
+                },
+            }).then((rating) => console.log(rating.data));
+        }
+    }
+
     return (
         <div className="recipe-page">
             <div className="right-side">
@@ -54,6 +67,7 @@ export const RecipePage: FC = () => {
                                 value={rating}
                                 onChange={(event, newValue) => {
                                     setRating(newValue);
+                                    insertNewRating(newValue);
                                 }}
                                 precision={0.5}
                             />
@@ -128,8 +142,7 @@ const _parseStringArray = (str: string | undefined): string[] => {
                 str
                     .substring(1, str.length - 1)
                     .replaceAll('\\"', '"')
-                    .replaceAll(",/ ", "")
-                    .replaceAll("/", "") +
+                    .replaceAll(",/ ", "") +
                 "]",
         );
     } catch (e) {
