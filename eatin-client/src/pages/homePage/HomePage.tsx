@@ -128,14 +128,6 @@ export const HomePage: FC = () => {
         setSearchValue("");
     };
 
-    const showMyRecipes = () => {
-        // TODO: here we will update the shown recipes....
-    };
-
-    const showSavedRecipes = () => {
-        // TODO: here we will update the shown recipes....
-    };
-
     return (
         <div>
             <AsyncDataLoaderWrapper loading={recommendedRecipesLoading} text="loading recipes...">
@@ -155,14 +147,6 @@ export const HomePage: FC = () => {
                                 <SearchIcon />
                             </Button>
                         </div>
-                    </div>
-                    <div className="d-flex flex-row">
-                        <Button className="recipes-btn" onClick={showMyRecipes}>
-                            My Recipes
-                        </Button>
-                        <Button className="recipes-btn" onClick={showSavedRecipes}>
-                            Saved Recipes
-                        </Button>
                     </div>
                 </div>
                 <RecommendedFeed currentRecipes={currentShownRecipes} />
