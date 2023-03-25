@@ -19,7 +19,7 @@ export const RecommendedFeed: FC<Props> = ({ currentRecipes }) => {
                     key={`${recipe.name}-${itemIndex}`}
                     title={recipe.name}
                     items={recipe.recipes}
-                    itemsInOneSlider={4}
+                    itemsInOneSlider={5}
                     isLoading={isLoading}
                     className="recommended-recipes-carousel"
                 />
