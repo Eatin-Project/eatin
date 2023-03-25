@@ -26,7 +26,7 @@ export const RecipePage: FC = () => {
     const [createRating] = useCreateRatingMutation();
 
     useEffect(() => {
-        setRating(ratingData ? ratingData?.ratingByUserAndRecipe.rating : 0);
+        setRating(ratingData ? ratingData.ratingByUserAndRecipe.rating : 0);
     }, [ratingData]);
 
     if (recipeLoading || ratingLoading) return <AsyncDataLoaderWrapper loading text="loading recipe page..." />;
