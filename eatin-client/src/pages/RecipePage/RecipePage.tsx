@@ -12,14 +12,6 @@ import {BookmarkButton} from "../../components/ui/BookmarkButton";
 import {Comment} from "../../components/ui/Comment";
 import {RecipeImageCarousel} from "./RecipeImageCarousel";
 import {User} from "../../components/ui/User";
-import { Rating } from "@mui/material";
-import { FC, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useCreateRatingMutation, useGetRecipeByIdQuery } from "../../generated/graphql";
-import { BookmarkButton } from "../../components/ui/BookmarkButton";
-import { Comment } from "../../components/ui/Comment";
-import { RecipeImageCarousel } from "./RecipeImageCarousel";
-import { User } from "../../components/ui/User";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 import { useAuth } from "../../context/auth-context";
 

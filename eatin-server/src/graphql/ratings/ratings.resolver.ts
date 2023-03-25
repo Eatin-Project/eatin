@@ -2,7 +2,6 @@ import {Resolver, Query, Args, Mutation} from '@nestjs/graphql';
 import {Inject} from '@nestjs/common';
 import {Ratings} from "./ratings.model";
 import {RatingsService} from "./ratings.service";
-import {InsertResult} from "typeorm";
 
 @Resolver(of => Ratings)
 export class RatingsResolver {

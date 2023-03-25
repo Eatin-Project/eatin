@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from 'typeorm';
+import {Repository, UpdateResult} from 'typeorm';
 import {Ratings} from "./ratings.model";
 import {RatingDTO} from "./ratings.dto";
 
@@ -12,7 +12,13 @@ export class RatingsService {
     ) {
     }
 
-    create(details: RatingDTO): Promise<Ratings> {
+    async create(details: RatingDTO): Promise<Ratings> {
+        let previousRating = await this.findByUserAndRecipe(details.user_id, details.recipe_index);
+        if (!!previousRating) {
+            Object.assign(previousRating, {'rating': details.rating});
+            return this.ratingsRepository.save(previousRating);
+        }
+
         return this.ratingsRepository.save(details);
     }
 
