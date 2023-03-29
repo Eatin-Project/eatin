@@ -3,9 +3,10 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { FC, useRef, useState } from "react";
 
-import { ToastContainer, toast, Id, Zoom } from "react-toastify";
+import { toast, Id } from "react-toastify";
 import { CategoryCarousel } from "./CategoryCarousel";
 import { Recipe, RecipesSection } from "../../components/types";
+import { ToastNotification } from "../../components/ui/ToastNotification";
 
 interface Props {
     currentRecipes: RecipesSection[];
@@ -40,19 +41,7 @@ export const RecommendedFeed: FC<Props> = ({ currentRecipes }) => {
                     className="recommended-recipes-carousel"
                 />
             ))}
-            <ToastContainer
-                position="top-center"
-                autoClose={3000}
-                hideProgressBar={true}
-                newestOnTop
-                transition={Zoom}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            />
+            <ToastNotification />
         </div>
     );
 };
