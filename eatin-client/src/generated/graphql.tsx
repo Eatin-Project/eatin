@@ -21,6 +21,8 @@ export type Mutation = {
   createRating: Ratings;
   createRecipe: Recipes;
   createUser: Users;
+  createUserRecipes: UserRecipes;
+  removeUserRecipes: UserRecipes;
 };
 
 
@@ -63,6 +65,19 @@ export type MutationCreateUserArgs = {
   phone: Scalars['String'];
 };
 
+
+export type MutationCreateUserRecipesArgs = {
+  is_saved: Scalars['Boolean'];
+  recipe_index: Scalars['Float'];
+  user_id: Scalars['String'];
+};
+
+
+export type MutationRemoveUserRecipesArgs = {
+  recipeID: Scalars['Float'];
+  userID: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   ratingByUserAndRecipe: Ratings;
@@ -74,6 +89,12 @@ export type Query = {
   topRecipesByCategory: Array<Recipes>;
   topRecipesByCuisine: Array<Recipes>;
   user: Users;
+  userRecipes: Array<UserRecipes>;
+  userRecipesByRecipe: Array<UserRecipes>;
+  userRecipesByRecipeAndIsSaved: Array<UserRecipes>;
+  userRecipesByUser: Array<UserRecipes>;
+  userRecipesByUserAndIsSaved: Array<UserRecipes>;
+  userRecipesByUserAndRecipe: UserRecipes;
   users: Array<Users>;
 };
 
@@ -113,6 +134,34 @@ export type QueryUserArgs = {
   id: Scalars['String'];
 };
 
+
+export type QueryUserRecipesByRecipeArgs = {
+  recipeID: Scalars['Float'];
+};
+
+
+export type QueryUserRecipesByRecipeAndIsSavedArgs = {
+  isSaved: Scalars['Boolean'];
+  recipeID: Scalars['Float'];
+};
+
+
+export type QueryUserRecipesByUserArgs = {
+  userID: Scalars['String'];
+};
+
+
+export type QueryUserRecipesByUserAndIsSavedArgs = {
+  isSaved: Scalars['Boolean'];
+  userID: Scalars['String'];
+};
+
+
+export type QueryUserRecipesByUserAndRecipeArgs = {
+  recipeID: Scalars['Float'];
+  userID: Scalars['String'];
+};
+
 export type Ratings = {
   __typename?: 'Ratings';
   rating: Scalars['Float'];
@@ -142,6 +191,13 @@ export type Recipes = {
   total_time: Scalars['Float'];
   url: Scalars['String'];
   vote_count: Scalars['Float'];
+};
+
+export type UserRecipes = {
+  __typename?: 'UserRecipes';
+  is_saved: Scalars['Boolean'];
+  recipe_index: Scalars['Float'];
+  user_id: Scalars['String'];
 };
 
 export type Users = {
@@ -187,6 +243,23 @@ export type CreateRecipeMutationVariables = Exact<{
 
 
 export type CreateRecipeMutation = { __typename?: 'Mutation', createRecipe: { __typename?: 'Recipes', recipe_title: string, url: string, record_health: string, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number } };
+
+export type CreateUserRecipesMutationVariables = Exact<{
+  user_id: Scalars['String'];
+  recipe_index: Scalars['Float'];
+  is_saved: Scalars['Boolean'];
+}>;
+
+
+export type CreateUserRecipesMutation = { __typename?: 'Mutation', createUserRecipes: { __typename?: 'UserRecipes', user_id: string, recipe_index: number, is_saved: boolean } };
+
+export type RemoveUserRecipesMutationVariables = Exact<{
+  user_id: Scalars['String'];
+  recipe_index: Scalars['Float'];
+}>;
+
+
+export type RemoveUserRecipesMutation = { __typename?: 'Mutation', removeUserRecipes: { __typename?: 'UserRecipes', user_id: string, recipe_index: number, is_saved: boolean } };
 
 export type CreateUserMutationVariables = Exact<{
   id: Scalars['String'];
@@ -388,6 +461,83 @@ export function useCreateRecipeMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateRecipeMutationHookResult = ReturnType<typeof useCreateRecipeMutation>;
 export type CreateRecipeMutationResult = Apollo.MutationResult<CreateRecipeMutation>;
 export type CreateRecipeMutationOptions = Apollo.BaseMutationOptions<CreateRecipeMutation, CreateRecipeMutationVariables>;
+export const CreateUserRecipesDocument = gql`
+    mutation createUserRecipes($user_id: String!, $recipe_index: Float!, $is_saved: Boolean!) {
+  createUserRecipes(
+    user_id: $user_id
+    recipe_index: $recipe_index
+    is_saved: $is_saved
+  ) {
+    user_id
+    recipe_index
+    is_saved
+  }
+}
+    `;
+export type CreateUserRecipesMutationFn = Apollo.MutationFunction<CreateUserRecipesMutation, CreateUserRecipesMutationVariables>;
+
+/**
+ * __useCreateUserRecipesMutation__
+ *
+ * To run a mutation, you first call `useCreateUserRecipesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserRecipesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserRecipesMutation, { data, loading, error }] = useCreateUserRecipesMutation({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      recipe_index: // value for 'recipe_index'
+ *      is_saved: // value for 'is_saved'
+ *   },
+ * });
+ */
+export function useCreateUserRecipesMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserRecipesMutation, CreateUserRecipesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserRecipesMutation, CreateUserRecipesMutationVariables>(CreateUserRecipesDocument, options);
+      }
+export type CreateUserRecipesMutationHookResult = ReturnType<typeof useCreateUserRecipesMutation>;
+export type CreateUserRecipesMutationResult = Apollo.MutationResult<CreateUserRecipesMutation>;
+export type CreateUserRecipesMutationOptions = Apollo.BaseMutationOptions<CreateUserRecipesMutation, CreateUserRecipesMutationVariables>;
+export const RemoveUserRecipesDocument = gql`
+    mutation RemoveUserRecipes($user_id: String!, $recipe_index: Float!) {
+  removeUserRecipes(userID: $user_id, recipeID: $recipe_index) {
+    user_id
+    recipe_index
+    is_saved
+  }
+}
+    `;
+export type RemoveUserRecipesMutationFn = Apollo.MutationFunction<RemoveUserRecipesMutation, RemoveUserRecipesMutationVariables>;
+
+/**
+ * __useRemoveUserRecipesMutation__
+ *
+ * To run a mutation, you first call `useRemoveUserRecipesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveUserRecipesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeUserRecipesMutation, { data, loading, error }] = useRemoveUserRecipesMutation({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      recipe_index: // value for 'recipe_index'
+ *   },
+ * });
+ */
+export function useRemoveUserRecipesMutation(baseOptions?: Apollo.MutationHookOptions<RemoveUserRecipesMutation, RemoveUserRecipesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveUserRecipesMutation, RemoveUserRecipesMutationVariables>(RemoveUserRecipesDocument, options);
+      }
+export type RemoveUserRecipesMutationHookResult = ReturnType<typeof useRemoveUserRecipesMutation>;
+export type RemoveUserRecipesMutationResult = Apollo.MutationResult<RemoveUserRecipesMutation>;
+export type RemoveUserRecipesMutationOptions = Apollo.BaseMutationOptions<RemoveUserRecipesMutation, RemoveUserRecipesMutationVariables>;
 export const CreateUserDocument = gql`
     mutation createUser($id: String!, $firstname: String!, $lastname: String!, $email: String!, $phone: String!, $gender: String!, $birthdate: DateTime!, $country: String!) {
   createUser(
