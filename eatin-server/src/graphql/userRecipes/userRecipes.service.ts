@@ -1,36 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserRecipes } from './userRecipes.model';
-import { userRecipesDTO } from './userRecipes.dto';
+import { Userrecipes } from './userRecipes.model';
+import { UserrecipeDTO } from './userRecipes.dto';
 
 @Injectable()
-export class UserRecipesService {
+export class UserrecipesService {
   constructor(
-    @InjectRepository(UserRecipes)
-    private userRecipesRepository: Repository<UserRecipes>,
+    @InjectRepository(Userrecipes)
+    private userRecipesRepository: Repository<Userrecipes>,
   ) {}
 
-  create(details: userRecipesDTO): Promise<UserRecipes> {
+  create(details: UserrecipeDTO): Promise<Userrecipes> {
     return this.userRecipesRepository.save(details);
   }
 
-  findAll(): Promise<UserRecipes[]> {
+  findAll(): Promise<Userrecipes[]> {
     return this.userRecipesRepository.find();
   }
 
-  findByRecipe(recipeID: number): Promise<UserRecipes[]> {
+  findByRecipe(recipeID: number): Promise<Userrecipes[]> {
     return this.userRecipesRepository.findBy({ recipe_index: recipeID });
   }
 
-  findByUser(userID: string): Promise<UserRecipes[]> {
+  findByUser(userID: string): Promise<Userrecipes[]> {
     return this.userRecipesRepository.findBy({ user_id: userID });
   }
 
   findByUserAndIsSaved(
     userID: string,
     isSaved: boolean,
-  ): Promise<UserRecipes[]> {
+  ): Promise<Userrecipes[]> {
     return this.userRecipesRepository.findBy({
       user_id: userID,
       is_saved: isSaved,
@@ -40,14 +40,14 @@ export class UserRecipesService {
   findByRecipeAndIsSaved(
     recipeID: number,
     isSaved: boolean,
-  ): Promise<UserRecipes[]> {
+  ): Promise<Userrecipes[]> {
     return this.userRecipesRepository.findBy({
       recipe_index: recipeID,
       is_saved: isSaved,
     });
   }
 
-  findByUserAndRecipe(userID: string, recipeID: number): Promise<UserRecipes> {
+  findByUserAndRecipe(userID: string, recipeID: number): Promise<Userrecipes> {
     return this.userRecipesRepository.findOne({
       where: { user_id: userID, recipe_index: recipeID },
     });
@@ -57,7 +57,7 @@ export class UserRecipesService {
     userID: string,
     recipeID: number,
     isSaved: boolean,
-  ): Promise<UserRecipes> {
+  ): Promise<Userrecipes> {
     return this.userRecipesRepository.findOne({
       where: { user_id: userID, recipe_index: recipeID, is_saved: isSaved },
     });
@@ -66,9 +66,12 @@ export class UserRecipesService {
   async removeUserRecipe(
     userID: string,
     recipeID: number,
-  ): Promise<UserRecipes> {
+  ): Promise<Userrecipes> {
     const item = await this.findByUserAndRecipe(userID, recipeID);
-    const result = await this.userRecipesRepository.delete(item);
-    return result && result.affected !== 0 ? item : null;
+    if (item) {
+      await this.userRecipesRepository.delete(item);
+      return item;
+    }
+    return null;
   }
 }

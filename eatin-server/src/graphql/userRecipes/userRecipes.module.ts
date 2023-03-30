@@ -1,12 +1,12 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
-import { UserRecipes } from './userRecipes.model';
-import { UserRecipesService } from './userRecipes.service';
-import { UserRecipeResolver } from './userRecipes.resolver';
+import { Userrecipes } from './userRecipes.model';
+import { UserrecipesService } from './userRecipes.service';
+import { UserrecipeResolver } from './userRecipes.resolver';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserRecipes])],
-  providers: [UserRecipesService, UserRecipeResolver],
-  exports: [UserRecipesService],
+  imports: [TypeOrmModule.forFeature([Userrecipes])],
+  providers: [UserrecipesService, UserrecipeResolver],
+  exports: [UserrecipesService],
 })
-export class UserRecipesModule {}
+export class UserrecipesModule {}

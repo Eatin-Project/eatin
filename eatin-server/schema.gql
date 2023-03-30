@@ -47,7 +47,7 @@ type Ratings {
   rating: Float!
 }
 
-type UserRecipes {
+type Userrecipes {
   user_id: String!
   recipe_index: Float!
   is_saved: Boolean!
@@ -64,18 +64,18 @@ type Query {
   ratingsByUser(id: String!): [Ratings!]!
   ratingByUserAndRecipe(id: String!, index: Float!): Ratings!
   ratings: [Ratings!]!
-  userRecipesByRecipe(recipeID: Float!): [UserRecipes!]!
-  userRecipesByUser(userID: String!): [UserRecipes!]!
-  userRecipesByUserAndIsSaved(userID: String!, isSaved: Boolean!): [UserRecipes!]!
-  userRecipesByRecipeAndIsSaved(recipeID: Float!, isSaved: Boolean!): [UserRecipes!]!
-  userRecipesByUserAndRecipe(userID: String!, recipeID: Float!): UserRecipes!
-  userRecipes: [UserRecipes!]!
+  userRecipesByRecipe(recipeID: Float!): [Userrecipes!]!
+  userRecipesByUser(userID: String!): [Userrecipes!]!
+  userRecipesByUserAndIsSaved(userID: String!, isSaved: Boolean!): [Userrecipes!]!
+  userRecipesByRecipeAndIsSaved(recipeID: Float!, isSaved: Boolean!): [Userrecipes!]!
+  userRecipesByUserAndRecipe(userID: String!, recipeID: Float!): Userrecipes!
+  userRecipes: [Userrecipes!]!
 }
 
 type Mutation {
   createUser(id: String!, firstname: String!, lastname: String!, email: String!, phone: String!, gender: String!, birthdate: DateTime!, country: String!): Users!
   createRecipe(recipe_title: String!, url: String!, record_health: String!, description: String!, cuisine: String!, course: String!, diet: String!, prep_time: Float!, cook_time: Float!, ingredients: String!, instructions: String!, author: String!, tags: String!, category: String!, image: String!, difficulty: String!, total_time: Float!): Recipes!
   createRating(user_id: String!, recipe_index: Float!, rating: Float!): Ratings!
-  removeUserRecipes(userID: String!, recipeID: Float!): UserRecipes!
-  createUserRecipes(user_id: String!, recipe_index: Float!, is_saved: Boolean!): UserRecipes!
+  removeUserRecipes(userID: String!, recipeID: Float!): Userrecipes!
+  createUserRecipes(user_id: String!, recipe_index: Float!, is_saved: Boolean!): Userrecipes!
 }

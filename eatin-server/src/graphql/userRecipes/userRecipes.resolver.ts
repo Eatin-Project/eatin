@@ -1,74 +1,74 @@
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
-import { UserRecipes } from './userRecipes.model';
-import { UserRecipesService } from './userRecipes.service';
+import { Userrecipes } from './userRecipes.model';
+import { UserrecipesService } from './userRecipes.service';
 
-@Resolver((of) => UserRecipes)
-export class UserRecipeResolver {
+@Resolver((of) => Userrecipes)
+export class UserrecipeResolver {
   constructor(
-    @Inject(UserRecipesService) private userRecipesService: UserRecipesService,
+    @Inject(UserrecipesService) private userRecipesService: UserrecipesService,
   ) {}
 
-  @Query((returns) => [UserRecipes])
+  @Query((returns) => [Userrecipes])
   async userRecipesByRecipe(
     @Args('recipeID') recipeID: number,
-  ): Promise<UserRecipes[]> {
+  ): Promise<Userrecipes[]> {
     return await this.userRecipesService.findByRecipe(recipeID);
   }
 
-  @Query((returns) => [UserRecipes])
+  @Query((returns) => [Userrecipes])
   async userRecipesByUser(
     @Args('userID') userID: string,
-  ): Promise<UserRecipes[]> {
+  ): Promise<Userrecipes[]> {
     return await this.userRecipesService.findByUser(userID);
   }
 
-  @Query((returns) => [UserRecipes])
+  @Query((returns) => [Userrecipes])
   async userRecipesByUserAndIsSaved(
     @Args('userID') userID: string,
     @Args('isSaved') isSaved: boolean,
-  ): Promise<UserRecipes[]> {
+  ): Promise<Userrecipes[]> {
     return await this.userRecipesService.findByUserAndIsSaved(userID, isSaved);
   }
 
-  @Query((returns) => [UserRecipes])
+  @Query((returns) => [Userrecipes])
   async userRecipesByRecipeAndIsSaved(
     @Args('recipeID') recipeID: number,
     @Args('isSaved') isSaved: boolean,
-  ): Promise<UserRecipes[]> {
+  ): Promise<Userrecipes[]> {
     return await this.userRecipesService.findByRecipeAndIsSaved(
       recipeID,
       isSaved,
     );
   }
 
-  @Query((returns) => UserRecipes)
+  @Query((returns) => Userrecipes)
   async userRecipesByUserAndRecipe(
     @Args('userID') userID: string,
     @Args('recipeID') recipeID: number,
-  ): Promise<UserRecipes> {
+  ): Promise<Userrecipes> {
     return await this.userRecipesService.findByUserAndRecipe(userID, recipeID);
   }
 
-  @Query((returns) => [UserRecipes])
-  async userRecipes(): Promise<UserRecipes[]> {
+  @Query((returns) => [Userrecipes])
+  async userRecipes(): Promise<Userrecipes[]> {
     return await this.userRecipesService.findAll();
   }
 
-  @Mutation((returns) => UserRecipes)
+  @Mutation((returns) => Userrecipes)
   async removeUserRecipes(
     @Args('userID') userID: string,
     @Args('recipeID') recipeID: number,
-  ): Promise<UserRecipes> {
+  ): Promise<Userrecipes> {
     return await this.userRecipesService.removeUserRecipe(userID, recipeID);
   }
 
-  @Mutation((returns) => UserRecipes)
+  @Mutation((returns) => Userrecipes)
   async createUserRecipes(
     @Args('user_id') user_id: string,
     @Args('recipe_index') recipe_index: number,
     @Args('is_saved') is_saved: boolean,
-  ): Promise<UserRecipes> {
+  ): Promise<Userrecipes> {
     return await this.userRecipesService.create({
       user_id,
       recipe_index,

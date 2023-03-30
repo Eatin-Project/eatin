@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { RecipesModule } from './recipes/recipes.module';
 import { RatingsModule } from './ratings/ratings.module';
-import { UserRecipesModule } from './userRecipes/userRecipes.module';
+import { UserrecipesModule } from './userRecipes/userRecipes.module';
 
 @Module({
-  imports: [UsersModule, RecipesModule, RatingsModule, UserRecipesModule],
+  imports: [UsersModule, RecipesModule, RatingsModule, UserrecipesModule],
   providers: [],
   exports: [],
 })
