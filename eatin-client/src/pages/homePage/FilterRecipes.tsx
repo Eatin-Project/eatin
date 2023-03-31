@@ -1,15 +1,15 @@
 import "./FilterRecipes.css";
 
-import {MenuItem, TextField} from "@mui/material";
-import {FC, useState} from "react";
-import {GiTrashCan} from "react-icons/gi";
-import {FilterOptions} from "../../components/types";
+import { MenuItem, TextField } from "@mui/material";
+import { FC, useState } from "react";
+import { GiTrashCan } from "react-icons/gi";
+import { FilterOptions } from "../../components/types";
 
 interface Props {
     filterOptions: FilterOptions[];
 }
 
-export const FilterRecipes: FC<Props> = ({filterOptions}) => {
+export const FilterRecipes: FC<Props> = ({ filterOptions }) => {
     const [filterValues, setFilterValues] = useState<string[]>([]);
 
     const setNewValues = (optionIndex: number, value: string) => {
@@ -26,9 +26,14 @@ export const FilterRecipes: FC<Props> = ({filterOptions}) => {
     return (
         <div className="filter-recipes">
             {filterOptions.map((filterOption, optionIndex) => (
-                <div className="filter-dropdown">
-                    {!!filterValues[optionIndex] &&
-                        <GiTrashCan size="1.5rem" className="trash-icon" onClick={() => onClear(optionIndex)}/>}
+                <div className="filter-dropdown" key={optionIndex}>
+                    {!!filterValues[optionIndex] && (
+                        <GiTrashCan
+                            size="1.5rem"
+                            className="trash-icon"
+                            onClick={() => onClear(optionIndex)}
+                        />
+                    )}
                     <TextField
                         key={`${optionIndex}-${filterOption.name}`}
                         label={filterOption.name}

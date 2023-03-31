@@ -31,8 +31,8 @@ export const GET_RATINGS_BY_RECIPE_INDEX = gql`
 `;
 
 export const GET_RATINGS_BY_RECIPE_AND_USER = gql`
-    query getRatingsByRecipeAndUser($id: String!, $index: Float!) {
-        ratingsByUserAndRecipe(id: $id, index: $index) {
+    query getRatingByRecipeAndUser($id: String!, $index: Float!) {
+        ratingByUserAndRecipe(id: $id, index: $index) {
             user_id
             recipe_index
             rating

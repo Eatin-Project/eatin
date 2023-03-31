@@ -2,7 +2,6 @@ import {Resolver, Query, Args, Mutation} from '@nestjs/graphql';
 import {Inject} from '@nestjs/common';
 import {Ratings} from "./ratings.model";
 import {RatingsService} from "./ratings.service";
-import {InsertResult} from "typeorm";
 
 @Resolver(of => Ratings)
 export class RatingsResolver {
@@ -10,19 +9,19 @@ export class RatingsResolver {
         @Inject(RatingsService) private ratingsService: RatingsService) {
     }
 
-    @Query(returns => Ratings)
+    @Query(returns => [Ratings])
     async ratingsByRecipe(@Args('index') index: number): Promise<Ratings[]> {
         return await this.ratingsService.findByRecipe(index);
     }
 
-    @Query(returns => Ratings)
+    @Query(returns => [Ratings])
     async ratingsByUser(@Args('id') id: string): Promise<Ratings[]> {
         return await this.ratingsService.findByUser(id);
     }
 
     @Query(returns => Ratings)
-    async ratingsByUserAndRecipe(@Args('id') id: string,
-                                 @Args('index') index: number): Promise<Ratings[]> {
+    async ratingByUserAndRecipe(@Args('id') id: string,
+                                @Args('index') index: number): Promise<Ratings> {
         return await this.ratingsService.findByUserAndRecipe(id, index);
     }
 

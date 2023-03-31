@@ -134,7 +134,7 @@ export const HomePage: FC = () => {
 
     return (
         <div>
-            <AsyncDataLoaderWrapper loading={recommendedRecipesLoading} text="loading recipes...">
+            <AsyncDataLoaderWrapper loading={recommendedRecipesLoading} text="Finding the perfect recipes for you...">
                 <div className="header">
                     {<FilterRecipes filterOptions={currentFilterOptions} />}
                     <div className="search-manually">

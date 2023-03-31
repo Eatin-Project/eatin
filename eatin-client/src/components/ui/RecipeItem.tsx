@@ -16,7 +16,12 @@ export const RecipeItem: FC<Props> = ({ recipe }) => {
     };
     return (
         <div className="recipe-item" onClick={navigateToRecipePage}>
-            <RecipeItemOverlay rating={recipe.rating} vote_count={recipe.vote_count} />
+            <RecipeItemOverlay
+                rating={recipe.rating}
+                vote_count={recipe.vote_count}
+                index={recipe.index}
+                recipe_title={recipe.recipe_title}
+            />
             <img src={recipe.image}></img>
         </div>
     );

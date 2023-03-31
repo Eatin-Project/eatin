@@ -1,6 +1,15 @@
 .genres-page {
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-  overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.Toastify__toast-theme--light {
+    background: #fd7269 !important;
+    color: black !important;
+}
+
+.Toastify__progress-bar {
+    background-color: white !important;
 }

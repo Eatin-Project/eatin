@@ -54,9 +54,9 @@ type Query {
   recipes: [Recipes!]!
   topRecipesByCategory(category: String!): [Recipes!]!
   topRecipesByCuisine(cuisine: String!): [Recipes!]!
-  ratingsByRecipe(index: Float!): Ratings!
-  ratingsByUser(id: String!): Ratings!
-  ratingsByUserAndRecipe(id: String!, index: Float!): Ratings!
+  ratingsByRecipe(index: Float!): [Ratings!]!
+  ratingsByUser(id: String!): [Ratings!]!
+  ratingByUserAndRecipe(id: String!, index: Float!): Ratings!
   ratings: [Ratings!]!
 }
 

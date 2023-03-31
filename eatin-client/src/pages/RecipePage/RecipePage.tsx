@@ -1,28 +1,36 @@
 import "./RecipePage.css";
 
-import { Rating } from "@mui/material";
-import { FC, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useCreateRatingMutation, useGetRecipeByIdQuery } from "../../generated/graphql";
-import { BookmarkButton } from "../../components/ui/BookmarkButton";
-import { Comment } from "../../components/ui/Comment";
-import { RecipeImageCarousel } from "./RecipeImageCarousel";
-import { User } from "../../components/ui/User";
+import {Rating} from "@mui/material";
+import {FC, useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {
+    useGetRecipeByIdQuery,
+    useCreateRatingMutation,
+    useGetRatingByRecipeAndUserQuery
+} from "../../generated/graphql";
+import {BookmarkButton} from "../../components/ui/BookmarkButton";
+import {Comment} from "../../components/ui/Comment";
+import {RecipeImageCarousel} from "./RecipeImageCarousel";
+import {User} from "../../components/ui/User";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 import { useAuth } from "../../context/auth-context";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
-    const [rating, setRating] = useState<number | null>(0);
     const [isSaved, setIsSaved] = useState(false);
-    const { currentUser } = useAuth();
-    const { data, loading } = useGetRecipeByIdQuery({ variables: { index: Number(id) } });
-    const recipe = data?.recipe;
+    const [rating, setRating] = useState<number | null>(0)
+    const {currentUser} = useAuth();
+    const {data: ratingData, loading: ratingLoading} = useGetRatingByRecipeAndUserQuery({variables: {id: currentUser ? currentUser?.uid: '', index: Number(id)}});
+    const {data: recipeData, loading : recipeLoading} = useGetRecipeByIdQuery({ variables: { index: Number(id) } });
+    const recipe = recipeData?.recipe;
     const [createRating] = useCreateRatingMutation();
 
-    if (loading) return <AsyncDataLoaderWrapper loading text="loading recipe page..." />;
-    if (!recipe) return <h2>Recipe does not exist :)</h2>;
+    useEffect(() => {
+        setRating(ratingData ? ratingData.ratingByUserAndRecipe.rating : 0);
+    }, [ratingData]);
 
+    if (recipeLoading || ratingLoading) return <AsyncDataLoaderWrapper loading text="loading recipe page..." />;
+    if (!recipe) return <h2>Recipe does not exist :)</h2>;
     const {
         author,
         image,

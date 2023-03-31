@@ -1,14 +1,28 @@
 import "./RecipeItemOverlay.css";
 
 import { Button, Rating } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
+import { ToastContainer, toast, Id, Zoom } from "react-toastify";
 import { Recipe } from "../types";
 import CancelIcon from "@mui/icons-material/Cancel";
 
-type Props = Pick<Recipe, "rating" | "vote_count">;
+type Props = Pick<Recipe, "rating" | "vote_count" | "index" | "recipe_title">;
 
-export const RecipeItemOverlay: FC<Props> = ({ rating, vote_count }) => {
+export const RecipeItemOverlay: FC<Props> = ({ rating, vote_count, index, recipe_title }) => {
     const [userRating, setUserRating] = useState<number | null>(null);
+    const currentSavedToastID = useRef<Id | undefined>(undefined);
+
+    const changeRecipeSavedState = (recipeID: number, recipeName: string, isSaved: boolean) => {
+        if (currentSavedToastID) {
+            toast.dismiss(currentSavedToastID.current);
+        }
+
+        if (isSaved) {
+            currentSavedToastID.current = toast(`${recipeName}, was saved!`);
+        } else {
+            currentSavedToastID.current = toast(`${recipeName}, was removed...`);
+        }
+    };
 
     return (
         <div
@@ -21,6 +35,13 @@ export const RecipeItemOverlay: FC<Props> = ({ rating, vote_count }) => {
                 <Button className="delete-from-list" size="large">
                     <CancelIcon className="delete-from-list-icon" />
                 </Button>
+                <Rating
+                    className="is-saved"
+                    max={1}
+                    onChange={(e, value) =>
+                        changeRecipeSavedState?.(index, recipe_title, value ? true : false)
+                    }
+                />
             </div>
             <div className="item-info">
                 <Rating
