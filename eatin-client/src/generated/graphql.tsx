@@ -328,6 +328,49 @@ export type GetTopRatedRecipesByCuisineQueryVariables = Exact<{
 
 export type GetTopRatedRecipesByCuisineQuery = { __typename?: 'Query', topRecipesByCuisine: Array<{ __typename?: 'Recipes', index: number, recipe_title: string, url: string, record_health: string, vote_count: number, rating: number, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number }> };
 
+export type GetAllUserrecipesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllUserrecipesQuery = { __typename?: 'Query', userRecipes: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean }> };
+
+export type GetUserrecipesByUserIdQueryVariables = Exact<{
+  userID: Scalars['String'];
+}>;
+
+
+export type GetUserrecipesByUserIdQuery = { __typename?: 'Query', userRecipesByUser: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean }> };
+
+export type GetUserrecipesByRecipeIndexQueryVariables = Exact<{
+  recipeID: Scalars['Float'];
+}>;
+
+
+export type GetUserrecipesByRecipeIndexQuery = { __typename?: 'Query', userRecipesByRecipe: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean }> };
+
+export type GetUserrecipesByRecipeIndexAndIsSavedQueryVariables = Exact<{
+  recipeID: Scalars['Float'];
+  isSaved: Scalars['Boolean'];
+}>;
+
+
+export type GetUserrecipesByRecipeIndexAndIsSavedQuery = { __typename?: 'Query', userRecipesByRecipeAndIsSaved: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean }> };
+
+export type GetUserrecipesByUserAndIsSavedQueryVariables = Exact<{
+  userID: Scalars['String'];
+  isSaved: Scalars['Boolean'];
+}>;
+
+
+export type GetUserrecipesByUserAndIsSavedQuery = { __typename?: 'Query', userRecipesByUserAndIsSaved: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean }> };
+
+export type GetUserrecipesByRecipeAndUserQueryVariables = Exact<{
+  userID: Scalars['String'];
+  recipeID: Scalars['Float'];
+}>;
+
+
+export type GetUserrecipesByRecipeAndUserQuery = { __typename?: 'Query', userRecipesByUserAndRecipe: { __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean } };
+
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -957,6 +1000,230 @@ export function useGetTopRatedRecipesByCuisineLazyQuery(baseOptions?: Apollo.Laz
 export type GetTopRatedRecipesByCuisineQueryHookResult = ReturnType<typeof useGetTopRatedRecipesByCuisineQuery>;
 export type GetTopRatedRecipesByCuisineLazyQueryHookResult = ReturnType<typeof useGetTopRatedRecipesByCuisineLazyQuery>;
 export type GetTopRatedRecipesByCuisineQueryResult = Apollo.QueryResult<GetTopRatedRecipesByCuisineQuery, GetTopRatedRecipesByCuisineQueryVariables>;
+export const GetAllUserrecipesDocument = gql`
+    query getAllUserrecipes {
+  userRecipes {
+    user_id
+    recipe_index
+    is_saved
+  }
+}
+    `;
+
+/**
+ * __useGetAllUserrecipesQuery__
+ *
+ * To run a query within a React component, call `useGetAllUserrecipesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllUserrecipesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllUserrecipesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllUserrecipesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllUserrecipesQuery, GetAllUserrecipesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllUserrecipesQuery, GetAllUserrecipesQueryVariables>(GetAllUserrecipesDocument, options);
+      }
+export function useGetAllUserrecipesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllUserrecipesQuery, GetAllUserrecipesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllUserrecipesQuery, GetAllUserrecipesQueryVariables>(GetAllUserrecipesDocument, options);
+        }
+export type GetAllUserrecipesQueryHookResult = ReturnType<typeof useGetAllUserrecipesQuery>;
+export type GetAllUserrecipesLazyQueryHookResult = ReturnType<typeof useGetAllUserrecipesLazyQuery>;
+export type GetAllUserrecipesQueryResult = Apollo.QueryResult<GetAllUserrecipesQuery, GetAllUserrecipesQueryVariables>;
+export const GetUserrecipesByUserIdDocument = gql`
+    query getUserrecipesByUserId($userID: String!) {
+  userRecipesByUser(userID: $userID) {
+    user_id
+    recipe_index
+    is_saved
+  }
+}
+    `;
+
+/**
+ * __useGetUserrecipesByUserIdQuery__
+ *
+ * To run a query within a React component, call `useGetUserrecipesByUserIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserrecipesByUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserrecipesByUserIdQuery({
+ *   variables: {
+ *      userID: // value for 'userID'
+ *   },
+ * });
+ */
+export function useGetUserrecipesByUserIdQuery(baseOptions: Apollo.QueryHookOptions<GetUserrecipesByUserIdQuery, GetUserrecipesByUserIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserrecipesByUserIdQuery, GetUserrecipesByUserIdQueryVariables>(GetUserrecipesByUserIdDocument, options);
+      }
+export function useGetUserrecipesByUserIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserrecipesByUserIdQuery, GetUserrecipesByUserIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserrecipesByUserIdQuery, GetUserrecipesByUserIdQueryVariables>(GetUserrecipesByUserIdDocument, options);
+        }
+export type GetUserrecipesByUserIdQueryHookResult = ReturnType<typeof useGetUserrecipesByUserIdQuery>;
+export type GetUserrecipesByUserIdLazyQueryHookResult = ReturnType<typeof useGetUserrecipesByUserIdLazyQuery>;
+export type GetUserrecipesByUserIdQueryResult = Apollo.QueryResult<GetUserrecipesByUserIdQuery, GetUserrecipesByUserIdQueryVariables>;
+export const GetUserrecipesByRecipeIndexDocument = gql`
+    query getUserrecipesByRecipeIndex($recipeID: Float!) {
+  userRecipesByRecipe(recipeID: $recipeID) {
+    user_id
+    recipe_index
+    is_saved
+  }
+}
+    `;
+
+/**
+ * __useGetUserrecipesByRecipeIndexQuery__
+ *
+ * To run a query within a React component, call `useGetUserrecipesByRecipeIndexQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserrecipesByRecipeIndexQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserrecipesByRecipeIndexQuery({
+ *   variables: {
+ *      recipeID: // value for 'recipeID'
+ *   },
+ * });
+ */
+export function useGetUserrecipesByRecipeIndexQuery(baseOptions: Apollo.QueryHookOptions<GetUserrecipesByRecipeIndexQuery, GetUserrecipesByRecipeIndexQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserrecipesByRecipeIndexQuery, GetUserrecipesByRecipeIndexQueryVariables>(GetUserrecipesByRecipeIndexDocument, options);
+      }
+export function useGetUserrecipesByRecipeIndexLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserrecipesByRecipeIndexQuery, GetUserrecipesByRecipeIndexQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserrecipesByRecipeIndexQuery, GetUserrecipesByRecipeIndexQueryVariables>(GetUserrecipesByRecipeIndexDocument, options);
+        }
+export type GetUserrecipesByRecipeIndexQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeIndexQuery>;
+export type GetUserrecipesByRecipeIndexLazyQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeIndexLazyQuery>;
+export type GetUserrecipesByRecipeIndexQueryResult = Apollo.QueryResult<GetUserrecipesByRecipeIndexQuery, GetUserrecipesByRecipeIndexQueryVariables>;
+export const GetUserrecipesByRecipeIndexAndIsSavedDocument = gql`
+    query getUserrecipesByRecipeIndexAndIsSaved($recipeID: Float!, $isSaved: Boolean!) {
+  userRecipesByRecipeAndIsSaved(recipeID: $recipeID, isSaved: $isSaved) {
+    user_id
+    recipe_index
+    is_saved
+  }
+}
+    `;
+
+/**
+ * __useGetUserrecipesByRecipeIndexAndIsSavedQuery__
+ *
+ * To run a query within a React component, call `useGetUserrecipesByRecipeIndexAndIsSavedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserrecipesByRecipeIndexAndIsSavedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserrecipesByRecipeIndexAndIsSavedQuery({
+ *   variables: {
+ *      recipeID: // value for 'recipeID'
+ *      isSaved: // value for 'isSaved'
+ *   },
+ * });
+ */
+export function useGetUserrecipesByRecipeIndexAndIsSavedQuery(baseOptions: Apollo.QueryHookOptions<GetUserrecipesByRecipeIndexAndIsSavedQuery, GetUserrecipesByRecipeIndexAndIsSavedQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserrecipesByRecipeIndexAndIsSavedQuery, GetUserrecipesByRecipeIndexAndIsSavedQueryVariables>(GetUserrecipesByRecipeIndexAndIsSavedDocument, options);
+      }
+export function useGetUserrecipesByRecipeIndexAndIsSavedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserrecipesByRecipeIndexAndIsSavedQuery, GetUserrecipesByRecipeIndexAndIsSavedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserrecipesByRecipeIndexAndIsSavedQuery, GetUserrecipesByRecipeIndexAndIsSavedQueryVariables>(GetUserrecipesByRecipeIndexAndIsSavedDocument, options);
+        }
+export type GetUserrecipesByRecipeIndexAndIsSavedQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeIndexAndIsSavedQuery>;
+export type GetUserrecipesByRecipeIndexAndIsSavedLazyQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeIndexAndIsSavedLazyQuery>;
+export type GetUserrecipesByRecipeIndexAndIsSavedQueryResult = Apollo.QueryResult<GetUserrecipesByRecipeIndexAndIsSavedQuery, GetUserrecipesByRecipeIndexAndIsSavedQueryVariables>;
+export const GetUserrecipesByUserAndIsSavedDocument = gql`
+    query getUserrecipesByUserAndIsSaved($userID: String!, $isSaved: Boolean!) {
+  userRecipesByUserAndIsSaved(userID: $userID, isSaved: $isSaved) {
+    user_id
+    recipe_index
+    is_saved
+  }
+}
+    `;
+
+/**
+ * __useGetUserrecipesByUserAndIsSavedQuery__
+ *
+ * To run a query within a React component, call `useGetUserrecipesByUserAndIsSavedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserrecipesByUserAndIsSavedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserrecipesByUserAndIsSavedQuery({
+ *   variables: {
+ *      userID: // value for 'userID'
+ *      isSaved: // value for 'isSaved'
+ *   },
+ * });
+ */
+export function useGetUserrecipesByUserAndIsSavedQuery(baseOptions: Apollo.QueryHookOptions<GetUserrecipesByUserAndIsSavedQuery, GetUserrecipesByUserAndIsSavedQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserrecipesByUserAndIsSavedQuery, GetUserrecipesByUserAndIsSavedQueryVariables>(GetUserrecipesByUserAndIsSavedDocument, options);
+      }
+export function useGetUserrecipesByUserAndIsSavedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserrecipesByUserAndIsSavedQuery, GetUserrecipesByUserAndIsSavedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserrecipesByUserAndIsSavedQuery, GetUserrecipesByUserAndIsSavedQueryVariables>(GetUserrecipesByUserAndIsSavedDocument, options);
+        }
+export type GetUserrecipesByUserAndIsSavedQueryHookResult = ReturnType<typeof useGetUserrecipesByUserAndIsSavedQuery>;
+export type GetUserrecipesByUserAndIsSavedLazyQueryHookResult = ReturnType<typeof useGetUserrecipesByUserAndIsSavedLazyQuery>;
+export type GetUserrecipesByUserAndIsSavedQueryResult = Apollo.QueryResult<GetUserrecipesByUserAndIsSavedQuery, GetUserrecipesByUserAndIsSavedQueryVariables>;
+export const GetUserrecipesByRecipeAndUserDocument = gql`
+    query getUserrecipesByRecipeAndUser($userID: String!, $recipeID: Float!) {
+  userRecipesByUserAndRecipe(userID: $userID, recipeID: $recipeID) {
+    user_id
+    recipe_index
+    is_saved
+  }
+}
+    `;
+
+/**
+ * __useGetUserrecipesByRecipeAndUserQuery__
+ *
+ * To run a query within a React component, call `useGetUserrecipesByRecipeAndUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserrecipesByRecipeAndUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserrecipesByRecipeAndUserQuery({
+ *   variables: {
+ *      userID: // value for 'userID'
+ *      recipeID: // value for 'recipeID'
+ *   },
+ * });
+ */
+export function useGetUserrecipesByRecipeAndUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserrecipesByRecipeAndUserQuery, GetUserrecipesByRecipeAndUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserrecipesByRecipeAndUserQuery, GetUserrecipesByRecipeAndUserQueryVariables>(GetUserrecipesByRecipeAndUserDocument, options);
+      }
+export function useGetUserrecipesByRecipeAndUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserrecipesByRecipeAndUserQuery, GetUserrecipesByRecipeAndUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserrecipesByRecipeAndUserQuery, GetUserrecipesByRecipeAndUserQueryVariables>(GetUserrecipesByRecipeAndUserDocument, options);
+        }
+export type GetUserrecipesByRecipeAndUserQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeAndUserQuery>;
+export type GetUserrecipesByRecipeAndUserLazyQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeAndUserLazyQuery>;
+export type GetUserrecipesByRecipeAndUserQueryResult = Apollo.QueryResult<GetUserrecipesByRecipeAndUserQuery, GetUserrecipesByRecipeAndUserQueryVariables>;
 export const GetAllUsersDocument = gql`
     query getAllUsers {
   users {

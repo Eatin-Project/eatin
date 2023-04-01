@@ -41,8 +41,8 @@ export const GET_USERRECIPES_BY_RECIPE_AND_IS_SAVED = gql`
 `;
 
 export const GET_USERRECIPES_BY_USER_AND_IS_SAVED = gql`
-    query getUserrecipesByUserAndIsSaved($userID: String!, isSaved: $isSaved) {
-        userRecipesByUserAndIsSaved($userID: String!, isSaved: $isSaved) {
+    query getUserrecipesByUserAndIsSaved($userID: String!, $isSaved: Boolean!) {
+        userRecipesByUserAndIsSaved(userID: $userID, isSaved: $isSaved) {
             user_id
             recipe_index
             is_saved
