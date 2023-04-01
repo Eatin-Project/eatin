@@ -7,7 +7,7 @@ export function useGetSections(userId: string) {
 
     useEffect(() => {
         setLoading(true);
-        fetch(`http://localhost:3001/graphql`, {
+        fetch(`http://localhost:8000/graphql`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
