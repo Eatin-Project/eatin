@@ -21,8 +21,8 @@ export type Mutation = {
   createRating: Ratings;
   createRecipe: Recipes;
   createUser: Users;
-  createUserRecipes: UserRecipes;
-  removeUserRecipes: UserRecipes;
+  createUserRecipes: Userrecipes;
+  removeUserRecipes: Userrecipes;
 };
 
 
@@ -89,12 +89,12 @@ export type Query = {
   topRecipesByCategory: Array<Recipes>;
   topRecipesByCuisine: Array<Recipes>;
   user: Users;
-  userRecipes: Array<UserRecipes>;
-  userRecipesByRecipe: Array<UserRecipes>;
-  userRecipesByRecipeAndIsSaved: Array<UserRecipes>;
-  userRecipesByUser: Array<UserRecipes>;
-  userRecipesByUserAndIsSaved: Array<UserRecipes>;
-  userRecipesByUserAndRecipe: UserRecipes;
+  userRecipes: Array<Userrecipes>;
+  userRecipesByRecipe: Array<Userrecipes>;
+  userRecipesByRecipeAndIsSaved: Array<Userrecipes>;
+  userRecipesByUser: Array<Userrecipes>;
+  userRecipesByUserAndIsSaved: Array<Userrecipes>;
+  userRecipesByUserAndRecipe: Userrecipes;
   users: Array<Users>;
 };
 
@@ -193,8 +193,8 @@ export type Recipes = {
   vote_count: Scalars['Float'];
 };
 
-export type UserRecipes = {
-  __typename?: 'UserRecipes';
+export type Userrecipes = {
+  __typename?: 'Userrecipes';
   is_saved: Scalars['Boolean'];
   recipe_index: Scalars['Float'];
   user_id: Scalars['String'];
@@ -251,7 +251,7 @@ export type CreateUserRecipesMutationVariables = Exact<{
 }>;
 
 
-export type CreateUserRecipesMutation = { __typename?: 'Mutation', createUserRecipes: { __typename?: 'UserRecipes', user_id: string, recipe_index: number, is_saved: boolean } };
+export type CreateUserRecipesMutation = { __typename?: 'Mutation', createUserRecipes: { __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean } };
 
 export type RemoveUserRecipesMutationVariables = Exact<{
   user_id: Scalars['String'];
@@ -259,7 +259,7 @@ export type RemoveUserRecipesMutationVariables = Exact<{
 }>;
 
 
-export type RemoveUserRecipesMutation = { __typename?: 'Mutation', removeUserRecipes: { __typename?: 'UserRecipes', user_id: string, recipe_index: number, is_saved: boolean } };
+export type RemoveUserRecipesMutation = { __typename?: 'Mutation', removeUserRecipes: { __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean } };
 
 export type CreateUserMutationVariables = Exact<{
   id: Scalars['String'];

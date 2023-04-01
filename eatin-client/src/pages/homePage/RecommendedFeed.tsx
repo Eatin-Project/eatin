@@ -6,48 +6,21 @@ import { FC, useRef, useState } from "react";
 import { toast, Id } from "react-toastify";
 import { CategoryCarousel } from "./CategoryCarousel";
 import { RecipesSection } from "../../components/types";
-import { ToastNotification } from "../../components/ui/ToastNotification";
 import {
-    useCreateUserRecipesMutation,
-    useRemoveUserRecipesMutation,
-} from "../../generated/graphql";
-import { useAuth } from "../../context/auth-context";
+    useDeleteUserRecipe,
+    useInsetNewUserRecipe,
+} from "../../components/functions/userRecipesFunc";
+import { ToastNotification } from "../../components/ui/ToastNotification";
 
 interface Props {
     currentRecipes: RecipesSection[];
 }
 
 export const RecommendedFeed: FC<Props> = ({ currentRecipes }) => {
-    const [createSavedUserRecipe] = useCreateUserRecipesMutation();
-    const [removedUserRecipe] = useRemoveUserRecipesMutation();
-    const { currentUser } = useAuth();
+    const { insertNewUserRecipe } = useInsetNewUserRecipe();
+    const { deleteNewUserRecipe } = useDeleteUserRecipe();
     const [isLoading, setIsLoading] = useState(false);
     const currentSavedToastID = useRef<Id | undefined>(undefined);
-
-    const insertNewUserRecipe = (recipeIndex: Number, isSaved: boolean) => {
-        if (currentUser?.uid) {
-            createSavedUserRecipe({
-                variables: {
-                    user_id: currentUser?.uid,
-                    recipe_index: Number(recipeIndex),
-                    is_saved: isSaved,
-                },
-            }).then((userRecipe) => console.log(userRecipe.data));
-        }
-    };
-
-    const removeUserRecipe = (recipeIndex: Number) => {
-        if (currentUser?.uid) {
-            removedUserRecipe({
-                variables: {
-                    user_id: currentUser?.uid,
-                    recipe_index: Number(recipeIndex),
-                },
-            }).then((userRecipe) =>
-                console.log(userRecipe ? userRecipe.data : "Nothing was removed"),
-            );
-        }
-    };
 
     const changeRecipeSavedState = (recipeID: number, recipeName: string, isSaved: boolean) => {
         if (currentSavedToastID) {
@@ -57,7 +30,7 @@ export const RecommendedFeed: FC<Props> = ({ currentRecipes }) => {
             insertNewUserRecipe(recipeID, true);
             currentSavedToastID.current = toast(`${recipeName}, was saved!`);
         } else {
-            removeUserRecipe(recipeID);
+            deleteNewUserRecipe(recipeID);
             currentSavedToastID.current = toast(`${recipeName}, was removed...`);
         }
     };
