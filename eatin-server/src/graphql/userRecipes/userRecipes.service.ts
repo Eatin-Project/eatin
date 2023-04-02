@@ -11,7 +11,15 @@ export class UserrecipesService {
     private userRecipesRepository: Repository<Userrecipes>,
   ) {}
 
-  create(details: UserrecipeDTO): Promise<Userrecipes> {
+  async create(details: UserrecipeDTO): Promise<Userrecipes> {
+    let previousRecipe = await this.findByUserAndRecipe(
+      details.user_id,
+      details.recipe_index,
+    );
+    if (!!previousRecipe) {
+      Object.assign(previousRecipe, { is_saved: details.is_saved });
+      return this.userRecipesRepository.save(previousRecipe);
+    }
     return this.userRecipesRepository.save(details);
   }
 
@@ -23,7 +31,11 @@ export class UserrecipesService {
     return this.userRecipesRepository.findBy({ recipe_index: recipeID });
   }
 
-  findByUser(userID: string): Promise<Userrecipes[]> {
+  async findByUser(userID: string): Promise<Userrecipes[]> {
+    console.log('boop', userID);
+    const a = await this.userRecipesRepository.findBy({ user_id: userID });
+    console.log('gggg', a);
+
     return this.userRecipesRepository.findBy({ user_id: userID });
   }
 

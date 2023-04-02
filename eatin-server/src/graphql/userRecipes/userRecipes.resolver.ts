@@ -2,6 +2,7 @@ import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { Userrecipes } from './userRecipes.model';
 import { UserrecipesService } from './userRecipes.service';
+import { log } from 'console';
 
 @Resolver((of) => Userrecipes)
 export class UserrecipeResolver {

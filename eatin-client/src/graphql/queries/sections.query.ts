@@ -46,26 +46,12 @@ export function useGetSections(userId: string) {
                 }),
             });
             const resJson = await res.json();
-            const newData = resJson.data.sections;
-            newData.map(async (item: { name: any; recipes: any }) => {
-                // const recipeRes =
-            });
-            setData(newData);
+            setData(resJson.data.sections);
             setLoading(false);
         } catch (e) {
             console.log(`Error has occured in sections query - ${e}`);
             setError(e);
         }
-        // .then((res) => res.json())
-        // .then((res) => {
-        //     const sectionData = res.data.sections;
-        //     sectionData.map((item: { name: any; recipes: any }) => {
-
-        //     });
-        //     setData(sectionData);
-        // })
-        // .catch((e) => setError(e))
-        // .finally(() => setLoading(false));
     }, []);
 
     useEffect(() => {

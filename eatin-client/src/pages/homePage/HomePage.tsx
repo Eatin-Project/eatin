@@ -70,11 +70,11 @@ export const HomePage: FC = () => {
     }
 
     function assertBigger(item: Recipe, field: string, filter: string) {
-        return item[field as keyof Recipe] >= Number(filter.slice(0, 1));
+        return Number(item[field as keyof Recipe]) >= Number(filter.slice(0, 1));
     }
 
     function assertSmaller(item: Recipe, field: string, filter: string) {
-        return item[field as keyof Recipe] <= Number(filter);
+        return Number(item[field as keyof Recipe]) <= Number(filter);
     }
 
     function filterRecipes(items: Recipe[]) {
@@ -138,7 +138,10 @@ export const HomePage: FC = () => {
 
     return (
         <div>
-            <AsyncDataLoaderWrapper loading={recommendedRecipesLoading} text="Finding the perfect recipes for you...">
+            <AsyncDataLoaderWrapper
+                loading={recommendedRecipesLoading}
+                text="Finding the perfect recipes for you..."
+            >
                 <div className="header">
                     {<FilterRecipes filterOptions={currentFilterOptions} />}
                     <div className="search-manually">
