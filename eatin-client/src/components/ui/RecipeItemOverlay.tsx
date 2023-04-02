@@ -30,10 +30,10 @@ export const RecipeItemOverlay: FC<Props> = ({ rating, vote_count, index, recipe
             onMouseEnter={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
         >
-            <div className="buttons-spread">
+            <div className="buttons-spread p-0">
                 <Rating className="is-saved" max={1} />
-                <Button className="delete-from-list" size="large">
-                    <CancelIcon className="delete-from-list-icon" />
+                <Button className="delete-from-list p-0" size="large">
+                    <CancelIcon className="delete-from-list-icon p-0" />
                 </Button>
                 <Rating
                     className="is-saved"

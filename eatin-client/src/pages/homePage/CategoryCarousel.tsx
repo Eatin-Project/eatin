@@ -10,10 +10,10 @@ import { RecipeItemOverlay } from "../../components/ui/RecipeItemOverlay";
 
 type Props = Omit<CarouselProps, "items"> & {
     items: Recipe[];
-    changeRecipeSavedState: (arg0: number, arg1: string, arg2: boolean) => void;
+    // changeRecipeSavedState: (arg0: number, arg1: string, arg2: boolean) => void;
 };
 
-export const CategoryCarousel: FC<Props> = ({ items, changeRecipeSavedState, ...props }) => {
+export const CategoryCarousel: FC<Props> = ({ items, ...props }) => {
     const navigate = useNavigate();
 
     const carouselItems: CarouselItem<Recipe>[] = items.map(
@@ -37,7 +37,6 @@ export const CategoryCarousel: FC<Props> = ({ items, changeRecipeSavedState, ...
                     vote_count={vote_count}
                     index={index}
                     recipe_title={recipe_title}
-                    changeRecipeSavedState={changeRecipeSavedState}
                 />
             ),
         }),

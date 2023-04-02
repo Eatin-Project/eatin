@@ -33,8 +33,7 @@ export interface RecipesSection {
 }
 
 export interface FilterWrapper {
-    field: string;
+    field: keyof Recipe;
     filter: string;
-    operator: (item: Recipe, field: string, filter: string) => void;
+    operator: (item: Recipe, field: keyof Recipe, filter: string) => void;
 }
-
