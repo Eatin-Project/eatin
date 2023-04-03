@@ -58,55 +58,53 @@ export function useDeleteUserRecipe() {
     return { data, deleteNewUserRecipe };
 }
 
-export function useAddIsSavedOrUploadToRecipeList() {
+export function useAddIsSavedOrUploadToRecipeList(recipesSection: RecipesSection[]) {
     const { currentUser } = useAuth();
-    const {
-        data: userRecipesData,
-        loading: userRecipesDataLoading,
-        error: error,
-    } = useGetUserrecipesByUserIdQuery({
+    const { data: userRecipesData } = useGetUserrecipesByUserIdQuery({
         variables: { userID: currentUser ? currentUser.uid : "" },
     });
-    const [newRecipes, setNewRecipes] = useState(null);
-    // const [isLoading, setIsLoading] = useState(false);
+    const [newRecipes, setNewRecipes] = useState<RecipesSection[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
-    // const isDataFetched = useRef(false);
-
-    const addIsSavedOrUploadToRecipeList = useCallback(
-        (recipesSection: RecipesSection[]) => {
-            // setIsLoading(true);
-            const newRecipes: any = recipesSection;
-            console.log("aaaa", userRecipesData?.userRecipesByUser, userRecipesDataLoading, error);
-            console.log("aaaabbb", currentUser ? currentUser.uid : "nonr");
-
-            newRecipes.map((section: RecipesSection) => {
-                section.recipes.map((recipe: any) => {
-                    recipe["is_uploaded"] = false;
-                    recipe["is_saved"] = false;
-                    if (userRecipesData) {
-                        const index = userRecipesData.userRecipesByUser.findIndex(
-                            (i) => i.recipe_index === recipe.index,
-                        );
-                        if (index !== -1) {
-                            if (userRecipesData.userRecipesByUser[index].is_saved)
-                                recipe["is_saved"] = true;
-                            else recipe["is_uploaded"] = true;
-                        }
+    const addIsSavedOrUploadToRecipeList = useCallback(() => {
+        setIsLoading(true);
+        recipesSection.forEach((section: RecipesSection) => {
+            section.recipes.forEach((recipe: Recipe) => {
+                recipe["is_uploaded"] = false;
+                recipe["is_saved"] = false;
+                if (userRecipesData) {
+                    const index = userRecipesData.userRecipesByUser.findIndex(
+                        (i) => i.recipe_index === recipe.index,
+                    );
+                    if (index !== -1) {
+                        if (userRecipesData.userRecipesByUser[index].is_saved)
+                            recipe["is_saved"] = true;
+                        else recipe["is_uploaded"] = true;
                     }
-                });
+                }
             });
-            console.log("ffdsfsdf", newRecipes);
+        });
+        setNewRecipes([...recipesSection]);
+        setIsLoading(false);
+    }, [userRecipesData, recipesSection]);
 
-            setNewRecipes(newRecipes);
-            // setIsLoading(false);
+    const updateSavedRecipe = useCallback(
+        (isSaved: boolean, recipe_index: number, section_name: string) => {
+            const updatedRecipes = newRecipes;
+            const sectionIndex: number = updatedRecipes.findIndex(
+                (val) => val.name === section_name,
+            );
+            const recipeInSectionIndex: number = updatedRecipes[sectionIndex].recipes.findIndex(
+                (val) => val.index === recipe_index,
+            );
+            updatedRecipes[sectionIndex].recipes[recipeInSectionIndex].is_saved = isSaved;
+            setNewRecipes([...updatedRecipes]);
         },
-        [userRecipesData, currentUser],
+        [newRecipes],
     );
 
-    // useEffect(() => {
-    //     if (!isDataFetched.current) addIsSavedOrUploadToRecipeList();
-    //     isDataFetched.current = true;
-    // }, [userRecipesData, currentUser]);
-
-    return { newRecipes, addIsSavedOrUploadToRecipeList };
+    useEffect(() => {
+        addIsSavedOrUploadToRecipeList();
+    }, [addIsSavedOrUploadToRecipeList]);
+    return { newRecipes, isLoading, updateSavedRecipe };
 }

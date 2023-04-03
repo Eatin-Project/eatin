@@ -12,7 +12,6 @@ import {
     useAddIsSavedOrUploadToRecipeList,
 } from "../../components/functions/userRecipesFunc";
 import { ToastNotification } from "../../components/ui/ToastNotification";
-import { useGetUserrecipesByUserIdQuery } from "../../generated/graphql";
 
 interface Props {
     currentRecipes: RecipesSection[];
@@ -21,18 +20,13 @@ interface Props {
 export const RecommendedFeed: FC<Props> = ({ currentRecipes }) => {
     const { insertNewUserRecipe } = useInsetNewUserRecipe();
     const { deleteNewUserRecipe } = useDeleteUserRecipe();
-    const { newRecipes: recipesData, addIsSavedOrUploadToRecipeList } =
-        useAddIsSavedOrUploadToRecipeList();
-    const [isLoading, setIsLoading] = useState(false);
+    const { newRecipes: recipesData, isLoading } =
+        useAddIsSavedOrUploadToRecipeList(currentRecipes);
     const currentSavedToastID = useRef<Id | undefined>(undefined);
 
     useEffect(() => {
-        // console.log(recipesData);
-        console.log("a", currentRecipes);
-        addIsSavedOrUploadToRecipeList(currentRecipes);
-        console.log("b", recipesData);
-        // console.log("maybe", userRecipesData, userRecipesDataLoading, error);
-    }, [currentRecipes]);
+        console.log(recipesData);
+    }, [recipesData]);
 
     const changeRecipeSavedState = (recipeID: number, recipeName: string, isSaved: boolean) => {
         if (currentSavedToastID) {
@@ -49,7 +43,7 @@ export const RecommendedFeed: FC<Props> = ({ currentRecipes }) => {
 
     return (
         <div className="genres-page">
-            {currentRecipes.map((recipe, itemIndex) => (
+            {(recipesData ? recipesData : []).map((recipe, itemIndex) => (
                 <CategoryCarousel
                     key={`${recipe.name}-${itemIndex}`}
                     title={recipe.name}

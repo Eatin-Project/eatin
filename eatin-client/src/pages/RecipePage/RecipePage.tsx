@@ -1,27 +1,31 @@
 import "./RecipePage.css";
 
-import {Rating} from "@mui/material";
-import {FC, useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import { Rating } from "@mui/material";
+import { FC, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
     useGetRecipeByIdQuery,
     useCreateRatingMutation,
-    useGetRatingByRecipeAndUserQuery
+    useGetRatingByRecipeAndUserQuery,
 } from "../../generated/graphql";
-import {BookmarkButton} from "../../components/ui/BookmarkButton";
-import {Comment} from "../../components/ui/Comment";
-import {RecipeImageCarousel} from "./RecipeImageCarousel";
-import {User} from "../../components/ui/User";
+import { BookmarkButton } from "../../components/ui/BookmarkButton";
+import { Comment } from "../../components/ui/Comment";
+import { RecipeImageCarousel } from "./RecipeImageCarousel";
+import { User } from "../../components/ui/User";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 import { useAuth } from "../../context/auth-context";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
     const [isSaved, setIsSaved] = useState(false);
-    const [rating, setRating] = useState<number | null>(0)
-    const {currentUser} = useAuth();
-    const {data: ratingData, loading: ratingLoading} = useGetRatingByRecipeAndUserQuery({variables: {id: currentUser ? currentUser?.uid: '', index: Number(id)}});
-    const {data: recipeData, loading : recipeLoading} = useGetRecipeByIdQuery({ variables: { index: Number(id) } });
+    const [rating, setRating] = useState<number | null>(0);
+    const { currentUser } = useAuth();
+    const { data: ratingData, loading: ratingLoading } = useGetRatingByRecipeAndUserQuery({
+        variables: { id: currentUser ? currentUser?.uid : "", index: Number(id) },
+    });
+    const { data: recipeData, loading: recipeLoading } = useGetRecipeByIdQuery({
+        variables: { index: Number(id) },
+    });
     const recipe = recipeData?.recipe;
     const [createRating] = useCreateRatingMutation();
 
@@ -29,7 +33,8 @@ export const RecipePage: FC = () => {
         setRating(ratingData ? ratingData.ratingByUserAndRecipe.rating : 0);
     }, [ratingData]);
 
-    if (recipeLoading || ratingLoading) return <AsyncDataLoaderWrapper loading text="loading recipe page..." />;
+    if (recipeLoading || ratingLoading)
+        return <AsyncDataLoaderWrapper loading text="loading recipe page..." />;
     if (!recipe) return <h2>Recipe does not exist :)</h2>;
     const {
         author,
@@ -86,8 +91,8 @@ export const RecipePage: FC = () => {
                     <RecipeImageCarousel images={[image, image]} />
                 </div>
                 <div className="comments">
-                    {comments.map((comment) => (
-                        <Comment {...comment} />
+                    {comments.map((comment, i) => (
+                        <Comment {...comment} key={i} />
                     ))}
                 </div>
             </div>
@@ -112,14 +117,14 @@ export const RecipePage: FC = () => {
                 <p>{description}</p>
                 <h5>ingredients:</h5>
                 <ul className="ingredients-list">
-                    {_parseStringArray(ingredients).map((ingredient) => (
-                        <li key={ingredient}>{ingredient}</li>
+                    {_parseStringArray(ingredients).map((ingredient, i) => (
+                        <li key={`${ingredient}-${i}`}>{ingredient}</li>
                     ))}
                 </ul>
                 <h5>How to cook?</h5>
                 <ol>
-                    {_parseStringArray(instructions).map((instruction) => (
-                        <li key={instruction}>{instruction}</li>
+                    {_parseStringArray(instructions).map((instruction, i) => (
+                        <li key={`${instruction}-${i}`}>{instruction}</li>
                     ))}
                 </ol>
                 <div className="tags">

@@ -19,6 +19,8 @@ export interface Recipe {
     image: string;
     difficulty: string;
     total_time: number;
+    is_saved?: boolean;
+    is_uploaded?: boolean;
 }
 
 export interface FilterOptions {
@@ -37,4 +39,3 @@ export interface FilterWrapper {
     filter: string;
     operator: (item: Recipe, field: string, filter: string) => void;
 }
-

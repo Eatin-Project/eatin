@@ -6,6 +6,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { Carousel, CarouselItem, CarouselProps } from "../../components/ui/Carousel";
 import { useNavigate } from "react-router-dom";
 import { Recipe } from "../../components/types";
+import { BookmarkButton } from "../../components/ui/BookmarkButton";
 
 type Props = Omit<CarouselProps, "items"> & {
     items: Recipe[];
@@ -15,8 +16,8 @@ type Props = Omit<CarouselProps, "items"> & {
 export const CategoryCarousel: FC<Props> = ({ items, changeRecipeSavedState, ...props }) => {
     const navigate = useNavigate();
 
-    const carouselItems: CarouselItem<Recipe>[] = items.map(
-        ({ image, index, recipe_title }, i) => ({
+    const carouselItems: CarouselItem<any>[] = items.map(
+        ({ image, index, recipe_title, is_saved, is_uploaded }, i) => ({
             image,
             id: index,
             title: recipe_title,
@@ -28,6 +29,8 @@ export const CategoryCarousel: FC<Props> = ({ items, changeRecipeSavedState, ...
                     vote_count={vote_count}
                     index={index}
                     recipe_title={recipe_title}
+                    is_saved={is_saved ? is_saved : false}
+                    is_uploaded={is_uploaded ? is_uploaded : false}
                     changeRecipeSavedState={changeRecipeSavedState}
                 />
             ),
@@ -45,7 +48,7 @@ export const CategoryCarousel: FC<Props> = ({ items, changeRecipeSavedState, ...
 
 type CategoryCarouselItemProps = Pick<
     Recipe,
-    "rating" | "vote_count" | "index" | "recipe_title"
+    "rating" | "vote_count" | "index" | "recipe_title" | "is_saved" | "is_uploaded"
 > & {
     changeRecipeSavedState: (arg0: number, arg1: string, arg2: boolean) => void;
 };
@@ -55,6 +58,8 @@ const CategoryCarouselItem: FC<CategoryCarouselItemProps> = ({
     vote_count,
     index,
     recipe_title,
+    is_saved,
+    is_uploaded,
     changeRecipeSavedState,
 }) => {
     const [userRating, setUserRating] = useState<number | null>(null);
@@ -65,13 +70,11 @@ const CategoryCarouselItem: FC<CategoryCarouselItemProps> = ({
                 <Button className="delete-from-list p-0" size="large">
                     <CancelIcon className="delete-from-list-icon p-0" />
                 </Button>
-                <Rating
+                <BookmarkButton
+                    onChange={(value) => changeRecipeSavedState(index, recipe_title, value)}
+                    value={is_saved ? true : false}
                     className="is-saved"
-                    max={1}
-                    onChange={(e, value) =>
-                        changeRecipeSavedState(index, recipe_title, value ? true : false)
-                    }
-                />
+                ></BookmarkButton>
             </div>
             <div className="item-info">
                 <Rating
