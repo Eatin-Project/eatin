@@ -2,14 +2,17 @@ import "./RecipeItemOverlay.css";
 
 import { Button, Rating } from "@mui/material";
 import { FC, useRef, useState } from "react";
-import { ToastContainer, toast, Id, Zoom } from "react-toastify";
+import { toast, Id } from "react-toastify";
 import { Recipe } from "../types";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { BookmarkButton } from "./BookmarkButton";
 import { ToastNotification } from "./ToastNotification";
 import { useDeleteUserRecipe, useInsetNewUserRecipe } from "../functions/userRecipesFunc";
 
-type Props = Pick<Recipe, "rating" | "vote_count" | "index" | "recipe_title" | "is_saved">;
+type Props = Pick<Recipe, "rating" | "vote_count" | "index" | "recipe_title" | "is_saved"> & {
+    updateSavedRecipes?: (isSaved: boolean, recipeIndex: number, sectionName: string) => void;
+    sectionName?: string;
+};
 
 export const RecipeItemOverlay: FC<Props> = ({
     rating,
@@ -17,6 +20,8 @@ export const RecipeItemOverlay: FC<Props> = ({
     index,
     recipe_title,
     is_saved,
+    sectionName,
+    updateSavedRecipes,
 }) => {
     const [userRating, setUserRating] = useState<number | null>(null);
     const currentSavedToastID = useRef<Id | undefined>(undefined);
@@ -34,6 +39,7 @@ export const RecipeItemOverlay: FC<Props> = ({
             deleteNewUserRecipe(recipeID);
             currentSavedToastID.current = toast(`${recipeName}, was removed...`);
         }
+        if (updateSavedRecipes && sectionName) updateSavedRecipes(value, recipeID, sectionName);
     };
 
     return (

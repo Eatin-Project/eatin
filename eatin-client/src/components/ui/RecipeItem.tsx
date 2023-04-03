@@ -22,7 +22,7 @@ export const RecipeItem: FC<Props> = ({ recipe }) => {
                 index={recipe.index}
                 recipe_title={recipe.recipe_title}
             />
-            <img src={recipe.image}></img>
+            <img src={recipe.image} alt={recipe.recipe_title} />
         </div>
     );
 };

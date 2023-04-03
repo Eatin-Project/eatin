@@ -31,11 +31,7 @@ export class UserrecipesService {
     return this.userRecipesRepository.findBy({ recipe_index: recipeID });
   }
 
-  async findByUser(userID: string): Promise<Userrecipes[]> {
-    console.log('boop', userID);
-    const a = await this.userRecipesRepository.findBy({ user_id: userID });
-    console.log('gggg', a);
-
+  findByUser(userID: string): Promise<Userrecipes[]> {
     return this.userRecipesRepository.findBy({ user_id: userID });
   }
 
