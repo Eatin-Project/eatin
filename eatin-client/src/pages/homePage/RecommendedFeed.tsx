@@ -50,11 +50,11 @@ export const RecommendedFeed: FC<Props> = ({ currentRecipes }) => {
                     items={recipe.recipes}
                     itemsInOneSlider={5}
                     isLoading={isLoading}
-                    changeRecipeSavedState={changeRecipeSavedState}
+                    // changeRecipeSavedState={changeRecipeSavedState}
                     className="recommended-recipes-carousel"
                 />
             ))}
-            <ToastNotification />
+            {/* <ToastNotification /> */}
         </div>
     );
 };
