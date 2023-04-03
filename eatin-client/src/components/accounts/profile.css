@@ -1,0 +1,27 @@
+.profile-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: 1em;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-filters {
+    display: flex;
+    flex-direction: row;
+}
+
+.recipes-catalog {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.recipes-btn.selected {
+    background-color: #fff;
+}

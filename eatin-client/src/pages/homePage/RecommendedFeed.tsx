@@ -15,17 +15,17 @@ export const RecommendedFeed: FC<Props> = ({ currentRecipes }) => {
     const [isLoading, setIsLoading] = useState(false);
     const currentSavedToastID = useRef<Id | undefined>(undefined);
 
-    const changeRecipeSavedState = (recipeID: number, recipeName: string, isSaved: boolean) => {
-        if (currentSavedToastID) {
-            toast.dismiss(currentSavedToastID.current);
-        }
+    // const changeRecipeSavedState = (recipeID: number, recipeName: string, isSaved: boolean) => {
+    //     if (currentSavedToastID) {
+    //         toast.dismiss(currentSavedToastID.current);
+    //     }
 
-        if (isSaved) {
-            currentSavedToastID.current = toast(`${recipeName}, was saved!`);
-        } else {
-            currentSavedToastID.current = toast(`${recipeName}, was removed...`);
-        }
-    };
+    //     if (isSaved) {
+    //         currentSavedToastID.current = toast(`${recipeName}, was saved!`);
+    //     } else {
+    //         currentSavedToastID.current = toast(`${recipeName}, was removed...`);
+    //     }
+    // };
 
     return (
         <div className="genres-page">
@@ -36,7 +36,7 @@ export const RecommendedFeed: FC<Props> = ({ currentRecipes }) => {
                     items={recipe.recipes}
                     itemsInOneSlider={5}
                     isLoading={isLoading}
-                    changeRecipeSavedState={changeRecipeSavedState}
+                    // changeRecipeSavedState={changeRecipeSavedState}
                     className="recommended-recipes-carousel"
                 />
             ))}
