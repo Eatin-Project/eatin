@@ -17,6 +17,8 @@ export const RecipeItemOverlay: FC<Props> = ({ rating, vote_count, index, recipe
             toast.dismiss(currentSavedToastID.current);
         }
 
+        console.log("HIIII");
+
         if (isSaved) {
             currentSavedToastID.current = toast(`${recipeName}, was saved!`);
         } else {
@@ -31,7 +33,6 @@ export const RecipeItemOverlay: FC<Props> = ({ rating, vote_count, index, recipe
             onClick={(e) => e.stopPropagation()}
         >
             <div className="buttons-spread p-0">
-                <Rating className="is-saved" max={1} />
                 <Button className="delete-from-list p-0" size="large">
                     <CancelIcon className="delete-from-list-icon p-0" />
                 </Button>
