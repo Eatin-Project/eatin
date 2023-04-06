@@ -12,7 +12,7 @@ export class UserrecipesService {
   ) {}
 
   async create(details: UserrecipeDTO): Promise<Userrecipes> {
-    let previousRecipe = await this.findByUserAndRecipe(
+    const previousRecipe = await this.findByUserAndRecipe(
       details.user_id,
       details.recipe_index,
     );
@@ -55,7 +55,10 @@ export class UserrecipesService {
     });
   }
 
-  findByUserAndRecipe(userID: string, recipeID: number): Promise<Userrecipes> {
+  async findByUserAndRecipe(
+    userID: string,
+    recipeID: number,
+  ): Promise<Userrecipes> {
     return this.userRecipesRepository.findOne({
       where: { user_id: userID, recipe_index: recipeID },
     });

@@ -10,6 +10,7 @@ import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 import { useGetSections } from "../../graphql/queries/sections.query";
 import { useAuth } from "../../context/auth-context";
 import { useFilterRecipes } from "../../components/hooks/useFilterRecipes";
+import { useAddIsSavedToRecipesSection } from "../../components/functions/SavedStateInRecipes";
 
 const _ = require("lodash");
 
@@ -23,15 +24,21 @@ export const HomePage: FC = () => {
         currentUser ? currentUser.uid : "",
     );
 
+    const {
+        updatedRecipes: recipesData,
+        isLoading: updateSavedStateLoading,
+        updateSavedStateInRecipesSection,
+    } = useAddIsSavedToRecipesSection(recommendedRecipes);
+
     useEffect(() => {
-        const initialRecipes: { name: string; recipes: Recipe[] }[] = recommendedRecipes?.map(
+        const initialRecipes: { name: string; recipes: Recipe[] }[] = recipesData?.map(
             (section: { name: any; recipes: any }) => ({
                 name: section.name,
                 recipes: section.recipes,
             }),
         );
         setAllRecipes(initialRecipes);
-    }, [currentUser, recommendedRecipes]);
+    }, [currentUser, recipesData]);
 
     const updateSearchResult = () => {
         setSearchValue("");
@@ -40,7 +47,7 @@ export const HomePage: FC = () => {
     return (
         <div>
             <AsyncDataLoaderWrapper
-                loading={recommendedRecipesLoading}
+                loading={recommendedRecipesLoading || updateSavedStateLoading}
                 text="Finding the perfect recipes for you..."
             >
                 <div className="header">
@@ -61,7 +68,11 @@ export const HomePage: FC = () => {
                         </div>
                     </div>
                 </div>
-                <RecommendedFeed currentRecipes={filteredRecipes} />
+                <RecommendedFeed
+                    currentRecipes={filteredRecipes}
+                    isLoadingCurrentRecipes={updateSavedStateLoading}
+                    updateSavedStateInRecipesSection={updateSavedStateInRecipesSection}
+                />
             </AsyncDataLoaderWrapper>
         </div>
     );

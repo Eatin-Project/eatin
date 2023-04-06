@@ -10,12 +10,12 @@ import { FilterRecipes } from "../../pages/homePage/FilterRecipes";
 import { FilterOptions, Recipe } from "../types";
 import AsyncDataLoaderWrapper from "../ui/AsyncDataLoaderWrapper";
 import { RecipeItem } from "../ui/RecipeItem";
-import IconButton from "@mui/material/IconButton";
 import { User } from "../ui/User";
 import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
+import { useAddIsSavedToRecipesList } from "../functions/SavedStateInRecipes";
 
 export const Profile: FC = () => {
     const [categoryFilter, setCategoryFilter] = useState("");
@@ -93,10 +93,18 @@ type Props = {
 };
 
 const Catalog: FC<Props> = ({ recipes }) => {
+    const { updatedRecipes, updateSavedStateInRecipesList } = useAddIsSavedToRecipesList(
+        recipes ? recipes : [],
+    );
+
     return (
         <div className="recipes-catalog">
-            {recipes?.map((recipe) => (
-                <RecipeItem recipe={recipe} key={recipe.index}></RecipeItem>
+            {updatedRecipes?.map((recipe) => (
+                <RecipeItem
+                    recipe={recipe}
+                    key={recipe.index}
+                    updateSavedRecipes={updateSavedStateInRecipesList}
+                ></RecipeItem>
             ))}
         </div>
     );

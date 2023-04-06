@@ -7,6 +7,7 @@ import {
     useGetRecipeByIdQuery,
     useCreateRatingMutation,
     useGetRatingByRecipeAndUserQuery,
+    useGetUserrecipesByRecipeAndUserQuery,
 } from "../../generated/graphql";
 import { BookmarkButton } from "../../components/ui/BookmarkButton";
 import { Comment } from "../../components/ui/Comment";
@@ -14,26 +15,34 @@ import { RecipeImageCarousel } from "./RecipeImageCarousel";
 import { User } from "../../components/ui/User";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 import { useAuth } from "../../context/auth-context";
+import { useToastNotification } from "../../components/functions/useToastNotification";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
     const [isSaved, setIsSaved] = useState(false);
     const [rating, setRating] = useState<number | null>(0);
     const { currentUser } = useAuth();
+    const { notify } = useToastNotification();
+
     const { data: ratingData, loading: ratingLoading } = useGetRatingByRecipeAndUserQuery({
         variables: { id: currentUser ? currentUser?.uid : "", index: Number(id) },
     });
     const { data: recipeData, loading: recipeLoading } = useGetRecipeByIdQuery({
         variables: { index: Number(id) },
     });
+    const { data: isRecipeSaved, loading: recipeSavedLoading } =
+        useGetUserrecipesByRecipeAndUserQuery({
+            variables: { recipeID: Number(id), userID: currentUser ? currentUser?.uid : "" },
+        });
     const recipe = recipeData?.recipe;
     const [createRating] = useCreateRatingMutation();
 
     useEffect(() => {
         setRating(ratingData ? ratingData.ratingByUserAndRecipe.rating : 0);
-    }, [ratingData]);
+        setIsSaved(isRecipeSaved ? true : false);
+    }, [isRecipeSaved, ratingData]);
 
-    if (recipeLoading || ratingLoading)
+    if (recipeLoading || ratingLoading || recipeSavedLoading)
         return <AsyncDataLoaderWrapper loading text="loading recipe page..." />;
     if (!recipe) return <h2>Recipe does not exist :)</h2>;
     const {
@@ -68,6 +77,12 @@ export const RecipePage: FC = () => {
         }
     }
 
+    const setNewRating = (newValue: number | null) => {
+        setRating(newValue);
+        insertNewRating(newValue);
+        notify(`You have given a rating of ${newValue} to the recipe ${recipe_title}`);
+    };
+
     return (
         <div className="recipe-page">
             <div className="right-side">
@@ -79,14 +94,19 @@ export const RecipePage: FC = () => {
                                 size="large"
                                 value={rating}
                                 onChange={(event, newValue) => {
-                                    setRating(newValue);
-                                    insertNewRating(newValue);
+                                    setNewRating(newValue);
                                 }}
                                 precision={0.5}
                             />
                             <span className="tag">{vote_count}</span>
                         </User>
-                        <BookmarkButton value={isSaved} onChange={setIsSaved} size="large" />
+                        <BookmarkButton
+                            recipeID={Number(id)}
+                            recipeName={recipe_title}
+                            value={isSaved}
+                            onChange={(value) => setIsSaved(value)}
+                            size="large"
+                        />
                     </div>
                     <RecipeImageCarousel images={[image, image]} />
                 </div>

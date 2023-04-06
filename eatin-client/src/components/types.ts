@@ -20,7 +20,6 @@ export interface Recipe {
     difficulty: string;
     total_time: number;
     is_saved?: boolean;
-    is_uploaded?: boolean;
 }
 
 export interface FilterOptions {

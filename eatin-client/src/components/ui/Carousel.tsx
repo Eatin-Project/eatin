@@ -70,7 +70,7 @@ export function Carousel<T = unknown>({
                 ...(slideTo ? animationClassnames : {}),
             });
         },
-        [currentSlide, nextSlide],
+        [currentSlide, nextSlide, slideTo],
     );
 
     const getNextSlide = useCallback(
@@ -100,9 +100,8 @@ export function Carousel<T = unknown>({
 
     useEffect(() => {
         if (autoSlide) interval.current = setInterval(() => slideWithAnimation("next"), 3000);
-
         return () => clearInterval(interval.current);
-    }, [autoSlide, slideWithAnimation]);
+    }, [autoSlide, slideWithAnimation, title]);
 
     return (
         <div className={classNames("carousel-wrapper", className, { "with-arrows": !hideArrows })}>
@@ -241,7 +240,7 @@ const CarouselBreadCrumb: FC<CarouselBreadCrumbProps> = ({
 }) => {
     const handleClick = useCallback(
         () => onClick(slide < currentSlide ? "prev" : "next", slide),
-        [slide, currentSlide],
+        [onClick, slide, currentSlide],
     );
 
     const breadCrumbsClassnames = useMemo(
