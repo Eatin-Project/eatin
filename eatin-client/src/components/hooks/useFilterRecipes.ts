@@ -46,11 +46,11 @@ export function useFilterRecipes(initialRecipes: RecipesSection[]) {
     }
 
     function assertBigger(item: Recipe, field: keyof Recipe, filter: string) {
-        return item[field] >= Number(filter.slice(0, 1));
+        return Number(item[field]) >= Number(filter.slice(0, 1));
     }
 
     function assertSmaller(item: Recipe, field: keyof Recipe, filter: string) {
-        return item[field] <= Number(filter);
+        return Number(item[field]) <= Number(filter);
     }
 
     function filterRecipes(items: Recipe[]) {

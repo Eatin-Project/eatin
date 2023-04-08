@@ -3,6 +3,7 @@ import "./App.css";
 import { Router } from "./components/Router/Router";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/auth-context";
+import { ToastNotification } from "./components/ui/ToastNotification";
 import React from "react";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
                     <Router />
                 </BrowserRouter>
             </AuthProvider>
+            <ToastNotification />
         </div>
     );
 }

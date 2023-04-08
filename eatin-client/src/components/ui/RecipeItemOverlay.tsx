@@ -1,30 +1,24 @@
 import "./RecipeItemOverlay.css";
 
 import { Button, Rating } from "@mui/material";
-import { FC, useRef, useState } from "react";
-import { ToastContainer, toast, Id, Zoom } from "react-toastify";
+import { FC, useState } from "react";
 import { Recipe } from "../types";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { BookmarkButton } from "./BookmarkButton";
 
-type Props = Pick<Recipe, "rating" | "vote_count" | "index" | "recipe_title">;
+type Props = Pick<Recipe, "rating" | "vote_count" | "index" | "recipe_title" | "is_saved"> & {
+    updateSavedRecipes: (isSaved: boolean, recipeIndex: number) => void;
+};
 
-export const RecipeItemOverlay: FC<Props> = ({ rating, vote_count, index, recipe_title }) => {
+export const RecipeItemOverlay: FC<Props> = ({
+    rating,
+    vote_count,
+    index,
+    recipe_title,
+    is_saved,
+    updateSavedRecipes,
+}) => {
     const [userRating, setUserRating] = useState<number | null>(null);
-    const currentSavedToastID = useRef<Id | undefined>(undefined);
-
-    const changeRecipeSavedState = (recipeID: number, recipeName: string, isSaved: boolean) => {
-        if (currentSavedToastID) {
-            toast.dismiss(currentSavedToastID.current);
-        }
-
-        console.log("HIIII");
-
-        if (isSaved) {
-            currentSavedToastID.current = toast(`${recipeName}, was saved!`);
-        } else {
-            currentSavedToastID.current = toast(`${recipeName}, was removed...`);
-        }
-    };
 
     return (
         <div
@@ -36,13 +30,13 @@ export const RecipeItemOverlay: FC<Props> = ({ rating, vote_count, index, recipe
                 <Button className="delete-from-list p-0" size="large">
                     <CancelIcon className="delete-from-list-icon p-0" />
                 </Button>
-                <Rating
+                <BookmarkButton
+                    onChange={(value) => updateSavedRecipes(value, index)}
+                    recipeID={index}
+                    recipeName={recipe_title}
+                    isClicked={is_saved ? true : false}
                     className="is-saved"
-                    max={1}
-                    onChange={(e, value) =>
-                        changeRecipeSavedState?.(index, recipe_title, value ? true : false)
-                    }
-                />
+                ></BookmarkButton>
             </div>
             <div className="item-info">
                 <Rating

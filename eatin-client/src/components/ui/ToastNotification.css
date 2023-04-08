@@ -1,0 +1,8 @@
+.Toastify__toast-theme--light {
+    background: #fd7269 !important;
+    color: black !important;
+}
+
+.Toastify__progress-bar {
+    background-color: white !important;
+}

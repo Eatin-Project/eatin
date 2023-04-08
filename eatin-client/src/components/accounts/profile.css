@@ -15,13 +15,6 @@
     flex-direction: row;
 }
 
-.recipes-catalog {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
 .recipes-btn.selected {
     background-color: #fff;
 }

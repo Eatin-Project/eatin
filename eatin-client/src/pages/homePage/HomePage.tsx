@@ -10,6 +10,7 @@ import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 import { useGetSections } from "../../graphql/queries/sections.query";
 import { useAuth } from "../../context/auth-context";
 import { useFilterRecipes } from "../../components/hooks/useFilterRecipes";
+import { useAddIsSavedToRecipesSection } from "../../components/functions/useAddIsSavedToRecipesSection";
 
 const _ = require("lodash");
 
@@ -23,15 +24,21 @@ export const HomePage: FC = () => {
         currentUser ? currentUser.uid : "",
     );
 
+    const {
+        recipesWithIsSaved: recipesData,
+        isLoading: updateSavedStateLoading,
+        updateIsSaved,
+    } = useAddIsSavedToRecipesSection(recommendedRecipes);
+
     useEffect(() => {
-        const initialRecipes: { name: string; recipes: Recipe[] }[] = recommendedRecipes?.map(
+        const initialRecipes: { name: string; recipes: Recipe[] }[] = recipesData?.map(
             (section: { name: any; recipes: any }) => ({
                 name: section.name,
                 recipes: section.recipes,
             }),
         );
         setAllRecipes(initialRecipes);
-    }, [currentUser, recommendedRecipes]);
+    }, [currentUser, recipesData]);
 
     const updateSearchResult = () => {
         setSearchValue("");
@@ -39,7 +46,10 @@ export const HomePage: FC = () => {
 
     return (
         <div>
-            <AsyncDataLoaderWrapper loading={recommendedRecipesLoading} text="Finding the perfect recipes for you...">
+            <AsyncDataLoaderWrapper
+                loading={recommendedRecipesLoading || updateSavedStateLoading}
+                text="Finding the perfect recipes for you..."
+            >
                 <div className="header">
                     {<FilterRecipes filterOptions={currentFilterOptions} />}
                     <div className="search-manually">
@@ -58,7 +68,11 @@ export const HomePage: FC = () => {
                         </div>
                     </div>
                 </div>
-                <RecommendedFeed currentRecipes={filteredRecipes} />
+                <RecommendedFeed
+                    currentRecipes={filteredRecipes}
+                    isLoadingCurrentRecipes={updateSavedStateLoading}
+                    updateSavedStateInRecipesSection={updateIsSaved}
+                />
             </AsyncDataLoaderWrapper>
         </div>
     );
