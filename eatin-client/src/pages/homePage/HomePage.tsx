@@ -11,15 +11,15 @@ import {RecipesCatalog} from "../../components/ui/RecipesCatalog";
 import {useCatalogFilterRecipes} from "../../components/hooks/useCatalogFilterRecipes";
 import RecipesWithFiltersWrapper from "../../components/ui/RecipesWithFiltersWrapper";
 import { useAddIsSavedToRecipesSection } from "../../components/functions/useAddIsSavedToRecipesSection";
+import {useSearch} from "../../context/search-context";
 
 const _ = require("lodash");
 
 export const HomePage: FC = () => {
-    const [typeValue, setTypeValue] = useState("");
-    const [searchValue, setSearchValue] = useState("");
     const [allRecipes, setAllRecipes] = useState<RecipesSection[]>([]);
     const [resultRecipes, setResultRecipes] = useState<Recipe[]>([]);
     const {currentUser} = useAuth();
+    const {searchValue} = useSearch();
     const {data: recommendedRecipes, loading: recommendedRecipesLoading} = useGetSections(
         currentUser ? currentUser.uid : "",
     );

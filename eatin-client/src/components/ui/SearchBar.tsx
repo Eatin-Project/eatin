@@ -3,12 +3,12 @@ import "./RecipeItem.css";
 import {FC, useState} from "react";
 import {Button, TextField} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import {useSearch} from "../../context/search-context";
 
 export const SearchBar: FC = ({}) => {
     const [typeValue, setTypeValue] = useState("");
-    const [searchValue, setSearchValue] = useState("");
-
-    const updateSearchResult = () => {
+    const {setSearchValue} = useSearch();
+    const updateSearchValue = () => {
         setSearchValue(typeValue);
     };
 
@@ -20,10 +20,9 @@ export const SearchBar: FC = ({}) => {
                         setTypeValue(event.target.value);
                     }}
                     className="search-bar"
-                    variant={undefined}
                     type="text"
                 />
-                <Button onClick={updateSearchResult} className="search-button">
+                <Button onClick={updateSearchValue} className="search-button">
                     <SearchIcon/>
                 </Button>
             </div>

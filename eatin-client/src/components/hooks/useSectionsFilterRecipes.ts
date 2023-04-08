@@ -5,6 +5,7 @@ import { Difficulty } from "../../pages/homePage/entities/difficulties.enum";
 import { RecipesSection, FilterWrapper, FilterOptions } from "../types";
 import {Rating} from "../../pages/homePage/entities/ratings.enum";
 import {assertBigger, assertEquals, assertSmaller, filterRecipes} from "./FilterUtils";
+import {useSearch} from "../../context/search-context";
 
 const _ = require("lodash");
 
@@ -14,6 +15,7 @@ export function useSectionsFilterRecipes(initialRecipes: RecipesSection[]) {
     const [difficultyFilter, setDifficultyFilter] = useState("");
     const [ratingFilter, setRatingFilter] = useState("");
     const [totalTimeFilter, setTotalTimeFilter] = useState("");
+    const {searchValue} = useSearch();
 
     const filters: FilterWrapper[] = [
         { field: "diet", filter: dietFilter, operator: assertEquals },
@@ -33,6 +35,19 @@ export function useSectionsFilterRecipes(initialRecipes: RecipesSection[]) {
         ratingFilter,
         totalTimeFilter,
     ]);
+
+    useEffect(() => {
+        if (!!searchValue) {
+            resetFilters();
+        }
+    }, [searchValue])
+
+    function resetFilters() {
+        setDietFilter("");
+        setDifficultyFilter("");
+        setRatingFilter("");
+        setTotalTimeFilter("");
+    }
 
     // TODO: for now the options are hardcoded until we get all the recommended recipes and can have the filter accordingly
     const currentFilterOptions: FilterOptions[] = [
