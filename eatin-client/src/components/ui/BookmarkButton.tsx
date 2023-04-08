@@ -6,13 +6,13 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { FC } from "react";
 import classNames from "classnames";
 
-import { useInsetNewUserRecipe } from "../functions/insertNewUserRecipe";
-import { useDeleteUserRecipe } from "../functions/deleteNewUserRecipe";
+import { useInsertNewUserRecipe } from "../functions/useInsertNewUserRecipe";
+import { useDeleteUserRecipe } from "../functions/useDeleteUserRecipe";
 import { useToastNotification } from "../functions/useToastNotification";
 
 interface Props {
     onChange: (isToggled: boolean) => void;
-    value: boolean;
+    isClicked: boolean;
     size?: RatingProps["size"];
     className?: string;
     recipeID: number;
@@ -21,25 +21,25 @@ interface Props {
 
 export const BookmarkButton: FC<Props> = ({
     onChange,
-    value,
+    isClicked,
     size,
     className,
     recipeID,
     recipeName,
 }) => {
-    const { insertNewUserRecipe } = useInsetNewUserRecipe();
+    const { insertNewUserRecipe } = useInsertNewUserRecipe();
     const { deleteNewUserRecipe } = useDeleteUserRecipe();
     const { notify } = useToastNotification();
 
-    const changeRecipeSavedState = (value: boolean) => {
-        if (value) {
+    const changeRecipeSavedState = (wasClicked: boolean) => {
+        if (wasClicked) {
             insertNewUserRecipe(recipeID, true);
             notify(`${recipeName}, was saved!`);
         } else {
             deleteNewUserRecipe(recipeID);
             notify(`${recipeName}, was removed...`);
         }
-        onChange(!!value);
+        onChange(!!wasClicked);
     };
 
     return (
@@ -47,7 +47,7 @@ export const BookmarkButton: FC<Props> = ({
             <Rating
                 className={classNames("eatin-bookmark-button", className)}
                 max={1}
-                value={!value ? 0 : 1}
+                value={!isClicked ? 0 : 1}
                 size={size}
                 onChange={(event, value) => changeRecipeSavedState(!!value)}
                 icon={<BookmarkIcon fontSize="inherit" />}

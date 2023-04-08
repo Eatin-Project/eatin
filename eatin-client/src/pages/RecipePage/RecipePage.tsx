@@ -77,7 +77,7 @@ export const RecipePage: FC = () => {
         }
     }
 
-    const setNewRating = (newValue: number | null) => {
+    const updateRating = (newValue: number | null) => {
         setRating(newValue);
         insertNewRating(newValue);
         notify(`You have given a rating of ${newValue} to the recipe ${recipe_title}`);
@@ -94,7 +94,7 @@ export const RecipePage: FC = () => {
                                 size="large"
                                 value={rating}
                                 onChange={(event, newValue) => {
-                                    setNewRating(newValue);
+                                    updateRating(newValue);
                                 }}
                                 precision={0.5}
                             />
@@ -103,7 +103,7 @@ export const RecipePage: FC = () => {
                         <BookmarkButton
                             recipeID={Number(id)}
                             recipeName={recipe_title}
-                            value={isSaved}
+                            isClicked={isSaved}
                             onChange={(value) => setIsSaved(value)}
                             size="large"
                         />

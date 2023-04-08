@@ -1,21 +1,19 @@
 import { Button } from "@mui/material";
 import { FC, useState } from "react";
 import "./profile.css";
-import SettingsIcon from "@mui/icons-material/Settings";
 import { useAuth } from "../../context/auth-context";
 import { useGetTopRatedRecipesByCategoryQuery, useGetUserByIdQuery } from "../../generated/graphql";
 import { Category } from "../../pages/homePage/entities/categories.enum";
 import { Cuisine } from "../../pages/homePage/entities/cuisines.enum";
 import { FilterRecipes } from "../../pages/homePage/FilterRecipes";
-import { FilterOptions, Recipe } from "../types";
+import { FilterOptions } from "../types";
 import AsyncDataLoaderWrapper from "../ui/AsyncDataLoaderWrapper";
-import { RecipeItem } from "../ui/RecipeItem";
 import { User } from "../ui/User";
 import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
-import { useAddIsSavedToRecipesList } from "../functions/SavedStateInRecipes";
+import { Catalog } from "./catalog";
 
 export const Profile: FC = () => {
     const [categoryFilter, setCategoryFilter] = useState("");
@@ -85,27 +83,5 @@ export const Profile: FC = () => {
                 </div>
             </div>
         </AsyncDataLoaderWrapper>
-    );
-};
-
-type Props = {
-    recipes?: Recipe[];
-};
-
-const Catalog: FC<Props> = ({ recipes }) => {
-    const { updatedRecipes, updateSavedStateInRecipesList } = useAddIsSavedToRecipesList(
-        recipes ? recipes : [],
-    );
-
-    return (
-        <div className="recipes-catalog">
-            {updatedRecipes?.map((recipe) => (
-                <RecipeItem
-                    recipe={recipe}
-                    key={recipe.index}
-                    updateSavedRecipes={updateSavedStateInRecipesList}
-                ></RecipeItem>
-            ))}
-        </div>
     );
 };

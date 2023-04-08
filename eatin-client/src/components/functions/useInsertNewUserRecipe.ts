@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { CreateUserRecipesMutation, useCreateUserRecipesMutation } from "../../generated/graphql";
 import { useAuth } from "../../context/auth-context";
 
-export function useInsetNewUserRecipe() {
+export function useInsertNewUserRecipe() {
     const [createSavedUserRecipe] = useCreateUserRecipesMutation();
     const [data, setData] = useState<CreateUserRecipesMutation | null | undefined>(null);
     const { currentUser } = useAuth();

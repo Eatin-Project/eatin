@@ -10,7 +10,7 @@ import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 import { useGetSections } from "../../graphql/queries/sections.query";
 import { useAuth } from "../../context/auth-context";
 import { useFilterRecipes } from "../../components/hooks/useFilterRecipes";
-import { useAddIsSavedToRecipesSection } from "../../components/functions/SavedStateInRecipes";
+import { useAddIsSavedToRecipesSection } from "../../components/functions/useAddIsSavedToRecipesSection";
 
 const _ = require("lodash");
 
@@ -25,9 +25,9 @@ export const HomePage: FC = () => {
     );
 
     const {
-        updatedRecipes: recipesData,
+        recipesWithIsSaved: recipesData,
         isLoading: updateSavedStateLoading,
-        updateSavedStateInRecipesSection,
+        updateIsSaved,
     } = useAddIsSavedToRecipesSection(recommendedRecipes);
 
     useEffect(() => {
@@ -71,7 +71,7 @@ export const HomePage: FC = () => {
                 <RecommendedFeed
                     currentRecipes={filteredRecipes}
                     isLoadingCurrentRecipes={updateSavedStateLoading}
-                    updateSavedStateInRecipesSection={updateSavedStateInRecipesSection}
+                    updateSavedStateInRecipesSection={updateIsSaved}
                 />
             </AsyncDataLoaderWrapper>
         </div>
