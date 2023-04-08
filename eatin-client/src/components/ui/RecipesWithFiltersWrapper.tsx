@@ -8,7 +8,6 @@ interface Props {
     loading: boolean;
 }
 
-
 const RecipesWithFiltersWrapper: FC<PropsWithChildren<Props>> = ({filterOptions, loading, children}) => {
 
     return (
@@ -16,7 +15,7 @@ const RecipesWithFiltersWrapper: FC<PropsWithChildren<Props>> = ({filterOptions,
             <AsyncDataLoaderWrapper loading={loading}
                                     text="Finding the perfect recipes for you...">
                 <div className="header">
-                    <FilterRecipes filterOptions={filterOptions}/>
+                    <FilterRecipes key={filterOptions.length} filterOptions={filterOptions}/>
                 </div>
                 {children}
             </AsyncDataLoaderWrapper>
