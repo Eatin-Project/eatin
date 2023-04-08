@@ -58,6 +58,7 @@ type Query {
   users: [Users!]!
   recipe(index: Float!): Recipes!
   recipes: [Recipes!]!
+  recipesByValue(value: String!): [Recipes!]!
   topRecipesByCategory(category: String!): [Recipes!]!
   topRecipesByCuisine(cuisine: String!): [Recipes!]!
   ratingsByRecipe(index: Float!): [Ratings!]!

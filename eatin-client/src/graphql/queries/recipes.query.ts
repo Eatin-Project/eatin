@@ -54,6 +54,33 @@ export const GET_RECIPE_BY_ID = gql`
     }
 `;
 
+export const GET_RECIPES_BY_VALUE = gql`
+    query getRecipesBySearch($value: String!) {
+        recipesByValue(value: $value) {
+            index
+            recipe_title
+            url
+            record_health
+            vote_count
+            rating
+            description
+            cuisine
+            course
+            diet
+            prep_time
+            cook_time
+            ingredients
+            instructions
+            author
+            tags
+            category
+            image
+            difficulty
+            total_time
+        }
+    }
+`;
+
 export const GET_RECIPE_BY_CATEGORY = gql`
     query getTopRatedRecipesByCategory($category: String!) {
         topRecipesByCategory(category: $category) {

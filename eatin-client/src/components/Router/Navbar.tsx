@@ -11,7 +11,8 @@ import { User } from "../ui/User";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Button, IconButton } from "@mui/material";
+import {Button, IconButton} from "@mui/material";
+import {SearchBar} from "../ui/SearchBar";
 
 export const Navbar = () => {
     const navigate = useNavigate();
@@ -33,11 +34,13 @@ export const Navbar = () => {
         signOutUser();
         handleClose();
     };
+
     return (
         <>
             <div className="navbar">
                 <AppLogo onClick={goToHomePage} />
                 <div className="navbar-end">
+                    <SearchBar />
                     <Button style={{ color: "black" }} onClick={() => navigate("/profile")}>
                         <User
                             name={!!data ? data?.user.firstname + " " + data?.user.lastname : ""}

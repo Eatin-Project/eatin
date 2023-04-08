@@ -86,6 +86,7 @@ export type Query = {
   ratingsByUser: Array<Ratings>;
   recipe: Recipes;
   recipes: Array<Recipes>;
+  recipesByValue: Array<Recipes>;
   topRecipesByCategory: Array<Recipes>;
   topRecipesByCuisine: Array<Recipes>;
   user: Users;
@@ -117,6 +118,11 @@ export type QueryRatingsByUserArgs = {
 
 export type QueryRecipeArgs = {
   index: Scalars['Float'];
+};
+
+
+export type QueryRecipesByValueArgs = {
+  value: Scalars['String'];
 };
 
 
@@ -313,6 +319,13 @@ export type GetRecipeByIdQueryVariables = Exact<{
 
 
 export type GetRecipeByIdQuery = { __typename?: 'Query', recipe: { __typename?: 'Recipes', index: number, recipe_title: string, url: string, record_health: string, vote_count: number, rating: number, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number } };
+
+export type GetRecipesBySearchQueryVariables = Exact<{
+  value: Scalars['String'];
+}>;
+
+
+export type GetRecipesBySearchQuery = { __typename?: 'Query', recipesByValue: Array<{ __typename?: 'Recipes', index: number, recipe_title: string, url: string, record_health: string, vote_count: number, rating: number, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number }> };
 
 export type GetTopRatedRecipesByCategoryQueryVariables = Exact<{
   category: Scalars['String'];
@@ -892,6 +905,60 @@ export function useGetRecipeByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetRecipeByIdQueryHookResult = ReturnType<typeof useGetRecipeByIdQuery>;
 export type GetRecipeByIdLazyQueryHookResult = ReturnType<typeof useGetRecipeByIdLazyQuery>;
 export type GetRecipeByIdQueryResult = Apollo.QueryResult<GetRecipeByIdQuery, GetRecipeByIdQueryVariables>;
+export const GetRecipesBySearchDocument = gql`
+    query getRecipesBySearch($value: String!) {
+  recipesByValue(value: $value) {
+    index
+    recipe_title
+    url
+    record_health
+    vote_count
+    rating
+    description
+    cuisine
+    course
+    diet
+    prep_time
+    cook_time
+    ingredients
+    instructions
+    author
+    tags
+    category
+    image
+    difficulty
+    total_time
+  }
+}
+    `;
+
+/**
+ * __useGetRecipesBySearchQuery__
+ *
+ * To run a query within a React component, call `useGetRecipesBySearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRecipesBySearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRecipesBySearchQuery({
+ *   variables: {
+ *      value: // value for 'value'
+ *   },
+ * });
+ */
+export function useGetRecipesBySearchQuery(baseOptions: Apollo.QueryHookOptions<GetRecipesBySearchQuery, GetRecipesBySearchQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRecipesBySearchQuery, GetRecipesBySearchQueryVariables>(GetRecipesBySearchDocument, options);
+      }
+export function useGetRecipesBySearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRecipesBySearchQuery, GetRecipesBySearchQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRecipesBySearchQuery, GetRecipesBySearchQueryVariables>(GetRecipesBySearchDocument, options);
+        }
+export type GetRecipesBySearchQueryHookResult = ReturnType<typeof useGetRecipesBySearchQuery>;
+export type GetRecipesBySearchLazyQueryHookResult = ReturnType<typeof useGetRecipesBySearchLazyQuery>;
+export type GetRecipesBySearchQueryResult = Apollo.QueryResult<GetRecipesBySearchQuery, GetRecipesBySearchQueryVariables>;
 export const GetTopRatedRecipesByCategoryDocument = gql`
     query getTopRatedRecipesByCategory($category: String!) {
   topRecipesByCategory(category: $category) {

@@ -17,7 +17,7 @@ export const RecommendedFeed: FC<Props> = ({
     isLoadingCurrentRecipes,
 }) => {
     return (
-        <div className="genres-page">
+        <div className="feed">
             {currentRecipes.map((recipe, itemIndex) => (
                 <CategoryCarousel
                     key={`${recipe.name}-${itemIndex}`}

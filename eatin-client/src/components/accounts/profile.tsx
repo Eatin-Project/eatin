@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import { FC, useState } from "react";
 import "./profile.css";
 import { useAuth } from "../../context/auth-context";
@@ -13,7 +12,7 @@ import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
-import { Catalog } from "./catalog";
+import {RecipesCatalog} from "../ui/RecipesCatalog";
 
 export const Profile: FC = () => {
     const [categoryFilter, setCategoryFilter] = useState("");
@@ -68,7 +67,7 @@ export const Profile: FC = () => {
                                 loading={cakesLoading}
                                 text="loading my recipes..."
                             >
-                                <Catalog recipes={cakes?.topRecipesByCategory}></Catalog>
+                                <RecipesCatalog recipes={cakes?.topRecipesByCategory ? cakes?.topRecipesByCategory : []}/>
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
                         <TabPanel value={1} sx={{ p: 2 }}>
@@ -76,7 +75,7 @@ export const Profile: FC = () => {
                                 loading={drinksLoading}
                                 text="loading saved recipes..."
                             >
-                                <Catalog recipes={drinks?.topRecipesByCategory}></Catalog>
+                                <RecipesCatalog recipes={drinks?.topRecipesByCategory ? drinks?.topRecipesByCategory : []}/>
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
                     </Tabs>
