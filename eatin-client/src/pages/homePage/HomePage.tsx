@@ -12,6 +12,7 @@ import {useCatalogFilterRecipes} from "../../components/hooks/useCatalogFilterRe
 import RecipesWithFiltersWrapper from "../../components/ui/RecipesWithFiltersWrapper";
 import { useAddIsSavedToRecipesSection } from "../../components/functions/useAddIsSavedToRecipesSection";
 import {useSearch} from "../../context/search-context";
+import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 
 const _ = require("lodash");
 
@@ -25,7 +26,7 @@ export const HomePage: FC = () => {
     );
     const {data: searchResultRecipes, loading: searchResultRecipesLoading} = useGetRecipesBySearchQuery(
         {variables: {value: searchValue}});
-    const {currentFilterOptions, filteredRecipes} = useSectionsFilterRecipes(allRecipes);
+    const {filteredRecipes} = useSectionsFilterRecipes(allRecipes);
     const {currentCatalogFilterOptions, catalogFilteredRecipes} = useCatalogFilterRecipes(resultRecipes);
 
     useEffect(() => {
@@ -54,9 +55,10 @@ export const HomePage: FC = () => {
                 <RecipesWithFiltersWrapper filterOptions={currentCatalogFilterOptions} loading={searchResultRecipesLoading} >
                     <RecipesCatalog recipes={catalogFilteredRecipes}/>
                 </RecipesWithFiltersWrapper> :
-                <RecipesWithFiltersWrapper filterOptions={currentFilterOptions} loading={recommendedRecipesLoading} >
+                <AsyncDataLoaderWrapper loading={recommendedRecipesLoading}
+                                        text="Finding the perfect recipes for you...">
                     <RecommendedFeed currentRecipes={filteredRecipes} isLoadingCurrentRecipes={updateSavedStateLoading} updateSavedStateInRecipesSection={updateIsSaved}/>
-                </RecipesWithFiltersWrapper>
+                </AsyncDataLoaderWrapper>
             }
         </>
     );
