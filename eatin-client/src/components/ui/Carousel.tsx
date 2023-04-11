@@ -125,7 +125,7 @@ export function Carousel<T = unknown>({
                                     key={item.id}
                                     itemIndex={itemIndex}
                                     {...item}
-                                    width={100 / itemsInOneSlider}
+                                    width={(100 - itemsInOneSlider) / itemsInOneSlider}
                                     onClick={onClickItem}
                                     randomColors={randomColors}
                                 />

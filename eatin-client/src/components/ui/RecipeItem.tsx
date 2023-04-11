@@ -17,6 +17,7 @@ export const RecipeItem: FC<Props> = ({ recipe, updateSavedRecipes }) => {
     };
     return (
         <div className="recipe-item" onClick={navigateToRecipePage}>
+            <h2 className="item-name">{recipe.recipe_title}</h2>
             <RecipeItemOverlay
                 rating={recipe.rating}
                 vote_count={recipe.vote_count}

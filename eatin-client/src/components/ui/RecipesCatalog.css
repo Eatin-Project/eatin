@@ -1,0 +1,7 @@
+.recipes-catalog {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0.5em 0;
+    justify-content: center;
+}

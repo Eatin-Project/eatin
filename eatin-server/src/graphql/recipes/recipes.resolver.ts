@@ -1,4 +1,4 @@
-import {Resolver, Query, Args, Mutation} from '@nestjs/graphql';
+import {Args, Mutation, Query, Resolver} from '@nestjs/graphql';
 import {Inject} from '@nestjs/common';
 import {Recipes} from "./recipes.model";
 import {RecipesService} from "./recipes.service";
@@ -17,6 +17,16 @@ export class RecipesResolver {
     @Query(returns => [Recipes])
     async recipes(): Promise<Recipes[]> {
         return await this.recipesService.findAll();
+    }
+
+    @Query(returns => [Recipes])
+    async recipesByValue(@Args('value') value: string): Promise<Recipes[]> {
+        return await this.recipesService.runQuery(`select *
+                                                    from recipes r
+                                                    where r.recipe_title like '%${value}%'
+                                                       or r.description like '%${value}%'
+                                                       or r.author like '%${value}%'
+                                                    order by r.vote_count desc;`);
     }
 
     @Query(returns => [Recipes])

@@ -33,8 +33,10 @@ export interface RecipesSection {
     recipes: Recipe[];
 }
 
+export type FilterableKeys = keyof Omit<Recipe, "is_saved">;
+
 export interface FilterWrapper {
-    field: keyof Recipe;
+    field: FilterableKeys;
     filter: string;
-    operator: (item: Recipe, field: keyof Recipe, filter: string) => void;
+    operator: (item: Recipe, field: FilterableKeys, filter: string) => void;
 }

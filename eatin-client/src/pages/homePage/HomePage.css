@@ -6,28 +6,6 @@
     padding: 1em 2em 1em 2em;
 }
 
-.header .search-bar {
-    color: black !important;
-    border-radius: 0.5em;
-    width: 100%;
-    max-width: 20vw !important;
-}
-
-.search-manually {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-around;
-    flex-grow: 1;
-}
-
-.complete-search-bar {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    width: 100%;
-}
-
 .recipes-btn {
     background-color: #fd7269 !important;
     color: black !important;
@@ -39,33 +17,4 @@
 }
 .recipes-btn:hover {
     border: black 1px solid !important;
-}
-
-.complete-search-bar .search-button {
-    background-color: #fd7269;
-    border-right: none;
-    padding: 1.1em;
-    cursor: pointer;
-    color: black;
-}
-
-.search-button:hover {
-    border: black 1px solid !important;
-    background-color: #fd7269 !important;
-}
-
-.header .search-result {
-    font-size: 3em;
-}
-
-.search-bar .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
-    color: #fd7269 !important;
-}
-
-.search-bar .MuiOutlinedInput-notchedOutline {
-    border: #fd7269 solid 1px;
-}
-
-.filter-dropdown .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
-    color: black !important;
 }

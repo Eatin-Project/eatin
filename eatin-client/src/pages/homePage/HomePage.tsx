@@ -1,28 +1,35 @@
 import "./HomePage.css";
 
-import { FC, useEffect, useState } from "react";
-import { RecommendedFeed } from "./RecommendedFeed";
-import { Button, TextField } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import { FilterRecipes } from "./FilterRecipes";
-import { Recipe, RecipesSection } from "../../components/types";
-import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
-import { useGetSections } from "../../graphql/queries/sections.query";
-import { useAuth } from "../../context/auth-context";
-import { useFilterRecipes } from "../../components/hooks/useFilterRecipes";
+import {FC, useEffect, useState} from "react";
+import {RecommendedFeed} from "./RecommendedFeed";
+import {Recipe, RecipesSection} from "../../components/types";
+import {useGetSections} from "../../graphql/queries/sections.query";
+import {useAuth} from "../../context/auth-context";
+import {useGetRecipesBySearchQuery} from "../../generated/graphql";
+import {useSectionsFilterRecipes} from "../../components/hooks/useSectionsFilterRecipes";
+import {RecipesCatalog} from "../../components/ui/RecipesCatalog";
+import {useCatalogFilterRecipes} from "../../components/hooks/useCatalogFilterRecipes";
+import RecipesWithFiltersWrapper from "../../components/ui/RecipesWithFiltersWrapper";
 import { useAddIsSavedToRecipesSection } from "../../components/functions/useAddIsSavedToRecipesSection";
-
-const _ = require("lodash");
+import {useSearch} from "../../context/search-context";
+import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 
 export const HomePage: FC = () => {
-    const [searchValue, setSearchValue] = useState("");
     const [allRecipes, setAllRecipes] = useState<RecipesSection[]>([]);
-
-    const { currentFilterOptions, filteredRecipes } = useFilterRecipes(allRecipes);
-    const { currentUser } = useAuth();
-    const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSections(
+    const [resultRecipes, setResultRecipes] = useState<Recipe[]>([]);
+    const {currentUser} = useAuth();
+    const {searchValue} = useSearch();
+    const {data: recommendedRecipes, loading: recommendedRecipesLoading} = useGetSections(
         currentUser ? currentUser.uid : "",
     );
+    const {data: searchResultRecipes, loading: searchResultRecipesLoading} = useGetRecipesBySearchQuery(
+        {variables: {value: searchValue}});
+    const {filteredRecipes} = useSectionsFilterRecipes(allRecipes);
+    const {currentCatalogFilterOptions, catalogFilteredRecipes} = useCatalogFilterRecipes(resultRecipes);
+
+    useEffect(() => {
+        setResultRecipes(!!searchResultRecipes?.recipesByValue ? searchResultRecipes.recipesByValue : []);
+    }, [searchResultRecipes]);
 
     const {
         recipesWithIsSaved: recipesData,
@@ -40,40 +47,17 @@ export const HomePage: FC = () => {
         setAllRecipes(initialRecipes);
     }, [currentUser, recipesData]);
 
-    const updateSearchResult = () => {
-        setSearchValue("");
-    };
-
     return (
-        <div>
-            <AsyncDataLoaderWrapper
-                loading={recommendedRecipesLoading || updateSavedStateLoading}
-                text="Finding the perfect recipes for you..."
-            >
-                <div className="header">
-                    {<FilterRecipes filterOptions={currentFilterOptions} />}
-                    <div className="search-manually">
-                        <div className="complete-search-bar">
-                            <TextField
-                                onChange={(event) => {
-                                    setSearchValue(event.target.value);
-                                }}
-                                className="search-bar"
-                                variant={undefined}
-                                type="text"
-                            />
-                            <Button onClick={updateSearchResult} className="search-button">
-                                <SearchIcon />
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-                <RecommendedFeed
-                    currentRecipes={filteredRecipes}
-                    isLoadingCurrentRecipes={updateSavedStateLoading}
-                    updateSavedStateInRecipesSection={updateIsSaved}
-                />
-            </AsyncDataLoaderWrapper>
-        </div>
+        <>
+            { !!searchValue && !!resultRecipes ?
+                <RecipesWithFiltersWrapper filterOptions={currentCatalogFilterOptions} loading={searchResultRecipesLoading} >
+                    <RecipesCatalog recipes={catalogFilteredRecipes}/>
+                </RecipesWithFiltersWrapper> :
+                <AsyncDataLoaderWrapper loading={recommendedRecipesLoading}
+                                        text="Finding the perfect recipes for you...">
+                    <RecommendedFeed currentRecipes={filteredRecipes} isLoadingCurrentRecipes={updateSavedStateLoading} updateSavedStateInRecipesSection={updateIsSaved}/>
+                </AsyncDataLoaderWrapper>
+            }
+        </>
     );
 };

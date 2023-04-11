@@ -1,5 +1,3 @@
-import "./CategoryCarousel.css";
-
 import { FC } from "react";
 import { Carousel, CarouselItem, CarouselProps } from "../../components/ui/Carousel";
 import { useNavigate } from "react-router-dom";
