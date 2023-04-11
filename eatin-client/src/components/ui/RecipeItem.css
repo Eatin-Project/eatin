@@ -1,13 +1,38 @@
 .recipe-item {
     position: relative;
     height: 10em;
-    width: 15em;
+    width: 18%;
     margin: 0.5em;
     cursor: pointer;
+    overflow: hidden;
+    border-radius: 5px;
 }
 
 .recipe-item img {
     object-fit: cover;
     height: 100%;
     width: 100%;
+}
+
+.recipe-item .item-name {
+    margin: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background-color: rgba(60, 74, 148, 0.5);
+    transition: 0.2s background-color, 0.2s transform;
+    font-size: 1em;
+    color: white;
+}
+
+/* hover over item */
+.recipe-item:hover .item-name {
+    background-color: rgba(60, 74, 148, 0.3) !important;
+    background-image: none;
+    transform: scale(1.03);
 }
