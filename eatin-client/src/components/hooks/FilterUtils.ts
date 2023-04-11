@@ -1,6 +1,4 @@
-import { FilterWrapper, Recipe } from "../types";
-
-type FilterableKeys = keyof Omit<Recipe, "is_saved">;
+import { FilterableKeys, FilterWrapper, Recipe } from "../types";
 
 export function assertEquals(item: Recipe, field: FilterableKeys, filter: string) {
     return item[field] === filter;
