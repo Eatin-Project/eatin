@@ -14,8 +14,6 @@ import { useAddIsSavedToRecipesSection } from "../../components/functions/useAdd
 import {useSearch} from "../../context/search-context";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 
-const _ = require("lodash");
-
 export const HomePage: FC = () => {
     const [allRecipes, setAllRecipes] = useState<RecipesSection[]>([]);
     const [resultRecipes, setResultRecipes] = useState<Recipe[]>([]);
