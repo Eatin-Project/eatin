@@ -18,32 +18,3 @@
 .recipes-btn:hover {
     border: black 1px solid !important;
 }
-
-.complete-search-bar .search-button {
-    background-color: #fd7269;
-    border-right: none;
-    padding: 1.1em;
-    cursor: pointer;
-    color: black;
-}
-
-.search-button:hover {
-    border: black 1px solid !important;
-    background-color: #fd7269 !important;
-}
-
-.header .search-result {
-    font-size: 3em;
-}
-
-.search-bar .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
-    color: #fd7269 !important;
-}
-
-.search-bar .MuiOutlinedInput-notchedOutline {
-    border: #fd7269 solid 1px;
-}
-
-.filter-dropdown .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
-    color: black !important;
-}

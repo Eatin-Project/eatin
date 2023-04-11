@@ -1,6 +1,6 @@
 import "./Navbar.css";
 
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 import { AppLogo } from "./AppLogo";
 import { useCallback, useState } from "react";
@@ -17,6 +17,7 @@ import {SearchBar} from "../ui/SearchBar";
 export const Navbar = () => {
     const navigate = useNavigate();
     const { currentUser, signOutUser } = useAuth();
+    const location = useLocation();
     const { data } = useGetUserByIdQuery({
         variables: { id: !!currentUser?.uid ? currentUser?.uid : "" },
     });
@@ -40,7 +41,7 @@ export const Navbar = () => {
             <div className="navbar">
                 <AppLogo onClick={goToHomePage} />
                 <div className="navbar-end">
-                    <SearchBar />
+                    {location.pathname === "/home" && <SearchBar />}
                     <Button style={{ color: "black" }} onClick={() => navigate("/profile")}>
                         <User
                             name={!!data ? data?.user.firstname + " " + data?.user.lastname : ""}

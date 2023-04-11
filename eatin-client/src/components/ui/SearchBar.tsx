@@ -1,4 +1,4 @@
-import "./RecipeItem.css";
+import "./SearchBar.css";
 
 import {FC, useState} from "react";
 import {Button, TextField} from "@mui/material";
@@ -19,6 +19,7 @@ export const SearchBar: FC = ({}) => {
                     onBlur={(event) => {
                         setTypeValue(event.target.value);
                     }}
+                    variant='standard'
                     className="search-bar"
                     type="text"
                 />
