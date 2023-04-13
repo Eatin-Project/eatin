@@ -1,22 +1,21 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function useGetSimilarRecipes(recipeIndex: number) {
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
 
-    const isDataFetched = useRef(false);
-
-    const fetchResults = useCallback(async () => {
-        try {
-            setLoading(true);
-            const res = await fetch(`http://localhost:8000/graphql`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    query: `query {
+    useEffect(() => {
+        (async function () {
+            try {
+                setLoading(true);
+                const res = await fetch(`http://localhost:8000/graphql`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        query: `query {
                             similar_recipes(recipe_index: ${recipeIndex}) {
                                 name
                                 recipes {
@@ -43,21 +42,17 @@ export function useGetSimilarRecipes(recipeIndex: number) {
                                 }
                             }
                         }`,
-                }),
-            });
-            const resJson = await res.json();
-            setData(resJson.data.similar_recipes);
-            setLoading(false);
-        } catch (e) {
-            console.log(`Error has occured in similar_recipes query - ${e}`);
-            setError(e);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (!isDataFetched.current) fetchResults();
-        isDataFetched.current = true;
-    }, []);
+                    }),
+                });
+                const resJson = await res.json();
+                setData(resJson.data.similar_recipes);
+                setLoading(false);
+            } catch (e) {
+                console.log(`Error has occured in similar_recipes query - ${e}`);
+                setError(e);
+            }
+        })();
+    }, [recipeIndex]);
 
     return { data, loading, error };
 }

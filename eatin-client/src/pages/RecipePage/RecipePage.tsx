@@ -1,6 +1,6 @@
 import "./RecipePage.css";
 import { FC, useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     useCreateRatingMutation,
     useGetRatingByRecipeAndUserQuery,
@@ -14,6 +14,7 @@ import { useAddIsSavedToRecipesSection } from "../../components/functions/useAdd
 import { useGetSimilarRecipes } from "../../graphql/queries/similar_recipes.query";
 import styled from "styled-components";
 import { Rating } from "@mui/material";
+import { Recipe } from "../../components/types";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
@@ -21,7 +22,7 @@ export const RecipePage: FC = () => {
     const [rating, setRating] = useState<number | null>(0);
     const { currentUser } = useAuth();
     const { notify } = useToastNotification();
-
+    const navigate = useNavigate();
     const { data: ratingData, loading: ratingLoading } = useGetRatingByRecipeAndUserQuery({
         variables: { id: currentUser ? currentUser?.uid : "", index: Number(id) },
     });
@@ -35,6 +36,7 @@ export const RecipePage: FC = () => {
     const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSimilarRecipes(
         Number(id),
     );
+    debugger;
     const {
         recipesWithIsSaved: recipesData,
         isLoading: updateSavedStateLoading,
@@ -181,20 +183,45 @@ export const RecipePage: FC = () => {
         <PageWrapper>
             <LeftSection>
                 <RecipeImage src={image}></RecipeImage>
-                <SimilarRecipes>
-                    <SimilarRecipesTitle>Similar Recipes</SimilarRecipesTitle>
-                    <Scrollable>
-                        <SimilarRecipe>
-                            <SmallImageWrapper>
-                                <SimilarRecipeImage src={image}></SimilarRecipeImage>
-                            </SmallImageWrapper>
-                            <SimilarRecipeDataWrapper>
-                                <SRTitle>{recipe_title}</SRTitle>
-                                <SRRating>{recipe.rating}</SRRating>
-                            </SimilarRecipeDataWrapper>
-                        </SimilarRecipe>
-                    </Scrollable>
-                </SimilarRecipes>
+                <AsyncDataLoaderWrapper
+                    loading={recommendedRecipesLoading}
+                    text="loading similar recipes..."
+                    spinnerHeight={"20%"}
+                    spinnerSize={"4em"}
+                >
+                    <SimilarRecipes>
+                        <SimilarRecipesTitle>{recommendedRecipes[0]?.name}</SimilarRecipesTitle>
+                        <Scrollable>
+                            {recommendedRecipes[0]?.recipes.map((similarRecipe: Recipe) => (
+                                <SimilarRecipe>
+                                    <SmallImageWrapper>
+                                        <SimilarRecipeImage
+                                            src={similarRecipe.image}
+                                        ></SimilarRecipeImage>
+                                    </SmallImageWrapper>
+                                    <SimilarRecipeDataWrapper>
+                                        <SRTitle
+                                            onClick={() =>
+                                                navigate("/recipe/" + similarRecipe.index)
+                                            }
+                                        >
+                                            {similarRecipe.recipe_title}
+                                        </SRTitle>
+                                        <SRRating>
+                                            <Rating
+                                                className="recipe-rating"
+                                                size="small"
+                                                value={similarRecipe.rating}
+                                                precision={0.5}
+                                                readOnly
+                                            />
+                                        </SRRating>
+                                    </SimilarRecipeDataWrapper>
+                                </SimilarRecipe>
+                            ))}
+                        </Scrollable>
+                    </SimilarRecipes>
+                </AsyncDataLoaderWrapper>
             </LeftSection>
             <RightSection>
                 <RecipeTitle>{recipe_title}</RecipeTitle>
@@ -278,7 +305,7 @@ const SRTitle = styled.div`
     font-size: 12px;
     line-height: 18px;
     text-decoration-line: underline;
-
+    cursor: pointer;
     color: #263238;
 `;
 
@@ -326,14 +353,14 @@ const Scrollable = styled.div`
 
 const SimilarRecipe = styled.div`
     display: flex;
-    margin: 1em 0 0 0;
+    margin: 1.5em 0 0 0;
 `;
 
 const SimilarRecipes = styled.div`
     display: flex;
     flex-direction: column;
-    margin: 1em 0 0 0;
-    max-height: 30em;
+    margin: 1.5em 0 0 0;
+    max-height: 100vh;
 `;
 
 const PageWrapper = styled.div`
