@@ -7,3 +7,7 @@
 .css-1c2i806-MuiFormLabel-root-MuiInputLabel-root.Mui-focused, .css-1c2i806-MuiFormLabel-root-MuiInputLabel-root {
     color: black !important;
 }
+
+.css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input.css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input.css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input {
+    text-align: left;
+}
