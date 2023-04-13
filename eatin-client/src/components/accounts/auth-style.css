@@ -1,0 +1,9 @@
+.css-v4u5dn-MuiInputBase-root-MuiInput-root:before, .css-v4u5dn-MuiInputBase-root-MuiInput-root:after,
+.css-m5hdmq-MuiInputBase-root-MuiInput-root-MuiSelect-root:before, .css-m5hdmq-MuiInputBase-root-MuiInput-root-MuiSelect-root:after,
+.css-l4u8b9-MuiInputBase-root-MuiInput-root:before, .css-l4u8b9-MuiInputBase-root-MuiInput-root:after {
+    border-bottom-color: #E14483 !important;
+}
+
+.css-1c2i806-MuiFormLabel-root-MuiInputLabel-root.Mui-focused, .css-1c2i806-MuiFormLabel-root-MuiInputLabel-root {
+    color: black !important;
+}
