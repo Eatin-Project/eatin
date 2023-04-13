@@ -41,3 +41,33 @@ html {
 .css-1e6y48t-MuiButtonBase-root-MuiButton-root {
     text-transform: none !important;
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #bcc6d2;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #eeeded;
+    border-radius: 8px;
+}
+
+.css-1c99szj-MuiRating-icon {
+    color: #E14026 !important;
+}
+
+.css-dqr9h-MuiRating-label {
+    display: inline;
+}
+
+.css-1algrk9-MuiRating-root {
+    color: #E14026 !important;
+}
+
+.css-ryrseu-MuiRating-root {
+    color: #E14026 !important;
+}
