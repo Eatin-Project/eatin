@@ -1,5 +1,5 @@
-import { FC, useState } from "react";
-import { Autocomplete, AutocompleteItem } from "../../ui/Autocomplete";
+import { FC } from "react";
+import { Autocomplete, AutocompleteItem } from "../../components/ui/Autocomplete";
 
 interface Props {
     values: AutocompleteItem[]; // TODO: change to ingredient type

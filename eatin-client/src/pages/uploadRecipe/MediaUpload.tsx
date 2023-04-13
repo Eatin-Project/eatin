@@ -1,4 +1,4 @@
-import { FileUpload } from "../../ui/FileUpload";
+import { FileUpload } from "../../components/ui/FileUpload";
 import { FC, useState } from "react";
 import { UploadImagesList } from "./UploadImagesList";
 
