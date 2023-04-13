@@ -1,13 +1,14 @@
 import { FC } from "react";
 import { Route, Routes } from "react-router";
-import { HomePage } from "../homePage/HomePage";
-import SignIn from "../components/accounts/sign-in";
-import SignUp from "../components/accounts/sign-up";
-import RequireAuth from "../components/require-auth";
-import Profile from "../components/accounts/profile";
 import { Navigate } from "react-router-dom";
+
+import { HomePage } from "../../pages/homePage/HomePage";
+import { RecipePage } from "../../pages/RecipePage/RecipePage";
+import SignIn from "../accounts/sign-in";
+import SignUp from "../accounts/sign-up";
+import RequireAuth from "../require-auth";
+import { Profile } from "../accounts/profile";
 import WithNav from "./WithNav";
-import { UploadRecipePage } from "../uploadRecipePage/UploadRecipePage";
 
 export const Router: FC = () => {
     return (
@@ -32,7 +33,15 @@ export const Router: FC = () => {
                         </RequireAuth>
                     }
                 />
-                <Route path="upload" element={<UploadRecipePage />} />
+                <Route
+                    path="recipe/:id"
+                    element={
+                        <RequireAuth>
+                            <RecipePage />
+                        </RequireAuth>
+                    }
+                />
+                <Route path="upload" />
             </Route>
             <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

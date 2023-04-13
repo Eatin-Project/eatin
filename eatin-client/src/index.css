@@ -1,0 +1,34 @@
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: 300 !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+    font-family: caviarDreams;
+    src: url('../src/assets/fonts/Caviar-Dreams/CaviarDreams.ttf');
+}
+
+@font-face {
+    font-family: caviarDreamsBold;
+    src: url('../src/assets/fonts/Caviar-Dreams/Caviar_Dreams_Bold.ttf');
+}
+
+@font-face {
+    font-family: coolvetica;
+    src: url('../src/assets/fonts/coolvetica/coolvetica rg.ttf');
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}

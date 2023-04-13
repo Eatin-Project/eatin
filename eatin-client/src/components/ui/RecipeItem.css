@@ -1,0 +1,13 @@
+.recipe-item {
+    position: relative;
+    height: 10em;
+    width: 15em;
+    margin: 0.5em;
+    cursor: pointer;
+}
+
+.recipe-item img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}

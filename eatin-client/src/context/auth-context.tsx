@@ -8,7 +8,6 @@ import {
 } from "react";
 import {createUserWithEmailAndPassword} from "@firebase/auth";
 import {auth} from "../firebase/firebase-config";
-import {useCreateUserMutation} from "../generated/graphql";
 
 interface Props {
     children?: ReactNode;
