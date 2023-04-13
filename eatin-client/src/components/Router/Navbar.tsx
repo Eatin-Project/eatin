@@ -9,6 +9,7 @@ import { useAuth } from "../../context/auth-context";
 import { User } from "../ui/User";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import AddIcon from "@mui/icons-material/Add";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, IconButton } from "@mui/material";
@@ -44,6 +45,13 @@ export const Navbar = () => {
                         />
                     </Button>
                     <div>
+                        <IconButton
+                            className="add-recipe"
+                            size="small"
+                            onClick={() => navigate("/upload")}
+                        >
+                            <AddIcon fontSize="small" />
+                        </IconButton>
                         <IconButton
                             id="basic-button"
                             aria-controls={open ? "basic-menu" : undefined}
