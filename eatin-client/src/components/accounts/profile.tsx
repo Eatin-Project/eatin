@@ -38,11 +38,13 @@ export const Profile: FC = () => {
         {
             name: "Category",
             options: Object.values(Category),
+            isMulti: true,
             setState: setCategoryFilter,
         },
         {
             name: "Cuisine",
             options: Object.values(Cuisine),
+            isMulti: true,
             setState: setCuisineFilter,
         },
     ];

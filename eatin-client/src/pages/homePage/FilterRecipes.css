@@ -4,53 +4,34 @@
     display: flex;
 }
 
-.filter-dropdown:hover {
-    border: black 1px solid !important;
-}
-
-.filter-dropdown {
-    border-radius: 25px;
-    border: #E14026 1px solid;
-    background-color: #F8F8F8 !important;
-    color: black !important;
-    margin-right: 0.5em !important;
-}
-
-/*.filter-dropdown .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {*/
-/*    font-size: 1em !important;*/
-/*}*/
-
-.filter-dropdown .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
-    color: black !important;
-    min-width: 5rem;
-    padding: 0 .3rem 1rem .3rem;
-}
-
-.filter-dropdown::selection {
-    border: none;
-}
-
-.filter-dropdown .MuiOutlinedInput-notchedOutline {
-    border: none;
-}
-
-.filter-dropdown .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
-    color: black;
-    font-size: 1.2em;
-}
-
-.filter-dropdown .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
-    color: black !important;
-}
-
 .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root, .css-1e6y48t-MuiButtonBase-root-MuiButton-root,
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input, .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root {
     font-family: 'Poppins-Regular', sans-serif !important;
     font-weight: 400 !important;
 }
 
-.trash-icon {
-    position: relative;
-    left: 0.5rem;
-    top: 0.5rem;
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+    border-radius: 25px !important;
+    min-width: 6rem !important;
+    max-height: 2em !important;
+}
+
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline, .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border: 1px solid #E14026 !important;
+}
+
+.css-1c2i806-MuiFormLabel-root-MuiInputLabel-root {
+    left: .8em !important;
+    top: -.5em !important;
+    z-index: 1;
+    background-color: #F8F8F8;
+}
+
+.css-aqpgxn-MuiFormLabel-root-MuiInputLabel-root {
+    top: -.9em !important;
+    left: .6em !important;
+}
+
+.css-vrp7az-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-vrp7az-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-vrp7az-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input :not([active]) {
+    padding: .4em !important;
 }

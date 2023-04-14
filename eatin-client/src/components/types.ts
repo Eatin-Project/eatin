@@ -25,6 +25,7 @@ export interface Recipe {
 export interface FilterOptions {
     name: string;
     options: string[];
+    isMulti: boolean;
     setState: (arg: string[]) => void;
 }
 

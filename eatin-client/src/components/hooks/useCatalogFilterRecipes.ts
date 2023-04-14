@@ -20,7 +20,7 @@ export function useCatalogFilterRecipes(initialRecipes: Recipe[]) {
     const [totalTimeFilter, setTotalTimeFilter] = useState([""]);
 
     const filters: FilterWrapper[] = [
-        { field: "category", filter: categoryFilter, operator:  assertEquals },
+        { field: "category", filter: categoryFilter, operator: assertEquals },
         { field: "cuisine", filter: cuisineFilter, operator: assertEquals },
         { field: "diet", filter: dietFilter, operator: assertEquals },
         { field: "difficulty", filter: difficultyFilter, operator: assertEquals },
@@ -59,31 +59,37 @@ export function useCatalogFilterRecipes(initialRecipes: Recipe[]) {
         {
             name: "Diet",
             options: Object.values(Diet),
+            isMulti: true,
             setState: setDietFilter,
         },
         {
             name: "Difficulty",
             options: Object.values(Difficulty),
+            isMulti: true,
             setState: setDifficultyFilter,
         },
         {
             name: "Rating",
             options: Object.values(Rating),
+            isMulti: false,
             setState: setRatingFilter,
         },
         {
             name: "Max Time",
             options: Object.values(CookingTime),
+            isMulti: false,
             setState: setTotalTimeFilter,
         },
         {
             name: "Category",
             options: Object.values(Category),
+            isMulti: true,
             setState: setCategoryFilter,
         },
         {
             name: "Cuisine",
             options: Object.values(Cuisine),
+            isMulti: true,
             setState: setCuisineFilter,
         },
     ];
