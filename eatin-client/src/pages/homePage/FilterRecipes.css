@@ -1,37 +1,13 @@
-.filter-recipes {
-    padding-top: 1em;
-    padding-left: 1em !important;
-    display: flex;
-}
-
 .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root, .css-1e6y48t-MuiButtonBase-root-MuiButton-root,
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input, .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root {
     font-family: 'Poppins-Regular', sans-serif !important;
     font-weight: 400 !important;
 }
 
-.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
-    border-radius: 25px !important;
-    min-width: 6rem !important;
-    max-height: 2em !important;
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked, .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
+    color: #E14026 !important;
 }
 
-.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline, .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border: 1px solid #E14026 !important;
-}
-
-.css-1c2i806-MuiFormLabel-root-MuiInputLabel-root {
-    left: .8em !important;
-    top: -.5em !important;
-    z-index: 1;
-    background-color: #F8F8F8;
-}
-
-.css-aqpgxn-MuiFormLabel-root-MuiInputLabel-root {
-    top: -.9em !important;
-    left: .6em !important;
-}
-
-.css-vrp7az-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-vrp7az-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-vrp7az-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input :not([active]) {
-    padding: .4em !important;
+.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
+    background-color: inherit !important;
 }
