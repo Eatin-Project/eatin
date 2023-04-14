@@ -15,8 +15,8 @@ import TabPanel from "@mui/joy/TabPanel";
 import {RecipesCatalog} from "../ui/RecipesCatalog";
 
 export const Profile: FC = () => {
-    const [categoryFilter, setCategoryFilter] = useState("");
-    const [cuisineFilter, setCuisineFilter] = useState("");
+    const [categoryFilter, setCategoryFilter] = useState([""]);
+    const [cuisineFilter, setCuisineFilter] = useState([""]);
     const { currentUser } = useAuth();
     const { data, error, loading } = useGetUserByIdQuery({
         variables: { id: !!currentUser?.uid ? currentUser?.uid : "" },

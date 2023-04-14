@@ -25,7 +25,7 @@ export interface Recipe {
 export interface FilterOptions {
     name: string;
     options: string[];
-    setState: (arg: string) => void;
+    setState: (arg: string[]) => void;
 }
 
 export interface RecipesSection {
@@ -37,6 +37,6 @@ export type FilterableKeys = keyof Omit<Recipe, "is_saved">;
 
 export interface FilterWrapper {
     field: FilterableKeys;
-    filter: string;
-    operator: (item: Recipe, field: FilterableKeys, filter: string) => void;
+    filter: string[];
+    operator: (item: Recipe, field: FilterableKeys, filter: string[]) => void;
 }

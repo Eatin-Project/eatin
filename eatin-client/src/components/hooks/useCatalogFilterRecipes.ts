@@ -12,12 +12,12 @@ const _ = require("lodash");
 
 export function useCatalogFilterRecipes(initialRecipes: Recipe[]) {
     const [catalogFilteredRecipes, setCatalogFilteredRecipes] = useState(initialRecipes);
-    const [categoryFilter, setCategoryFilter] = useState("");
-    const [cuisineFilter, setCuisineFilter] = useState("");
-    const [dietFilter, setDietFilter] = useState("");
-    const [difficultyFilter, setDifficultyFilter] = useState("");
-    const [ratingFilter, setRatingFilter] = useState("");
-    const [totalTimeFilter, setTotalTimeFilter] = useState("");
+    const [categoryFilter, setCategoryFilter] = useState([""]);
+    const [cuisineFilter, setCuisineFilter] = useState([""]);
+    const [dietFilter, setDietFilter] = useState([""]);
+    const [difficultyFilter, setDifficultyFilter] = useState([""]);
+    const [ratingFilter, setRatingFilter] = useState([""]);
+    const [totalTimeFilter, setTotalTimeFilter] = useState([""]);
 
     const filters: FilterWrapper[] = [
         { field: "category", filter: categoryFilter, operator:  assertEquals },
@@ -46,12 +46,12 @@ export function useCatalogFilterRecipes(initialRecipes: Recipe[]) {
     }, [initialRecipes])
 
     function resetFilters() {
-        setCategoryFilter("");
-        setCuisineFilter("");
-        setDietFilter("");
-        setDifficultyFilter("");
-        setRatingFilter("");
-        setTotalTimeFilter("");
+        setCategoryFilter([]);
+        setCuisineFilter([]);
+        setDietFilter([]);
+        setDifficultyFilter([]);
+        setRatingFilter([]);
+        setTotalTimeFilter([]);
     }
 
     // TODO: for now the options are hardcoded until we get all the recommended recipes and can have the filter accordingly

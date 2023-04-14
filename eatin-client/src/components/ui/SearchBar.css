@@ -20,15 +20,6 @@
     max-width: 20vw !important;
 }
 
-.complete-search-bar .search-button {
-    border-right: none;
-    padding: 0.25em 0 0.25em 0;
-    cursor: pointer;
-    color: black;
-    width: 0.5em !important;
-}
-
-.search-button:hover {
-    border: black 1px solid !important;
-    opacity: 0.8;
+.complete-search-bar .css-v4u5dn-MuiInputBase-root-MuiInput-root:before, .complete-search-bar .css-v4u5dn-MuiInputBase-root-MuiInput-root:after {
+    border-bottom-color: #E14026 !important;
 }
