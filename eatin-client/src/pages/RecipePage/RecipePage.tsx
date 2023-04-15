@@ -36,7 +36,7 @@ export const RecipePage: FC = () => {
     const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSimilarRecipes(
         Number(id),
     );
-    debugger;
+    // debugger;
     const {
         recipesWithIsSaved: recipesData,
         isLoading: updateSavedStateLoading,

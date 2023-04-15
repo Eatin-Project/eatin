@@ -5,7 +5,7 @@ import { Recipe } from "../types";
 
 export function useAddIsSavedToRecipesList(recipes: Recipe[]) {
     const { currentUser } = useAuth();
-    const { data: userRecipesData } = useGetUserrecipesByUserIdQuery({
+    const { data: userRecipesData, refetch } = useGetUserrecipesByUserIdQuery({
         variables: { userID: currentUser ? currentUser.uid : "" },
     });
     const [recipesWithIsSaved, setRecipesWithIsSaved] = useState<Recipe[]>([]);
@@ -40,6 +40,10 @@ export function useAddIsSavedToRecipesList(recipes: Recipe[]) {
         },
         [recipesWithIsSaved],
     );
+
+    useEffect(() => {
+        refetch({ userID: currentUser ? currentUser.uid : "" });
+    }, [currentUser, refetch]);
 
     useEffect(() => {
         addIsSavedToRecipesList();
