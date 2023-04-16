@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { Carousel, CarouselItem, CarouselProps } from "../../components/ui/Carousel";
+import { Carousel, CarouselProps } from "../../components/ui/Carousel";
 import { useNavigate } from "react-router-dom";
 import { Recipe } from "../../components/types";
-import { RecipeItemOverlay } from "../../components/ui/RecipeItemOverlay";
+import { ICarouselItem } from "../../components/ui/CarouselItem";
 
 type Props = Omit<CarouselProps, "items"> & {
     items: Recipe[];
@@ -12,23 +12,15 @@ type Props = Omit<CarouselProps, "items"> & {
 export const CategoryCarousel: FC<Props> = ({ items, updateSavedRecipes, ...props }) => {
     const navigate = useNavigate();
 
-    const carouselItems: CarouselItem<any>[] = items.map(
-        ({ image, index, recipe_title, is_saved }, i) => ({
+    const carouselItems: ICarouselItem<any>[] = items.map(
+        ({ image, index, recipe_title, is_saved, rating }, i) => ({
             image,
             id: index,
             title: recipe_title,
             itemValue: items[i],
-            renderItem: ({ rating, vote_count, index }) => (
-                <RecipeItemOverlay
-                    key={index}
-                    rating={rating}
-                    vote_count={vote_count}
-                    index={index}
-                    recipe_title={recipe_title}
-                    is_saved={is_saved}
-                    updateSavedRecipes={updateSavedRecipes}
-                />
-            ),
+            rating: rating,
+            isSaved: is_saved,
+            updateSavedRecipes: updateSavedRecipes,
         }),
     );
 
