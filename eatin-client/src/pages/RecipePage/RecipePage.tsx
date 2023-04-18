@@ -15,6 +15,7 @@ import { useGetSimilarRecipes } from "../../graphql/queries/similar_recipes.quer
 import styled from "styled-components";
 import { Rating } from "@mui/material";
 import { Recipe } from "../../components/types";
+import { redRatingStyle } from "../../components/ui/rating-styles";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
@@ -36,7 +37,7 @@ export const RecipePage: FC = () => {
     const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSimilarRecipes(
         Number(id),
     );
-    // debugger;
+
     const {
         recipesWithIsSaved: recipesData,
         isLoading: updateSavedStateLoading,
@@ -94,92 +95,6 @@ export const RecipePage: FC = () => {
     };
 
     return (
-        // <div>
-        //     <div className="recipe-page">
-        //         <div className="right-side">
-        //             <div className="recipe-media">
-        //                 <div className="above-image">
-        //                     <User name={author}>
-        //                         <Rating
-        //                             className="recipe-rating"
-        //                             size="large"
-        //                             value={rating}
-        //                             onChange={(event, newValue) => {
-        //                                 updateRating(newValue);
-        //                             }}
-        //                             precision={0.5}
-        //                         />
-        //                         <span className="tag">{vote_count}</span>
-        //                     </User>
-        //                     <BookmarkButton
-        //                         recipeID={Number(id)}
-        //                         recipeName={recipe_title}
-        //                         isClicked={isSaved}
-        //                         onChange={(value) => setIsSaved(value)}
-        //                         size="large"
-        //                     />
-        //                 </div>
-        //                 <RecipeImageCarousel images={[image, image]} />
-        //             </div>
-        //             <div className="comments">
-        //                 {comments.map((comment, i) => (
-        //                     <Comment {...comment} key={i} />
-        //                 ))}
-        //             </div>
-        //         </div>
-        //         <div className="recipe-data">
-        //             <div className="tags">
-        //                 <h4>{recipe_title}</h4>
-        //                 {[
-        //                     "category: " + category,
-        //                     "cuisine: " + cuisine,
-        //                     "course: " + course,
-        //                     "record health: " + record_health,
-        //                     "prep time: " + prep_time,
-        //                     "cook time: " + cook_time,
-        //                     "diet: " + diet,
-        //                     "difficulty: " + difficulty,
-        //                 ].map((tag) => (
-        //                     <span className="tag" key={tag}>
-        //                         {tag}
-        //                     </span>
-        //                 ))}
-        //             </div>
-        //             <p>{description}</p>
-        //             <h5>ingredients:</h5>
-        //             <ul className="ingredients-list">
-        //                 {_parseStringArray(ingredients).map((ingredient, i) => (
-        //                     <li key={`${ingredient}-${i}`}>{ingredient}</li>
-        //                 ))}
-        //             </ul>
-        //             <h5>How to cook?</h5>
-        //             <ol>
-        //                 {_parseStringArray(instructions).map((instruction, i) => (
-        //                     <li key={`${instruction}-${i}`}>{instruction}</li>
-        //                 ))}
-        //             </ol>
-        //             <div className="tags">
-        //                 <h5>Tags: </h5>
-        //                 {_parseStringArray(tags).map((tag) => (
-        //                     <span className="tag" key={tag}>
-        //                         {tag}
-        //                     </span>
-        //                 ))}
-        //             </div>
-        //             <div className="url">
-        //                 source url:{" "}
-        //                 <a href={url} target="_blank" rel="noreferrer">
-        //                     {url}
-        //                 </a>
-        //             </div>
-        //         </div>
-        //     </div>
-        //     <RecommendedFeed
-        //         currentRecipes={recipesData}
-        //         isLoadingCurrentRecipes={updateSavedStateLoading}
-        //         updateSavedStateInRecipesSection={updateIsSaved}
-        //     />
-        // </div>
         <PageWrapper>
             <LeftSection>
                 <RecipeImage src={image}></RecipeImage>
@@ -209,6 +124,7 @@ export const RecipePage: FC = () => {
                                         </SRTitle>
                                         <SRRating>
                                             <Rating
+                                                sx={redRatingStyle}
                                                 className="recipe-rating"
                                                 size="small"
                                                 value={similarRecipe.rating}
@@ -227,6 +143,7 @@ export const RecipePage: FC = () => {
                 <RecipeTitle>{recipe_title}</RecipeTitle>
                 <RecipeRating>
                     <Rating
+                        sx={redRatingStyle}
                         className="recipe-rating"
                         size="small"
                         value={rating}
