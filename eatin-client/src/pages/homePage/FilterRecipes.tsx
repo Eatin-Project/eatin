@@ -1,8 +1,7 @@
 import "./FilterRecipes.css";
 
 import {
-    Checkbox, Fab,
-    FormControl,
+    Checkbox, FormControl,
     InputLabel,
     ListItemText,
     MenuItem,
@@ -14,12 +13,14 @@ import {FC, useState} from "react";
 import {FilterOptions} from "../../components/types";
 import styled from "styled-components";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {SearchBar} from "../../components/ui/SearchBar";
 
 interface Props {
     filterOptions: FilterOptions[];
+    isSearch: boolean;
 }
 
-export const FilterRecipes: FC<Props> = ({filterOptions}) => {
+export const FilterRecipes: FC<Props> = ({filterOptions, isSearch}) => {
     const [filterValues, setFilterValues] = useState<string[][]>([[]]);
 
     const setNewValues = (optionIndex: number, event: SelectChangeEvent<string[]>) => {
@@ -39,8 +40,9 @@ export const FilterRecipes: FC<Props> = ({filterOptions}) => {
 
     return (
         <FiltersContainer className="p-2">
-            {filterOptions.map((filterOption, optionIndex) => (
-                <FormControlWrapper variant="standard" className="w-50 me-3">
+            <SearchBar/>
+            {isSearch && filterOptions.map((filterOption, optionIndex) => (
+                <FormControlWrapper variant="standard" className="w-50 mx-2">
                     <InputLabel>{filterOption.name}</InputLabel>
                     <Select
                         key={`${optionIndex}-${filterOption.name}}`}
@@ -57,7 +59,7 @@ export const FilterRecipes: FC<Props> = ({filterOptions}) => {
                         {filterOption.options.map((option, i) => (
                             <MenuItem value={option} key={`${i}-${option}`}>
                                 <Checkbox
-                                          checked={!!filterValues[optionIndex] && filterValues[optionIndex].indexOf(option) > -1}/>
+                                    checked={!!filterValues[optionIndex] && filterValues[optionIndex].indexOf(option) > -1}/>
                                 <ListItemText primary={option}/>
                             </MenuItem>
                         ))}
@@ -72,10 +74,11 @@ export const FilterRecipes: FC<Props> = ({filterOptions}) => {
 export const FiltersContainer = styled.div`
   display: flex;
   margin: 1em;
-  padding: .8em !important;
+  padding: 1em 1.5em 1em 1.5em !important;
   background-color: #F8F8F8;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 40px;
+  width: fit-content;
 
   .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
     border-radius: 25px !important;
@@ -85,6 +88,10 @@ export const FiltersContainer = styled.div`
 
   .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline, .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
     border: 1px solid #E14026 !important;
+  }
+
+  .css-1nrlq1o-MuiFormControl-root {
+    max-width: 9em !important;
   }
 
   .css-1c2i806-MuiFormLabel-root-MuiInputLabel-root {
@@ -111,6 +118,6 @@ export const FiltersContainer = styled.div`
 
 export const FormControlWrapper = styled(FormControl)`
   :last-child {
-    margin: 0 !important;
+    margin-right: 0 !important;
   }
 `;

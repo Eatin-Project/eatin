@@ -55,7 +55,7 @@ export const Profile: FC = () => {
                 <div className="profile-header">
                     <User size="large" name={data?.user.firstname + " " + data?.user.lastname} />
                     <div className="profile-filters">
-                        {<FilterRecipes filterOptions={currentFilterOptions} />}
+                        {<FilterRecipes filterOptions={currentFilterOptions} isSearch={false}/>}
                     </div>
                 </div>
                 <div>

@@ -32,11 +32,12 @@ export const ColumnWrapper = styled.div`
 export const Container = styled.div`
   background: #E14026;
   height: 100%;
-  overflow-y: hidden;
+  overflow: hidden;
 `;
 
 export const Form = styled.form`
-  padding: 15% 29% 20% 26%;
+  width: 50%;
+  height: 70%;
 `;
 
 export const Card = styled.div`

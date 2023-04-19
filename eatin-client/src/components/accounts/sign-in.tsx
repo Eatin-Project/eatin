@@ -57,42 +57,44 @@ function SignIn() {
                     <div className="d-flex ms-3 mt-3">
                         <MediumLogo/>
                     </div>
-                    <Form onSubmit={handleSubmit}>
-                        <div className="my-3">
-                            <FormInput
-                                name="email"
-                                type="email"
-                                className="w-100"
-                                required
-                                label="Email"
-                                variant="standard"
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <FormInput
-                                name="password"
-                                type="password"
-                                className="w-100"
-                                required
-                                label="Password"
-                                variant="standard"
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="d-grid mb-2">
-                            <ButtonWrapper
-                                type="submit"
-                                disabled={loading}
-                                className="btn btn-primary"
-                            >
-                                Sign In
-                            </ButtonWrapper>
-                        </div>
-                        <div className="forgot-password text-right mt-5">
-                            Don't have an account? <A href="/signUp">Sign Up</A>
-                        </div>
-                    </Form>
+                    <div className="d-flex align-items-center justify-content-center w-100 h-100">
+                        <Form onSubmit={handleSubmit}>
+                            <div className="my-3">
+                                <FormInput
+                                    name="email"
+                                    type="email"
+                                    className="w-100"
+                                    required
+                                    label="Email"
+                                    variant="standard"
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <FormInput
+                                    name="password"
+                                    type="password"
+                                    className="w-100"
+                                    required
+                                    label="Password"
+                                    variant="standard"
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="d-grid mb-2">
+                                <ButtonWrapper
+                                    type="submit"
+                                    disabled={loading}
+                                    className="btn btn-primary"
+                                >
+                                    Sign In
+                                </ButtonWrapper>
+                            </div>
+                            <div className="forgot-password text-right mt-5">
+                                Don't have an account? <A href="/signUp">Sign Up</A>
+                            </div>
+                        </Form>
+                    </div>
                 </Card>
             </Wrapper>
         </Container>

@@ -9,10 +9,10 @@ import {useGetRecipesBySearchQuery} from "../../generated/graphql";
 import {useSectionsFilterRecipes} from "../../components/hooks/useSectionsFilterRecipes";
 import {RecipesCatalog} from "../../components/ui/RecipesCatalog";
 import {useCatalogFilterRecipes} from "../../components/hooks/useCatalogFilterRecipes";
-import RecipesWithFiltersWrapper from "../../components/ui/RecipesWithFiltersWrapper";
 import { useAddIsSavedToRecipesSection } from "../../components/functions/useAddIsSavedToRecipesSection";
 import {useSearch} from "../../context/search-context";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
+import {FilterRecipes} from "./FilterRecipes";
 
 export const HomePage: FC = () => {
     const [allRecipes, setAllRecipes] = useState<RecipesSection[]>([]);
@@ -49,10 +49,11 @@ export const HomePage: FC = () => {
 
     return (
         <>
+            <FilterRecipes key={currentCatalogFilterOptions.length} filterOptions={currentCatalogFilterOptions} isSearch={!!searchValue && !!resultRecipes}/>
             { !!searchValue && !!resultRecipes ?
-                <RecipesWithFiltersWrapper filterOptions={currentCatalogFilterOptions} loading={searchResultRecipesLoading} >
+                <AsyncDataLoaderWrapper loading={searchResultRecipesLoading} text="Searching the perfect recipes for you...">
                     <RecipesCatalog recipes={catalogFilteredRecipes}/>
-                </RecipesWithFiltersWrapper> :
+                </AsyncDataLoaderWrapper> :
                 <AsyncDataLoaderWrapper loading={recommendedRecipesLoading}
                                         text="Finding the perfect recipes for you...">
                     <RecommendedFeed currentRecipes={filteredRecipes} isLoadingCurrentRecipes={updateSavedStateLoading} updateSavedStateInRecipesSection={updateIsSaved}/>

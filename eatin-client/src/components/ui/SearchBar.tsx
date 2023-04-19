@@ -13,20 +13,29 @@ export const SearchBar: FC = ({}) => {
         setSearchValue(typeValue);
     };
 
+    const clickSearch = () => {
+        searchButton.click();
+    }
+
+    let searchButton: HTMLButtonElement;
+
     return (
         <div className="search-manually">
             <div className="complete-search-bar">
                 <TextField
-                    onBlur={(event) => {
+                    onChange={(event) => {
                         setTypeValue(event.target.value);
                     }}
+                    onBlur={clickSearch}
+                    onKeyDown={(event: { keyCode: number; }) => event.keyCode === 13 ? clickSearch() : ''}
                     placeholder="Search Recipe..."
                     variant='standard'
                     className="search-bar"
                     type="text"
+                    autoComplete="off"
                 />
                 <SearchFab variant='extended' size="small" onClick={updateSearchValue} color="primary"
-                     aria-label="search">
+                           aria-label="search" ref={node => (!!node ? searchButton = node : '')}>
                     <SearchIcon/>
                 </SearchFab>
             </div>
@@ -36,6 +45,7 @@ export const SearchBar: FC = ({}) => {
 
 export const SearchFab = styled(Fab)`
   background: linear-gradient(90deg, #E04490 0%, #E14026 47.92%, #E5622D 98.44%);
+
   &:hover {
     opacity: 0.9;
   }

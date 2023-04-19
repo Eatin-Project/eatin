@@ -110,111 +110,113 @@ function SignUp() {
                     <div className="d-flex ms-3 mt-3">
                         <MediumLogo/>
                     </div>
-                    <Form onSubmit={handleSubmit}>
-                        <div className="my-3 d-flex">
-                            <FormInput
-                                name="firstName"
-                                type="text"
-                                className="w-50 me-3"
-                                required
-                                label="First Name"
-                                variant="standard"
-                                onChange={handleChange}
-                            />
-                            <FormInput
-                                name="lastName"
-                                type="text"
-                                className="w-50 ms-3"
-                                required
-                                label="Last Name"
-                                variant="standard"
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="my-3">
-                            <FormInput
-                                name="email"
-                                type="email"
-                                className="w-100"
-                                required
-                                label="Email"
-                                variant="standard"
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <FormInput
-                                name="password"
-                                type="password"
-                                className="w-100"
-                                required
-                                label="Password"
-                                variant="standard"
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <FormInput
-                                name="phone"
-                                type="number"
-                                className="w-100"
-                                required
-                                label="Phone Number"
-                                variant="standard"
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="my-3 d-flex">
-                            <FormControl variant="standard" className="w-50 me-3">
-                                <InputLabel id="gender-select-label">Gender</InputLabel>
-                                <Select
-                                    labelId="gender-label"
-                                    id="gender-select"
+                    <div className="d-flex align-items-center justify-content-center w-100 h-100">
+                        <Form onSubmit={handleSubmit}>
+                            <div className="my-3 d-flex">
+                                <FormInput
+                                    name="firstName"
+                                    type="text"
+                                    className="w-50 me-3"
                                     required
-                                    value={formFields.gender}
-                                    onChange={handleGenderChange}
-                                    label="Gender"
-                                >
-                                    {Object.keys(Gender)?.map((gender) => (
-                                        <MenuItem key={gender} value={gender}>{gender}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                            <LocalizationProvider className="w-50" dateAdapter={AdapterDayjs}>
-                                <DatePicker
-                                    className="ms-3"
-                                    slotProps={{textField: {variant: 'standard'}}}
-                                    label="Date Of Birth"
-                                    value={birthDate}
-                                    onChange={(date) => setBirthDate(date)}
+                                    label="First Name"
+                                    variant="standard"
+                                    onChange={handleChange}
                                 />
-                            </LocalizationProvider>
-                        </div>
-                        <div className="mb-3">
-                            <Autocomplete
-                                disablePortal
-                                id="combo-box-country"
-                                options={Object.values(Country)}
-                                onChange={(event: any, newValue: string | null) => {
-                                    handleCountryChange(!!newValue ? newValue : '');
-                                }}
-                                renderInput={(params) => <FormInput {...params} variant="standard" required
-                                                                    label="Country"/>}
-                            />
-                        </div>
-                        <div className="d-grid mb-2">
-                            <ButtonWrapper
-                                type="submit"
-                                disabled={loading}
-                                className="btn btn-primary"
-                            >
-                                Submit
-                            </ButtonWrapper>
-                        </div>
-                        <div className="forgot-password text-right mt-5">
-                            Already have an account? <A href="/signIn">Sign In</A>
-                        </div>
-                    </Form>
+                                <FormInput
+                                    name="lastName"
+                                    type="text"
+                                    className="w-50 ms-3"
+                                    required
+                                    label="Last Name"
+                                    variant="standard"
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="my-3">
+                                <FormInput
+                                    name="email"
+                                    type="email"
+                                    className="w-100"
+                                    required
+                                    label="Email"
+                                    variant="standard"
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <FormInput
+                                    name="password"
+                                    type="password"
+                                    className="w-100"
+                                    required
+                                    label="Password"
+                                    variant="standard"
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <FormInput
+                                    name="phone"
+                                    type="number"
+                                    className="w-100"
+                                    required
+                                    label="Phone Number"
+                                    variant="standard"
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="my-3 d-flex">
+                                <FormControl variant="standard" className="w-50 me-3">
+                                    <InputLabel id="gender-select-label">Gender</InputLabel>
+                                    <Select
+                                        labelId="gender-label"
+                                        id="gender-select"
+                                        required
+                                        value={formFields.gender}
+                                        onChange={handleGenderChange}
+                                        label="Gender"
+                                    >
+                                        {Object.keys(Gender)?.map((gender) => (
+                                            <MenuItem key={gender} value={gender}>{gender}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                                <LocalizationProvider className="w-50" dateAdapter={AdapterDayjs}>
+                                    <DatePicker
+                                        className="ms-3"
+                                        slotProps={{textField: {variant: 'standard'}}}
+                                        label="Date Of Birth"
+                                        value={birthDate}
+                                        onChange={(date) => setBirthDate(date)}
+                                    />
+                                </LocalizationProvider>
+                            </div>
+                            <div className="mb-3">
+                                <Autocomplete
+                                    disablePortal
+                                    id="combo-box-country"
+                                    options={Object.values(Country)}
+                                    onChange={(event: any, newValue: string | null) => {
+                                        handleCountryChange(!!newValue ? newValue : '');
+                                    }}
+                                    renderInput={(params) => <FormInput {...params} variant="standard" required
+                                                                        label="Country"/>}
+                                />
+                            </div>
+                            <div className="d-grid mb-2">
+                                <ButtonWrapper
+                                    type="submit"
+                                    disabled={loading}
+                                    className="btn btn-primary"
+                                >
+                                    Submit
+                                </ButtonWrapper>
+                            </div>
+                            <div className="forgot-password text-right mt-5">
+                                Already have an account? <A href="/signIn">Sign In</A>
+                            </div>
+                        </Form>
+                    </div>
                 </Card>
             </Wrapper>
         </Container>
