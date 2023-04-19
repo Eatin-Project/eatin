@@ -31,7 +31,7 @@ export class UserrecipesService {
     return this.userRecipesRepository.findBy({ recipe_index: recipeID });
   }
 
-  findByUser(userID: string): Promise<Userrecipes[]> {
+  async findByUser(userID: string): Promise<Userrecipes[]> {
     return this.userRecipesRepository.findBy({ user_id: userID });
   }
 
@@ -55,10 +55,7 @@ export class UserrecipesService {
     });
   }
 
-  async findByUserAndRecipe(
-    userID: string,
-    recipeID: number,
-  ): Promise<Userrecipes> {
+  findByUserAndRecipe(userID: string, recipeID: number): Promise<Userrecipes> {
     return this.userRecipesRepository.findOne({
       where: { user_id: userID, recipe_index: recipeID },
     });
@@ -72,6 +69,14 @@ export class UserrecipesService {
     return this.userRecipesRepository.findOne({
       where: { user_id: userID, recipe_index: recipeID, is_saved: isSaved },
     });
+  }
+
+  async findByUserWithRecipe(userID: string): Promise<Userrecipes[]> {
+    return await this.userRecipesRepository
+      .createQueryBuilder('userrecipe')
+      .leftJoinAndSelect('userrecipe.recipe', 'recipe')
+      .where('userrecipe.user_id = :userID', { userID })
+      .getMany();
   }
 
   async removeUserRecipe(

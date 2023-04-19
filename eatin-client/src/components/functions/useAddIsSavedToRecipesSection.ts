@@ -5,7 +5,7 @@ import { Recipe, RecipesSection } from "../types";
 
 export function useAddIsSavedToRecipesSection(recipes: RecipesSection[]) {
     const { currentUser } = useAuth();
-    const { data: userRecipesData } = useGetUserrecipesByUserIdQuery({
+    const { data: userRecipesData, refetch } = useGetUserrecipesByUserIdQuery({
         variables: { userID: currentUser ? currentUser.uid : "" },
     });
     const [recipesWithIsSaved, setRecipesWithIsSaved] = useState<RecipesSection[]>([]);
@@ -41,15 +41,20 @@ export function useAddIsSavedToRecipesSection(recipes: RecipesSection[]) {
                 const recipeInSectionIndex: number = section.recipes.findIndex(
                     (val) => val.index === recipeIndex,
                 );
+                const newSection = { ...section };
                 if (recipeInSectionIndex !== -1) {
-                    section.recipes[recipeInSectionIndex].is_saved = isSaved;
+                    newSection.recipes[recipeInSectionIndex].is_saved = isSaved;
                 }
-                return section;
+                return newSection;
             });
             setRecipesWithIsSaved([...updatedStateRecipes]);
         },
         [recipesWithIsSaved],
     );
+
+    useEffect(() => {
+        refetch({ userID: currentUser ? currentUser.uid : "" });
+    }, [currentUser, refetch]);
 
     useEffect(() => {
         addIsSavedToRecipesSection();
