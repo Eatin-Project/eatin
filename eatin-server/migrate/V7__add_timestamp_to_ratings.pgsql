@@ -1,0 +1,1 @@
+alter table ratings add column rating_timestamp timestamp not null default now();

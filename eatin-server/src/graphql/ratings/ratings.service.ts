@@ -1,40 +1,47 @@
-import {Injectable} from "@nestjs/common";
-import {InjectRepository} from "@nestjs/typeorm";
-import {Repository, UpdateResult} from 'typeorm';
-import {Ratings} from "./ratings.model";
-import {RatingDTO} from "./ratings.dto";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Ratings } from './ratings.model';
+import { RatingDTO } from './ratings.dto';
 
 @Injectable()
 export class RatingsService {
-    constructor(
-        @InjectRepository(Ratings)
-        private ratingsRepository: Repository<Ratings>
-    ) {
+  constructor(
+    @InjectRepository(Ratings)
+    private ratingsRepository: Repository<Ratings>,
+  ) {}
+
+  async create(details: RatingDTO): Promise<Ratings> {
+    const previousRating = await this.findByUserAndRecipe(
+      details.user_id,
+      details.recipe_index,
+    );
+    if (!!previousRating) {
+      Object.assign(previousRating, {
+        rating: details.rating,
+        rating_timestamp: new Date(),
+      });
+      return this.ratingsRepository.save(previousRating);
     }
 
-    async create(details: RatingDTO): Promise<Ratings> {
-        let previousRating = await this.findByUserAndRecipe(details.user_id, details.recipe_index);
-        if (!!previousRating) {
-            Object.assign(previousRating, {'rating': details.rating});
-            return this.ratingsRepository.save(previousRating);
-        }
+    return this.ratingsRepository.save(details);
+  }
 
-        return this.ratingsRepository.save(details);
-    }
+  findAll(): Promise<Ratings[]> {
+    return this.ratingsRepository.find();
+  }
 
-    findAll(): Promise<Ratings[]> {
-        return this.ratingsRepository.find();
-    }
+  findByRecipe(index: number): Promise<Ratings[]> {
+    return this.ratingsRepository.findBy({ recipe_index: index });
+  }
 
-    findByRecipe(index: number): Promise<Ratings[]> {
-        return this.ratingsRepository.findBy({recipe_index: index});
-    }
+  findByUser(id: string): Promise<Ratings[]> {
+    return this.ratingsRepository.findBy({ user_id: id });
+  }
 
-    findByUser(id: string): Promise<Ratings[]> {
-        return this.ratingsRepository.findBy({user_id: id});
-    }
-
-    findByUserAndRecipe(id: string, index: number): Promise<Ratings> {
-        return this.ratingsRepository.findOne({where: {user_id: id, recipe_index: index}});
-    }
+  findByUserAndRecipe(id: string, index: number): Promise<Ratings> {
+    return this.ratingsRepository.findOne({
+      where: { user_id: id, recipe_index: index },
+    });
+  }
 }

@@ -45,6 +45,7 @@ type Ratings {
   user_id: String!
   recipe_index: Float!
   rating: Float!
+  rating_timestamp: DateTime!
 }
 
 type Userrecipes {
