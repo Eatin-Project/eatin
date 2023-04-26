@@ -26,18 +26,18 @@ export type CarouselItemProps = ICarouselItem & {
 };
 
 export const CarouselItem: FC<CarouselItemProps> = ({
-    width,
-    id,
-    itemIndex,
-    image,
-    randomColors,
-    onClick,
-    rating,
-    isSaved,
-    updateSavedRecipes,
-    itemValue,
-    title,
-}) => {
+                                                        width,
+                                                        id,
+                                                        itemIndex,
+                                                        image,
+                                                        randomColors,
+                                                        onClick,
+                                                        rating,
+                                                        isSaved,
+                                                        updateSavedRecipes,
+                                                        itemValue,
+                                                        title,
+                                                    }) => {
     const handleClick = useCallback(() => onClick?.(id), [id, onClick]);
     const [isRecipeSaved, setIsRecipeSaved] = useState(isSaved);
     const { insertNewUserRecipe } = useInsertNewUserRecipe();
@@ -58,25 +58,25 @@ export const CarouselItem: FC<CarouselItemProps> = ({
     };
 
     return (
-        <CarouselItemWrapper onClick={handleClick}>
-            <CarouselItemImageWrapper>
-                <RecipeBookmarkIcon
-                    sx={{ color: isRecipeSaved ? "#E14026" : "#B0B0B0" }}
-                    onClick={(event) => handleBookmarkClicked(event)}
-                />
-                <RecipeRatingWrapper>
-                    <RecipeRating
-                        sx={whiteRatingStyle}
-                        size="small"
-                        value={rating}
-                        precision={0.5}
-                        readOnly
-                    />
-                </RecipeRatingWrapper>
-                <CarouselItemImage src={image} />
-            </CarouselItemImageWrapper>
-            <CarouselItemTitle>{title}</CarouselItemTitle>
-        </CarouselItemWrapper>
+      <CarouselItemWrapper onClick={handleClick}>
+          <CarouselItemImageWrapper>
+              <RecipeBookmarkIcon
+                sx={{ color: isRecipeSaved ? "#E14026" : "#B0B0B0" }}
+                onClick={(event) => handleBookmarkClicked(event)}
+              />
+              <RecipeRatingWrapper>
+                  <RecipeRating
+                    sx={whiteRatingStyle}
+                    size="small"
+                    value={rating}
+                    precision={0.5}
+                    readOnly
+                  />
+              </RecipeRatingWrapper>
+              <CarouselItemImage src={image} />
+          </CarouselItemImageWrapper>
+          <CarouselItemTitle>{title}</CarouselItemTitle>
+      </CarouselItemWrapper>
     );
 };
 
@@ -111,7 +111,7 @@ const CarouselItemImageWrapper = styled.div`
 const CarouselItemTitle = styled.div`
     font-style: normal;
     font-weight: 600;
-    font-size: 10px;
+    font-size: 13px;
     line-height: 15px;
     text-align: left;
     color: #263238;
