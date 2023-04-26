@@ -4,6 +4,7 @@
     position: relative;
     align-items: center;
     width: 100%;
+    margin: 0.3rem 0 1.3rem 0;
 }
 
 .carousel {
@@ -22,7 +23,7 @@
     align-self: flex-start;
     font-style: normal;
     font-weight: 400;
-    font-size: 13px;
+    font-size: 16px;
     line-height: 20px;
     color: #726D6D;
 }
