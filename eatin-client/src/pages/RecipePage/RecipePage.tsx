@@ -16,10 +16,12 @@ import styled from "styled-components";
 import { Rating } from "@mui/material";
 import { Recipe } from "../../components/types";
 import { redRatingStyle } from "../../components/ui/rating-styles";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { useInsertNewUserRecipe } from "../../components/functions/useInsertNewUserRecipe";
+import { useDeleteUserRecipe } from "../../components/functions/useDeleteUserRecipe";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
-    const [isSaved, setIsSaved] = useState(false);
     const [rating, setRating] = useState<number | null>(0);
     const { currentUser } = useAuth();
     const { notify } = useToastNotification();
@@ -34,6 +36,7 @@ export const RecipePage: FC = () => {
         useGetUserrecipesByRecipeAndUserQuery({
             variables: { recipeID: Number(id), userID: currentUser ? currentUser?.uid : "" },
         });
+    const [isSaved, setIsSaved] = useState(false);
     const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSimilarRecipes(
         Number(id),
     );
@@ -43,7 +46,8 @@ export const RecipePage: FC = () => {
         isLoading: updateSavedStateLoading,
         updateIsSaved,
     } = useAddIsSavedToRecipesSection(recommendedRecipes);
-
+    const { insertNewUserRecipe } = useInsertNewUserRecipe();
+    const { deleteNewUserRecipe } = useDeleteUserRecipe();
     const recipe = useMemo(() => recipeData?.recipe, [recipeData?.recipe]);
     const [createRating] = useCreateRatingMutation();
 
@@ -87,6 +91,19 @@ export const RecipePage: FC = () => {
             }).then((rating) => console.log(rating.data));
         }
     }
+
+    const handleBookmarkClicked = (event: any) => {
+        event.stopPropagation();
+        if (isSaved) {
+            deleteNewUserRecipe(Number(id));
+            notify(`${recipe_title}, was removed`);
+        } else {
+            insertNewUserRecipe(Number(id), true);
+            notify(`${recipe_title}, was saved`);
+        }
+
+        setIsSaved(!isSaved);
+    };
 
     const updateRating = (newValue: number | null) => {
         setRating(newValue);
@@ -140,7 +157,13 @@ export const RecipePage: FC = () => {
                 </AsyncDataLoaderWrapper>
             </LeftSection>
             <RightSection>
-                <RecipeTitle>{recipe_title}</RecipeTitle>
+                <TitleContainer>
+                    <RecipeBookmarkIcon
+                        sx={{ color: isSaved ? "#E14026" : "#B0B0B0" }}
+                        onClick={(event) => handleBookmarkClicked(event)}
+                    />
+                    <RecipeTitle>{recipe_title}</RecipeTitle>
+                </TitleContainer>
                 <RecipeRating>
                     <Rating
                         sx={redRatingStyle}
@@ -177,6 +200,16 @@ export const RecipePage: FC = () => {
     );
 };
 
+const RecipeBookmarkIcon = styled(BookmarkIcon)`
+    margin: 0.2rem 0.1rem 0 0;
+    cursor: pointer;
+
+    &:hover {
+        color: #e14026;
+        transition: 0.2s;
+    }
+`;
+
 const RecipeContentList = styled.div`
     font-weight: 350;
     font-size: 14px;
@@ -198,7 +231,14 @@ const Separator = styled.div`
     backdrop-filter: blur(2px);
 `;
 
-const RecipeRating = styled.div``;
+const RecipeRating = styled.div`
+    display: flex;
+`;
+
+const TitleContainer = styled.div`
+    display: flex;
+`;
+
 const RecipeTitle = styled.div`
     color: #263238;
     font-size: 23px;
