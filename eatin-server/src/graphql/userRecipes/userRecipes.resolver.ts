@@ -52,6 +52,13 @@ export class UserrecipeResolver {
   }
 
   @Query((returns) => [Userrecipes])
+  async userRecipesByUserWithRecipe(
+    @Args('userID') userID: string,
+  ): Promise<Userrecipes[]> {
+    return await this.userRecipesService.findByUserWithRecipe(userID);
+  }
+
+  @Query((returns) => [Userrecipes])
   async userRecipes(): Promise<Userrecipes[]> {
     return await this.userRecipesService.findAll();
   }

@@ -5,17 +5,10 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Skeleton } from "@mui/material";
 import classNames from "classnames";
-
-export interface CarouselItem<T = unknown> {
-    id: number;
-    image: string;
-    itemValue?: T;
-    title?: string;
-    renderItem?: (item: T) => React.ReactNode;
-}
+import { CarouselItem, ICarouselItem } from "./CarouselItem";
 
 export interface CarouselProps<T = unknown> {
-    items: CarouselItem<T>[];
+    items: ICarouselItem<T>[];
     title?: React.ReactNode;
     className?: string;
     itemsInOneSlider?: number;
@@ -102,10 +95,29 @@ export function Carousel<T = unknown>({
         if (autoSlide) interval.current = setInterval(() => slideWithAnimation("next"), 3000);
         return () => clearInterval(interval.current);
     }, [autoSlide, slideWithAnimation, title]);
+    const PREFIX: string = "Because You Liked ";
+
+    function getTitleLastSubstring(title: any) {
+        return title.title.slice(title.title.indexOf(PREFIX) + PREFIX.length);
+    }
+
+    function containsPrefix(title: any) {
+        return title.title.includes(PREFIX);
+    }
 
     return (
         <div className={classNames("carousel-wrapper", className, { "with-arrows": !hideArrows })}>
-            {title ? <h1 className="carousel-title">{title}</h1> : undefined}
+            {title && (
+                <span className="carousel-title">
+                    {containsPrefix({ title }) ? PREFIX : title}
+                    {containsPrefix({ title }) && (
+                        <span className="carousel-title-bold">
+                            {" "}
+                            "{getTitleLastSubstring({ title })}"
+                        </span>
+                    )}
+                </span>
+            )}
             <div className="carousel">
                 {isLoading ? (
                     <div className="carousel-slide active">
@@ -125,7 +137,7 @@ export function Carousel<T = unknown>({
                                     key={item.id}
                                     itemIndex={itemIndex}
                                     {...item}
-                                    width={100 / itemsInOneSlider}
+                                    width={(100 - itemsInOneSlider) / itemsInOneSlider}
                                     onClick={onClickItem}
                                     randomColors={randomColors}
                                 />
@@ -136,24 +148,25 @@ export function Carousel<T = unknown>({
             </div>
             {maxSlides > 1 && (
                 <>
-                    {!hideArrows ? (
+                    {!hideArrows && (
                         <>
                             <CarouselArrowIcon type="prev" onClick={slideWithAnimation} />
                             <CarouselArrowIcon type="next" onClick={slideWithAnimation} />
                         </>
-                    ) : undefined}
-                    <div className="carousel-bread-crumbs">
-                        {Array.from({ length: maxSlides }).map((_, itemIndex) => (
-                            <CarouselBreadCrumb
-                                key={itemIndex}
-                                slide={itemIndex}
-                                onClick={slideWithAnimation}
-                                isInAnimation={!!slideTo}
-                                currentSlide={currentSlide}
-                                nextSlide={nextSlide}
-                            />
-                        ))}
-                    </div>
+                    )}
+                    {/*TODO: I commented this because it is not on the design, but if we will want to still have it*/}
+                    {/*<div className="carousel-bread-crumbs">*/}
+                    {/*    {Array.from({ length: maxSlides }).map((_, itemIndex) => (*/}
+                    {/*        <CarouselBreadCrumb*/}
+                    {/*            key={itemIndex}*/}
+                    {/*            slide={itemIndex}*/}
+                    {/*            onClick={slideWithAnimation}*/}
+                    {/*            isInAnimation={!!slideTo}*/}
+                    {/*            currentSlide={currentSlide}*/}
+                    {/*            nextSlide={nextSlide}*/}
+                    {/*        />*/}
+                    {/*    ))}*/}
+                    {/*</div>*/}
                 </>
             )}
         </div>
@@ -171,54 +184,6 @@ const CarouselArrowIcon: FC<ArrowIconProps> = ({ type, onClick }) => {
     return (
         <div className={classNames("carousel-arrow", type)} onClick={handleClick}>
             {type === "next" ? <ArrowForwardIosIcon /> : <ArrowBackIosIcon />}
-        </div>
-    );
-};
-
-const COLORS = [
-    "rgba(0, 145, 110, 0.4)",
-    "rgba(255, 207, 0, 0.4)",
-    "rgba(238, 97, 35, 0.4)",
-    "rgba(250, 0, 63, 0.4)",
-];
-
-type CarouselItemProps = CarouselItem & {
-    width: number;
-    itemIndex: number;
-    randomColors?: boolean;
-    onClick?: (id: number) => void;
-};
-
-const CarouselItem: FC<CarouselItemProps> = ({
-    width,
-    id,
-    itemIndex,
-    image,
-    randomColors,
-    onClick,
-    renderItem,
-    itemValue,
-    title,
-}) => {
-    const handleClick = useCallback(() => onClick?.(id), [id, onClick]);
-
-    return (
-        <div
-            className={classNames("carousel-item", { click: !!onClick })}
-            onClick={handleClick}
-            style={{ width: `${width}%` }}
-            key={id}
-        >
-            {title ? (
-                <h2
-                    className="item-name"
-                    style={randomColors ? { backgroundColor: COLORS[itemIndex % 4] } : undefined}
-                >
-                    {title}
-                </h2>
-            ) : undefined}
-            {renderItem?.(itemValue)}
-            <img className="item-img" src={image} />
         </div>
     );
 };
@@ -256,7 +221,7 @@ const CarouselBreadCrumb: FC<CarouselBreadCrumbProps> = ({
     return <div onClick={handleClick} className={breadCrumbsClassnames} />;
 };
 
-const arrayToMatrix = (array: CarouselItem<any>[], columns: number): CarouselItem<any>[][] =>
+const arrayToMatrix = (array: ICarouselItem<any>[], columns: number): ICarouselItem<any>[][] =>
     Array(Math.ceil(array.length / columns))
         .fill(null)
         .reduce((prev, _, itemIndex) => {

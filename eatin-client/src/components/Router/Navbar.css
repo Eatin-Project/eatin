@@ -4,15 +4,21 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: whitesmoke;
-    color: black;
+    background-color: #e14026;
+    color: #EBEBEB !important;
     z-index: 1;
     position: relative;
     box-shadow: 0px 1px 10px 0px #00000038;
+    height: 4em;
+}
+
+.MuiButton-outlined {
+    border-color: #EBEBEB !important;
+    border-radius: 30%;
 }
 
 .navbar a {
-    color: black;
+    color: #EBEBEB;
 }
 
 .navbar .sign-out-btn {
@@ -33,15 +39,19 @@
 .navbar .navbar-end .search-input {
     margin: 0 0.5em;
 }
+
 .navbar .navbar-end .search-input > div {
     background-color: rgb(35 35 140);
 }
+
 .navbar .navbar-end .search-input fieldset {
     border-color: white;
 }
+
 .navbar .navbar-end .search-input input {
     padding: 0.7em;
 }
+
 .navbar .navbar-end .search-input label {
     line-height: 1;
 }

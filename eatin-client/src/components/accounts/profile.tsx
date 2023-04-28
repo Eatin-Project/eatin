@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import { FC, useState } from "react";
 import "./profile.css";
 import { useAuth } from "../../context/auth-context";
@@ -13,7 +12,8 @@ import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
-import { Catalog } from "./catalog";
+import { RecipesCatalog } from "../ui/RecipesCatalog";
+import { useGetSavedRecipes } from "../functions/useGetSavedRecipes";
 
 export const Profile: FC = () => {
     const [categoryFilter, setCategoryFilter] = useState("");
@@ -30,10 +30,10 @@ export const Profile: FC = () => {
     } = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Cake } });
 
     const {
-        data: drinks,
-        loading: drinksLoading,
-        error: drinksErrors,
-    } = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Drink } });
+        recipes: savedRecipes,
+        isLoading: savedRecipesLoading,
+        updateIsSaved,
+    } = useGetSavedRecipes();
 
     const currentFilterOptions: FilterOptions[] = [
         {
@@ -49,7 +49,7 @@ export const Profile: FC = () => {
     ];
 
     return (
-        <AsyncDataLoaderWrapper loading={loading} text="loading user...">
+        <AsyncDataLoaderWrapper loading={loading || savedRecipesLoading} text="loading user...">
             <div className="profile-container">
                 <div className="profile-header">
                     <User size="large" name={data?.user.firstname + " " + data?.user.lastname} />
@@ -68,15 +68,25 @@ export const Profile: FC = () => {
                                 loading={cakesLoading}
                                 text="loading my recipes..."
                             >
-                                <Catalog recipes={cakes?.topRecipesByCategory}></Catalog>
+                                <RecipesCatalog
+                                    recipes={
+                                        cakes?.topRecipesByCategory
+                                            ? cakes?.topRecipesByCategory
+                                            : []
+                                    }
+                                    specificSavedUpdateFunc={updateIsSaved}
+                                />
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
                         <TabPanel value={1} sx={{ p: 2 }}>
                             <AsyncDataLoaderWrapper
-                                loading={drinksLoading}
+                                loading={savedRecipesLoading}
                                 text="loading saved recipes..."
                             >
-                                <Catalog recipes={drinks?.topRecipesByCategory}></Catalog>
+                                <RecipesCatalog
+                                    recipes={savedRecipes}
+                                    specificSavedUpdateFunc={updateIsSaved}
+                                />
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
                     </Tabs>

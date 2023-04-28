@@ -1,23 +1,27 @@
-import {ChangeEvent, FormEvent, SetStateAction, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import "./auth-style.css";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     A,
-    Button,
+    AnimationText,
+    ButtonWrapper,
     Card,
-    DatePickerWrapper,
-    DropdownMenu,
-    DropdownToggle,
-    DropdownWrapper,
-    DropdownItem,
+    ColumnWrapper,
+    Container,
     Form,
     FormInput,
-    H1,
     Wrapper,
 } from "./auth-style";
-import {Gender} from "./genders.enum";
-import {useAuth} from "../../context/auth-context";
-import {Country} from "./countries.enum";
-import {useCreateUserMutation} from "../../generated/graphql";
+import { Gender } from "./genders.enum";
+import { useAuth } from "../../context/auth-context";
+import { Country } from "./countries.enum";
+import { useCreateUserMutation } from "../../generated/graphql";
+import { Autocomplete, FormControl, InputLabel, Select, SelectChangeEvent } from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { ReactComponent as ChefAnimation } from "../../assets/Chef.svg";
+import { ReactComponent as MediumLogo } from "../../assets/MediumLogo.svg";
 
 const defaultFormFields = {
     firstName: "",
@@ -32,12 +36,10 @@ const defaultFormFields = {
 function SignUp() {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const [birthDate, setBirthDate] = useState<Date | null>(null);
-    const {firstName, lastName, email, password, phone, gender, country} =
-        formFields;
+    const { firstName, lastName, email, password, phone, gender, country } = formFields;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const [searchValue, setSearchValue] = useState('');
-    const {signUpUser} = useAuth();
+    const { signUpUser } = useAuth();
     const resetFormFields = () => {
         return setFormFields(defaultFormFields);
     };
@@ -57,8 +59,8 @@ function SignUp() {
                 phone,
                 gender,
                 birthDate,
-                country
-            ).then((userCredential: { user: { uid: any; }; }) => {
+                country,
+            ).then((userCredential: { user: { uid: any } }) => {
                 if (userCredential) {
                     createUser({
                         variables: {
@@ -69,8 +71,8 @@ function SignUp() {
                             phone: phone,
                             gender: gender,
                             birthdate: birthDate,
-                            country: country
-                        }
+                            country: country,
+                        },
                     }).then((user) => {
                         console.log(user.data?.createUser);
                     });
@@ -86,150 +88,148 @@ function SignUp() {
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
-        setFormFields({...formFields, [name]: value});
+        const { name, value } = event.target;
+        setFormFields({ ...formFields, [name]: value });
     };
 
-    const handleGenderChange = (gender: string) => {
-        setFormFields({...formFields, gender: gender});
+    const handleGenderChange = (event: SelectChangeEvent) => {
+        setFormFields({ ...formFields, gender: event.target.value });
     };
 
     const handleCountryChange = (country: string) => {
-        setFormFields({...formFields, country: country});
+        setFormFields({ ...formFields, country: country });
     };
-
-    const handleSearch = (e: { target: { value: SetStateAction<string>; }; }) => {
-        setSearchValue(e.target.value);
-    };
-
-    const filteredCountries = Object.values(Country).filter((country) =>
-        country.toString().toLowerCase().includes(searchValue.toLowerCase())
-    );
 
     return (
-        <Wrapper>
-            <Card>
-                <Form onSubmit={handleSubmit}>
-                    <H1 className="mb-4">Sign Up</H1>
-                    <div className="my-3 d-flex">
-                        <FormInput
-                            name="firstName"
-                            type="text"
-                            className="form-control w-50 me-1"
-                            required
-                            placeholder="First Name"
-                            onChange={handleChange}
-                        />
-                        <FormInput
-                            name="lastName"
-                            type="text"
-                            className="form-control w-50 ms-1"
-                            required
-                            placeholder="Last Name"
-                            onChange={handleChange}
-                        />
+        <Container>
+            <Wrapper>
+                <ColumnWrapper>
+                    <AnimationText>Let’s Meet!</AnimationText>
+                    <AnimationText>Create an Account</AnimationText>
+                    <ChefAnimation style={{ marginTop: "20%" }} />
+                </ColumnWrapper>
+                <Card>
+                    <div className="d-flex ms-3 mt-3">
+                        <MediumLogo />
                     </div>
-                    <div className="my-3">
-                        <FormInput
-                            name="email"
-                            type="email"
-                            className="form-control"
-                            required
-                            placeholder="Email"
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <FormInput
-                            name="password"
-                            type="password"
-                            className="form-control"
-                            required
-                            placeholder="Password"
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <FormInput
-                            name="phone"
-                            type="number"
-                            className="form-control"
-                            required
-                            placeholder="Phone Number"
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <DropdownWrapper>
-                            <DropdownToggle id="gender-dropdown" className="form-control"
-                                            style={{color: !!formFields.gender ? '#212529' : '#6c757d'}}>
-                                {!!formFields.gender ? formFields.gender : "Gender"}
-                            </DropdownToggle>
-                            <DropdownMenu className="form-control">
-                                {Object.keys(Gender)?.map((gender) => (
-                                    <DropdownItem
-                                        name="gender"
-                                        key={gender}
-                                        onClick={() => handleGenderChange(gender)}
-                                    >
-                                        {gender}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </DropdownWrapper>
-                    </div>
-                    <div className="mb-3">
-                        <DatePickerWrapper
-                            required
-                            name="birthDate"
-                            placeholderText="Birth date"
-                            className="form-control"
-                            selected={birthDate}
-                            onSelect={(date: Date) => setBirthDate(date)}
-                            onChange={(date: Date) => setBirthDate(date)}
-                        ></DatePickerWrapper>
-                    </div>
-                    <div className="mb-3">
-                        <DropdownWrapper>
-                            <DropdownToggle id="country-dropdown" className="form-control"
-                                            style={{color: !!formFields.country ? '#212529' : '#6c757d'}}>
-                                {!!formFields.country ? formFields.country : "Country"}
-                            </DropdownToggle>
-                            <DropdownMenu className="form-control">
-                                <input
-                                    className="form-control"
+                    <div className="d-flex align-items-center justify-content-center w-100 h-100">
+                        <Form onSubmit={handleSubmit}>
+                            <div className="my-3 d-flex">
+                                <FormInput
+                                    name="firstName"
                                     type="text"
-                                    placeholder="search"
-                                    value={searchValue}
-                                    onChange={handleSearch}
+                                    className="w-50 me-3"
+                                    required
+                                    label="First Name"
+                                    variant="standard"
+                                    onChange={handleChange}
                                 />
-                                {filteredCountries?.map((country) => (
-                                    <DropdownItem
-                                        name="country"
-                                        key={country}
-                                        onClick={() => handleCountryChange(country)}
+                                <FormInput
+                                    name="lastName"
+                                    type="text"
+                                    className="w-50 ms-3"
+                                    required
+                                    label="Last Name"
+                                    variant="standard"
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="my-3">
+                                <FormInput
+                                    name="email"
+                                    type="email"
+                                    className="w-100"
+                                    required
+                                    label="Email"
+                                    variant="standard"
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <FormInput
+                                    name="password"
+                                    type="password"
+                                    className="w-100"
+                                    required
+                                    label="Password"
+                                    variant="standard"
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <FormInput
+                                    name="phone"
+                                    type="number"
+                                    className="w-100"
+                                    required
+                                    label="Phone Number"
+                                    variant="standard"
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="my-3 d-flex">
+                                <FormControl variant="standard" className="w-50 me-3">
+                                    <InputLabel id="gender-select-label">Gender</InputLabel>
+                                    <Select
+                                        labelId="gender-label"
+                                        id="gender-select"
+                                        required
+                                        value={formFields.gender}
+                                        onChange={handleGenderChange}
+                                        label="Gender"
                                     >
-                                        {country}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </DropdownWrapper>
+                                        {Object.keys(Gender)?.map((gender) => (
+                                            <MenuItem key={gender} value={gender}>
+                                                {gender}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                                <LocalizationProvider className="w-50" dateAdapter={AdapterDayjs}>
+                                    <DatePicker
+                                        className="ms-3"
+                                        slotProps={{ textField: { variant: "standard" } }}
+                                        label="Date Of Birth"
+                                        value={birthDate}
+                                        onChange={(date) => setBirthDate(date)}
+                                    />
+                                </LocalizationProvider>
+                            </div>
+                            <div className="mb-3">
+                                <Autocomplete
+                                    disablePortal
+                                    id="combo-box-country"
+                                    options={Object.values(Country)}
+                                    onChange={(event: any, newValue: string | null) => {
+                                        handleCountryChange(!!newValue ? newValue : "");
+                                    }}
+                                    renderInput={(params) => (
+                                        <FormInput
+                                            {...params}
+                                            variant="standard"
+                                            required
+                                            label="Country"
+                                        />
+                                    )}
+                                />
+                            </div>
+                            <div className="d-grid mb-2">
+                                <ButtonWrapper
+                                    type="submit"
+                                    disabled={loading}
+                                    className="btn btn-primary"
+                                >
+                                    Submit
+                                </ButtonWrapper>
+                            </div>
+                            <div className="forgot-password text-right mt-5">
+                                Already have an account? <A href="/signIn">Sign In</A>
+                            </div>
+                        </Form>
                     </div>
-                    <div className="d-grid mb-2">
-                        <Button
-                            type="submit"
-                            disabled={loading}
-                            className="btn btn-primary"
-                        >
-                            Submit
-                        </Button>
-                    </div>
-                    <p className="forgot-password text-right">
-                        Already have an account? <A href="/signIn">Sign In</A>
-                    </p>
-                </Form>
-            </Card>
-        </Wrapper>
+                </Card>
+            </Wrapper>
+        </Container>
     );
 }
 

@@ -1,88 +1,60 @@
 import styled from "styled-components";
-import {Dropdown} from "react-bootstrap";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-
-export const H1 = styled.h1`
-  color: #FF473C;
-`;
+import { Button, TextField } from "@mui/material";
 
 export const A = styled.a`
-  color: #FF473C;
+    color: #e14483;
 `;
 
-export const FormInput = styled.input`
-  background-color: #f6f6f6;
-  font-size: 16px;
-  border-radius: 2px;
+export const FormInput = styled(TextField)`
+    font-size: 16px;
 `;
 
-export const DatePickerWrapper = styled(DatePicker)`
-  background-color: #f6f6f6;
-  font-size: 16px;
-  border-radius: 2px;
-`;
-
-export const DropdownWrapper = styled(Dropdown)`
-  .btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
-    background-color: #F6F6F6FF;
-    border-color: #ced4da;
-  }
-`;
-
-export const DropdownToggle = styled(Dropdown.Toggle)`
-  background-color: #F6F6F6FF;
-  font-size: 16px;
-  border-radius: 2px;
-  text-align: start;
-  border-color: #ced4da;
-  &:hover, &:active {
-    background-color: #F6F6F6FF;
-    border-color: #ced4da;
-  }
-`;
-
-export const DropdownMenu = styled(Dropdown.Menu)`
-  max-height: 11rem;
-  overflow-y: scroll;
-  color: #FD7269;
-  background-color: #F6F6F6FF;
-  &:hover, &:active {
-    background-color: #F6F6F6FF;
-    border-color: #ced4da;
-  }
-`;
-
-export const DropdownItem = styled(Dropdown.Item)`
-  &:active {
-    background-color: #F6F6F6FF;
-    border-color: #ced4da;
-  }
-`;
-
-export const Button = styled.button`
-  background-color: #FD7269;
-  border-color: #FF473C;
-  border-radius: 2px;
-  &:hover, &:active {
-    background-color: #FD7269;
-    border-color: #FF473C;
-  }
+export const ButtonWrapper = styled(Button)`
+    background: linear-gradient(90deg, #e04490 0%, #e14026 47.92%, #e5622d 98.44%);
+    border-radius: 15px !important;
+    color: white !important;
 `;
 
 export const Wrapper = styled.div`
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    height: 100%;
+`;
+
+export const ColumnWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    margin-top: 16%;
+    margin-left: 10%;
+`;
+
+export const Container = styled.div`
+    background: #e14026;
+    height: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
 `;
 
 export const Form = styled.form`
-    padding: 2em 2em 2em 2em;
+    //padding: 15% 29% 20% 26%;
+    width: 50%;
+    height: 75%;
 `;
 
 export const Card = styled.div`
-    margin: 3em 0 0 0;
-    width: 30%;
-    border: 1px solid rgba(0,0,0,.125);
-    border-radius: .5rem;
-    box-shadow: 0 0 8px 2px rgba(0,0,0,.125);
+    width: 60%;
+    height: 100%;
+    border-radius: 38px;
+    box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.125);
+    background: #ebebeb;
+    position: relative;
+    left: 3%;
+`;
+
+export const AnimationText = styled.div`
+    color: white;
+    font-size: 32px;
+    font-weight: 600;
+    white-space: pre-line;
 `;

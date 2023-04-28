@@ -1,6 +1,6 @@
 import "./Navbar.css";
 
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { AppLogo } from "./AppLogo";
 import { useCallback, useState } from "react";
@@ -13,10 +13,12 @@ import AddIcon from "@mui/icons-material/Add";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, IconButton } from "@mui/material";
+import { SearchBar } from "../ui/SearchBar";
 
 export const Navbar = () => {
     const navigate = useNavigate();
     const { currentUser, signOutUser } = useAuth();
+    const location = useLocation();
     const { data } = useGetUserByIdQuery({
         variables: { id: !!currentUser?.uid ? currentUser?.uid : "" },
     });
@@ -34,12 +36,18 @@ export const Navbar = () => {
         signOutUser();
         handleClose();
     };
+
     return (
         <>
             <div className="navbar">
                 <AppLogo onClick={goToHomePage} />
                 <div className="navbar-end">
-                    <Button style={{ color: "black" }} onClick={() => navigate("/profile")}>
+                    {location.pathname === "/home" && <SearchBar />}
+                    <Button
+                        variant="outlined"
+                        sx={{ color: "#EBEBEB", borderRadius: 35 }}
+                        onClick={() => navigate("/profile")}
+                    >
                         <User
                             name={!!data ? data?.user.firstname + " " + data?.user.lastname : ""}
                         />
@@ -58,6 +66,7 @@ export const Navbar = () => {
                             aria-haspopup="true"
                             aria-expanded={open ? "true" : undefined}
                             onClick={handleClick}
+                            sx={{ color: "#EBEBEB" }}
                         >
                             <ArrowDropDownIcon />
                         </IconButton>

@@ -24,6 +24,10 @@ export class RecipesService {
         return this.recipesRepository.findOneBy({index: index});
     }
 
+    runQuery(query: string, params?: unknown[]) {
+        return this.recipesRepository.query(query, params);
+    }
+
     findTopRatedByCategory(category: string): Promise<Recipes[]> {
         return this.recipesRepository.find({
             order:
