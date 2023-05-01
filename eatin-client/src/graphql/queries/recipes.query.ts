@@ -1,4 +1,4 @@
-import {gql} from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_ALL_RECIPES = gql`
     query getAllRecipes {
@@ -132,5 +132,11 @@ export const GET_RECIPE_BY_CUISINE = gql`
             difficulty
             total_time
         }
+    }
+`;
+
+export const GET_RECIPE_FIELD_OPTIONS = gql`
+    query getRecipeFieldOptions($field: String!, $value: String!) {
+        recipeFieldOptions(field: $field, value: $value)
     }
 `;

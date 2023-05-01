@@ -85,6 +85,7 @@ export type Query = {
   ratingsByRecipe: Array<Ratings>;
   ratingsByUser: Array<Ratings>;
   recipe: Recipes;
+  recipeFieldOptions: Array<Scalars['String']>;
   recipes: Array<Recipes>;
   recipesByValue: Array<Recipes>;
   topRecipesByCategory: Array<Recipes>;
@@ -119,6 +120,12 @@ export type QueryRatingsByUserArgs = {
 
 export type QueryRecipeArgs = {
   index: Scalars['Float'];
+};
+
+
+export type QueryRecipeFieldOptionsArgs = {
+  field: Scalars['String'];
+  value: Scalars['String'];
 };
 
 
@@ -177,6 +184,7 @@ export type QueryUserRecipesByUserWithRecipeArgs = {
 export type Ratings = {
   __typename?: 'Ratings';
   rating: Scalars['Float'];
+  rating_timestamp: Scalars['DateTime'];
   recipe_index: Scalars['Float'];
   user_id: Scalars['String'];
 };
@@ -347,6 +355,14 @@ export type GetTopRatedRecipesByCuisineQueryVariables = Exact<{
 
 
 export type GetTopRatedRecipesByCuisineQuery = { __typename?: 'Query', topRecipesByCuisine: Array<{ __typename?: 'Recipes', index: number, recipe_title: string, url: string, record_health: string, vote_count: number, rating: number, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number }> };
+
+export type GetRecipeFieldOptionsQueryVariables = Exact<{
+  field: Scalars['String'];
+  value: Scalars['String'];
+}>;
+
+
+export type GetRecipeFieldOptionsQuery = { __typename?: 'Query', recipeFieldOptions: Array<string> };
 
 export type GetAllUserrecipesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1081,6 +1097,40 @@ export function useGetTopRatedRecipesByCuisineLazyQuery(baseOptions?: Apollo.Laz
 export type GetTopRatedRecipesByCuisineQueryHookResult = ReturnType<typeof useGetTopRatedRecipesByCuisineQuery>;
 export type GetTopRatedRecipesByCuisineLazyQueryHookResult = ReturnType<typeof useGetTopRatedRecipesByCuisineLazyQuery>;
 export type GetTopRatedRecipesByCuisineQueryResult = Apollo.QueryResult<GetTopRatedRecipesByCuisineQuery, GetTopRatedRecipesByCuisineQueryVariables>;
+export const GetRecipeFieldOptionsDocument = gql`
+    query getRecipeFieldOptions($field: String!, $value: String!) {
+  recipeFieldOptions(field: $field, value: $value)
+}
+    `;
+
+/**
+ * __useGetRecipeFieldOptionsQuery__
+ *
+ * To run a query within a React component, call `useGetRecipeFieldOptionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRecipeFieldOptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRecipeFieldOptionsQuery({
+ *   variables: {
+ *      field: // value for 'field'
+ *      value: // value for 'value'
+ *   },
+ * });
+ */
+export function useGetRecipeFieldOptionsQuery(baseOptions: Apollo.QueryHookOptions<GetRecipeFieldOptionsQuery, GetRecipeFieldOptionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRecipeFieldOptionsQuery, GetRecipeFieldOptionsQueryVariables>(GetRecipeFieldOptionsDocument, options);
+      }
+export function useGetRecipeFieldOptionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRecipeFieldOptionsQuery, GetRecipeFieldOptionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRecipeFieldOptionsQuery, GetRecipeFieldOptionsQueryVariables>(GetRecipeFieldOptionsDocument, options);
+        }
+export type GetRecipeFieldOptionsQueryHookResult = ReturnType<typeof useGetRecipeFieldOptionsQuery>;
+export type GetRecipeFieldOptionsLazyQueryHookResult = ReturnType<typeof useGetRecipeFieldOptionsLazyQuery>;
+export type GetRecipeFieldOptionsQueryResult = Apollo.QueryResult<GetRecipeFieldOptionsQuery, GetRecipeFieldOptionsQueryVariables>;
 export const GetAllUserrecipesDocument = gql`
     query getAllUserrecipes {
   userRecipes {

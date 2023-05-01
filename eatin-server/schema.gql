@@ -63,6 +63,7 @@ type Query {
   recipesByValue(value: String!): [Recipes!]!
   topRecipesByCategory(category: String!): [Recipes!]!
   topRecipesByCuisine(cuisine: String!): [Recipes!]!
+  recipeFieldOptions(field: String!, value: String!): [String!]!
   ratingsByRecipe(index: Float!): [Ratings!]!
   ratingsByUser(id: String!): [Ratings!]!
   ratingByUserAndRecipe(id: String!, index: Float!): Ratings!
