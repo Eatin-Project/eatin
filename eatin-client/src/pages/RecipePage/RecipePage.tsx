@@ -19,6 +19,7 @@ import { redRatingStyle } from "../../components/ui/rating-styles";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useInsertNewUserRecipe } from "../../components/functions/useInsertNewUserRecipe";
 import { useDeleteUserRecipe } from "../../components/functions/useDeleteUserRecipe";
+import { parseStringArray } from "../../components/functions/stringFunctions";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
@@ -181,7 +182,7 @@ export const RecipePage: FC = () => {
                 <RecipeContentTitle>INGREDIENTS</RecipeContentTitle>
                 <RecipeContentList>
                     <ul className="ingredients-list">
-                        {_parseStringArray(ingredients).map((ingredient, i) => (
+                        {parseStringArray(ingredients).map((ingredient, i) => (
                             <li key={`${ingredient}-${i}`}>{ingredient}</li>
                         ))}
                     </ul>
@@ -189,7 +190,7 @@ export const RecipePage: FC = () => {
                 <RecipeContentTitle>INSTRUCTIONS</RecipeContentTitle>
                 <RecipeContentList>
                     <ul>
-                        {_parseStringArray(instructions).map((instruction, i) => (
+                        {parseStringArray(instructions).map((instruction, i) => (
                             <li key={`${instruction}-${i}`}>{instruction}</li>
                         ))}
                     </ul>
@@ -336,23 +337,6 @@ const RightSection = styled.div`
     margin-left: 1em;
     text-align: left;
 `;
-
-const _parseStringArray = (str: string | undefined): string[] => {
-    if (!str) return [];
-
-    try {
-        return JSON.parse(
-            "[" +
-                str
-                    .substring(1, str.length - 1)
-                    .replaceAll('\\"', '"')
-                    .replaceAll(",/ ", "") +
-                "]",
-        );
-    } catch (e) {
-        return ["problem parsing string to json", "fix is coming soon! :D"];
-    }
-};
 
 const comments = [
     { user: "shirley", content: "looks great!!" },
