@@ -4,35 +4,44 @@ import { FC } from "react";
 import { useFormik } from "formik";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { AutocompleteItem } from "../../ui/Autocomplete";
-import { IngredientsAutocomplete } from "./IngredientsAutocomplete";
 import { MediaUpload } from "./MediaUpload";
 import { RecipeStages } from "./RecipeStages";
-import { GenreSelect } from "./GenreSelect";
-import { DifficultySelect } from "./DifficultySelect";
 
-interface Stage {
-    instruction: string;
-    title?: string;
-    image?: string;
+import { AutocompleteItem } from "../../components/ui/Autocomplete";
+import { useGetRecipeFieldOptionsQuery } from "../../generated/graphql";
+import { UploadRecipeSelect } from "./UploadRecipeSelect";
+import { UploadRecipeAutocomplete } from "./UploadRecipeAutocomplete";
+
+export interface SelectRecipeMetadata {
+    cuisine: string;
+    course: string;
+    diet: string;
+    difficulty: string;
 }
 
-interface RecipeMetadata {
-    title: string;
+export interface AutocompleteRecipeMetadata {
     ingredients: AutocompleteItem[];
+    tags: AutocompleteItem[];
+}
+
+export interface RecipeMetadata extends SelectRecipeMetadata, AutocompleteRecipeMetadata {
+    title: string;
+    description: string;
     stages: string[];
     images: string[];
-    genre: string;
-    difficulty: string;
 }
 
 export const UploadRecipePage: FC = () => {
     const formik = useFormik<RecipeMetadata>({
         initialValues: {
             title: "",
-            genre: "",
+            cuisine: "",
+            course: "",
+            diet: "",
+            description: "",
             stages: [""],
             ingredients: [],
+            tags: [],
             images: [],
             difficulty: "",
         },
@@ -63,19 +72,38 @@ export const UploadRecipePage: FC = () => {
                         value={formik.values.title}
                         {...getErrorProps("title")}
                     />
-                    <IngredientsAutocomplete
+                    <UploadRecipeAutocomplete
+                        field="ingredients"
                         values={formik.values.ingredients}
-                        onChange={(value) => handleChange("ingredients", value)}
+                        onChange={handleChange}
                         {...getErrorProps("ingredients")}
                     />
+                    <UploadRecipeAutocomplete
+                        field="tags"
+                        values={formik.values.tags}
+                        onChange={handleChange}
+                        {...getErrorProps("tags")}
+                    />
                     <div className="select-inputs">
-                        <GenreSelect
-                            value={formik.values.genre}
-                            onChange={(value) => handleChange("genre", value)}
+                        <UploadRecipeSelect
+                            field="cuisine"
+                            values={formik.values}
+                            onChange={handleChange}
                         />
-                        <DifficultySelect
-                            value={formik.values.difficulty}
-                            onChange={(value) => handleChange("difficulty", value)}
+                        <UploadRecipeSelect
+                            field="course"
+                            values={formik.values}
+                            onChange={handleChange}
+                        />
+                        <UploadRecipeSelect
+                            field="difficulty"
+                            values={formik.values}
+                            onChange={handleChange}
+                        />
+                        <UploadRecipeSelect
+                            field="diet"
+                            values={formik.values}
+                            onChange={handleChange}
                         />
                     </div>
                     <h2>How to cook:</h2>
