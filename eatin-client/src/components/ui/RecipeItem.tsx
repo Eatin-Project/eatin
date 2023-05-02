@@ -7,7 +7,7 @@ import { NavigateFunction, useNavigate } from "react-router";
 
 type Props = {
     recipe: Recipe;
-    updateSavedRecipes: (isSaved: boolean, recipeIndex: number) => void;
+    updateSavedRecipes: (recipeIndex: number) => void;
 };
 
 export const RecipeItem: FC<Props> = ({ recipe, updateSavedRecipes }) => {

@@ -30,12 +30,13 @@ export function useAddIsSavedToRecipesList(recipes: Recipe[]) {
     }, [userRecipesData, recipes]);
 
     const updateIsSaved = useCallback(
-        (isSaved: boolean, recipeIndex: number) => {
+        (recipeIndex: number) => {
             const updatedStateRecipes = recipesWithIsSaved;
             const recipeInSectionIndex: number = updatedStateRecipes.findIndex(
                 (val) => val.index === recipeIndex,
             );
-            updatedStateRecipes[recipeInSectionIndex].is_saved = isSaved;
+            updatedStateRecipes[recipeInSectionIndex].is_saved =
+                !updatedStateRecipes[recipeInSectionIndex].is_saved;
             setRecipesWithIsSaved([...updatedStateRecipes]);
         },
         [recipesWithIsSaved],

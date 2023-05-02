@@ -6,7 +6,7 @@ import { RecipeItem } from "./RecipeItem";
 
 type Props = {
     recipes: Recipe[];
-    specificSavedUpdateFunc: (isSaved: boolean, recipeIndex: number) => void;
+    specificSavedUpdateFunc: (recipeIndex: number) => void;
 };
 
 export const RecipesCatalog: FC<Props> = ({ recipes, specificSavedUpdateFunc }) => {

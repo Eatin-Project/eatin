@@ -39,6 +39,9 @@ export function useGetSections(userId: string) {
                                       total_time
                                       url
                                       vote_count
+                                        is_saved
+                                        is_uploaded
+                                        given_comment
                                 }
                             }
                         }`,

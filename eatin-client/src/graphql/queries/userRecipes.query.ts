@@ -6,6 +6,8 @@ export const GET_ALL_USERRECIPES = gql`
             user_id
             recipe_index
             is_saved
+            is_uploaded
+            given_comment
         }
     }
 `;
@@ -16,6 +18,8 @@ export const GET_USERRECIPES_BY_USER_ID = gql`
             user_id
             recipe_index
             is_saved
+            is_uploaded
+            given_comment
         }
     }
 `;
@@ -26,6 +30,8 @@ export const GET_USERRECIPES_BY_RECIPE_INDEX = gql`
             user_id
             recipe_index
             is_saved
+            is_uploaded
+            given_comment
         }
     }
 `;
@@ -36,6 +42,8 @@ export const GET_USERRECIPES_BY_RECIPE_AND_IS_SAVED = gql`
             user_id
             recipe_index
             is_saved
+            is_uploaded
+            given_comment
         }
     }
 `;
@@ -46,6 +54,56 @@ export const GET_USERRECIPES_BY_USER_AND_IS_SAVED = gql`
             user_id
             recipe_index
             is_saved
+            is_uploaded
+            given_comment
+        }
+    }
+`;
+
+export const GET_USERRECIPES_BY_RECIPE_AND_IS_UPLOADED = gql`
+    query getUserrecipesByRecipeIndexAndIsUploaded($recipeID: Float!, $isUploaded: Boolean!) {
+        userRecipesByRecipeAndIsUploaded(recipeID: $recipeID, isUploaded: $isUploaded) {
+            user_id
+            recipe_index
+            is_saved
+            is_uploaded
+            given_comment
+        }
+    }
+`;
+
+export const GET_USERRECIPES_BY_USER_AND_IS_UPLOADED = gql`
+    query getUserrecipesByUserAndIsUploaded($userID: String!, $isUploaded: Boolean!) {
+        userRecipesByUserAndIsUploaded(userID: $userID, isUploaded: $isUploaded) {
+            user_id
+            recipe_index
+            is_saved
+            is_uploaded
+            given_comment
+        }
+    }
+`;
+
+export const GET_USERRECIPES_BY_RECIPE_AND_COMMENT = gql`
+    query getUserrecipesByRecipeIndexAndComment($recipeID: Float!) {
+        userRecipesByRecipeAndIsCommentExists(recipeID: $recipeID) {
+            user_id
+            recipe_index
+            is_saved
+            is_uploaded
+            given_comment
+        }
+    }
+`;
+
+export const GET_USERRECIPES_BY_USER_AND_COMMENT = gql`
+    query getUserrecipesByUserAndComment($userID: String!) {
+        userRecipesByUserAndIsCommentExists(userID: $userID) {
+            user_id
+            recipe_index
+            is_saved
+            is_uploaded
+            given_comment
         }
     }
 `;
@@ -56,6 +114,8 @@ export const GET_USERRECIPES_BY_RECIPE_AND_USER = gql`
             user_id
             recipe_index
             is_saved
+            is_uploaded
+            given_comment
         }
     }
 `;
@@ -66,6 +126,8 @@ export const GET_USERRECIPES_BY_USER_WITH_RECIPE = gql`
             user_id
             recipe_index
             is_saved
+            is_uploaded
+            given_comment
             recipe {
                 index
                 recipe_title

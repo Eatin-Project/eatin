@@ -15,6 +15,8 @@ export function useInsertNewUserRecipe() {
                         user_id: currentUser.uid,
                         recipe_index: Number(recipeIndex),
                         is_saved: isSaved,
+                        given_comment: "",
+                        is_uploaded: false,
                     },
                 }).then((userRecipe) => {
                     setData(userRecipe.data);

@@ -14,6 +14,12 @@ export class Userrecipes {
   @Column('boolean', { nullable: false })
   is_saved: boolean;
   @Field()
+  @Column('boolean', { nullable: false })
+  is_uploaded: boolean;
+  @Field()
+  @Column('varchar', { length: 100, nullable: false })
+  given_comment: string;
+  @Field()
   @OneToOne(() => Recipes)
   @JoinColumn({ name: 'recipe_index' })
   recipe: Recipes;

@@ -7,7 +7,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { BookmarkButton } from "./BookmarkButton";
 
 type Props = Pick<Recipe, "rating" | "vote_count" | "index" | "recipe_title" | "is_saved"> & {
-    updateSavedRecipes: (isSaved: boolean, recipeIndex: number) => void;
+    updateSavedRecipes: (recipeIndex: number) => void;
 };
 
 export const RecipeItemOverlay: FC<Props> = ({
@@ -31,7 +31,7 @@ export const RecipeItemOverlay: FC<Props> = ({
                     <CancelIcon className="delete-from-list-icon p-0" />
                 </Button>
                 <BookmarkButton
-                    onChange={(value) => updateSavedRecipes(value, index)}
+                    onChange={() => updateSavedRecipes(index)}
                     recipeID={index}
                     recipeName={recipe_title}
                     isClicked={is_saved ? true : false}

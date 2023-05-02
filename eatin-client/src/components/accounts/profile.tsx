@@ -14,13 +14,14 @@ import Tab from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
 import { RecipesCatalog } from "../ui/RecipesCatalog";
 import { useGetSavedRecipes } from "../functions/useGetSavedRecipes";
+import { useGetRecipesConnectionIsSaved } from "../../graphql/queries/recipes_connection_is_saved.query";
 
 export const Profile: FC = () => {
     const [categoryFilter, setCategoryFilter] = useState("");
     const [cuisineFilter, setCuisineFilter] = useState("");
     const { currentUser } = useAuth();
     const { data, error, loading } = useGetUserByIdQuery({
-        variables: { id: !!currentUser?.uid ? currentUser?.uid : "" },
+        variables: { id: currentUser ? currentUser.uid : "" },
     });
 
     const {
@@ -30,10 +31,10 @@ export const Profile: FC = () => {
     } = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Cake } });
 
     const {
-        recipes: savedRecipes,
-        isLoading: savedRecipesLoading,
+        data: savedRecipes,
+        loading: savedRecipesLoading,
         updateIsSaved,
-    } = useGetSavedRecipes();
+    } = useGetRecipesConnectionIsSaved(currentUser ? currentUser.uid : "", true);
 
     const currentFilterOptions: FilterOptions[] = [
         {

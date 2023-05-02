@@ -1,11 +1,10 @@
 import "./HomePage.css";
 
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { RecommendedFeed } from "./RecommendedFeed";
 import { useGetSections } from "../../graphql/queries/sections.query";
 import { useAuth } from "../../context/auth-context";
 import { RecipesCatalog } from "../../components/ui/RecipesCatalog";
-import { useAddIsSavedToRecipesSection } from "../../components/functions/useAddIsSavedToRecipesSection";
 import { useSearch } from "../../context/search-context";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 import { useAddIsSavedToRecipesList } from "../../components/functions/useAddIsSavedToRecipesList";
@@ -21,16 +20,14 @@ export const HomePage: FC = () => {
         useGetRecipesBySearch();
 
     const {
-        recipesWithIsSaved: recipesData,
-        isLoading: updateSavedStateLoading,
-        updateIsSaved: updateRecipeData,
-    } = useAddIsSavedToRecipesSection(recommendedRecipes);
-
-    const {
         recipesWithIsSaved: resultRecipes,
         isLoading: resultRecipesLoading,
         updateIsSaved: updateResultRecipes,
     } = useAddIsSavedToRecipesList(searchResultRecipes);
+
+    useEffect(() => {
+        console.log(recommendedRecipes);
+    }, [recommendedRecipes]);
 
     return (
         <div>
@@ -46,13 +43,12 @@ export const HomePage: FC = () => {
                 </AsyncDataLoaderWrapper>
             ) : (
                 <AsyncDataLoaderWrapper
-                    loading={recommendedRecipesLoading || updateSavedStateLoading}
+                    loading={recommendedRecipesLoading}
                     text="Finding the perfect recipes for you..."
                 >
                     <RecommendedFeed
-                        currentRecipes={recipesData}
-                        isLoadingCurrentRecipes={updateSavedStateLoading}
-                        updateSavedStateInRecipesSection={updateRecipeData}
+                        currentRecipes={recommendedRecipes}
+                        isLoadingCurrentRecipes={recommendedRecipesLoading}
                     />
                 </AsyncDataLoaderWrapper>
             )}

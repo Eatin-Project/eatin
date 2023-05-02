@@ -67,7 +67,9 @@ export type MutationCreateUserArgs = {
 
 
 export type MutationCreateUserRecipesArgs = {
+  given_comment: Scalars['String'];
   is_saved: Scalars['Boolean'];
+  is_uploaded: Scalars['Boolean'];
   recipe_index: Scalars['Float'];
   user_id: Scalars['String'];
 };
@@ -92,9 +94,13 @@ export type Query = {
   user: Users;
   userRecipes: Array<Userrecipes>;
   userRecipesByRecipe: Array<Userrecipes>;
+  userRecipesByRecipeAndIsCommentExists: Array<Userrecipes>;
   userRecipesByRecipeAndIsSaved: Array<Userrecipes>;
+  userRecipesByRecipeAndIsUploaded: Array<Userrecipes>;
   userRecipesByUser: Array<Userrecipes>;
+  userRecipesByUserAndIsCommentExists: Array<Userrecipes>;
   userRecipesByUserAndIsSaved: Array<Userrecipes>;
+  userRecipesByUserAndIsUploaded: Array<Userrecipes>;
   userRecipesByUserAndRecipe: Userrecipes;
   userRecipesByUserWithRecipe: Array<Userrecipes>;
   users: Array<Users>;
@@ -147,8 +153,19 @@ export type QueryUserRecipesByRecipeArgs = {
 };
 
 
+export type QueryUserRecipesByRecipeAndIsCommentExistsArgs = {
+  recipeID: Scalars['Float'];
+};
+
+
 export type QueryUserRecipesByRecipeAndIsSavedArgs = {
   isSaved: Scalars['Boolean'];
+  recipeID: Scalars['Float'];
+};
+
+
+export type QueryUserRecipesByRecipeAndIsUploadedArgs = {
+  isUploaded: Scalars['Boolean'];
   recipeID: Scalars['Float'];
 };
 
@@ -158,8 +175,19 @@ export type QueryUserRecipesByUserArgs = {
 };
 
 
+export type QueryUserRecipesByUserAndIsCommentExistsArgs = {
+  userID: Scalars['String'];
+};
+
+
 export type QueryUserRecipesByUserAndIsSavedArgs = {
   isSaved: Scalars['Boolean'];
+  userID: Scalars['String'];
+};
+
+
+export type QueryUserRecipesByUserAndIsUploadedArgs = {
+  isUploaded: Scalars['Boolean'];
   userID: Scalars['String'];
 };
 
@@ -177,6 +205,7 @@ export type QueryUserRecipesByUserWithRecipeArgs = {
 export type Ratings = {
   __typename?: 'Ratings';
   rating: Scalars['Float'];
+  rating_timestamp: Scalars['DateTime'];
   recipe_index: Scalars['Float'];
   user_id: Scalars['String'];
 };
@@ -207,7 +236,9 @@ export type Recipes = {
 
 export type Userrecipes = {
   __typename?: 'Userrecipes';
+  given_comment: Scalars['String'];
   is_saved: Scalars['Boolean'];
+  is_uploaded: Scalars['Boolean'];
   recipe: Recipes;
   recipe_index: Scalars['Float'];
   user_id: Scalars['String'];
@@ -261,10 +292,12 @@ export type CreateUserRecipesMutationVariables = Exact<{
   user_id: Scalars['String'];
   recipe_index: Scalars['Float'];
   is_saved: Scalars['Boolean'];
+  is_uploaded: Scalars['Boolean'];
+  given_comment: Scalars['String'];
 }>;
 
 
-export type CreateUserRecipesMutation = { __typename?: 'Mutation', createUserRecipes: { __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean } };
+export type CreateUserRecipesMutation = { __typename?: 'Mutation', createUserRecipes: { __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string } };
 
 export type RemoveUserRecipesMutationVariables = Exact<{
   user_id: Scalars['String'];
@@ -272,7 +305,7 @@ export type RemoveUserRecipesMutationVariables = Exact<{
 }>;
 
 
-export type RemoveUserRecipesMutation = { __typename?: 'Mutation', removeUserRecipes: { __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean } };
+export type RemoveUserRecipesMutation = { __typename?: 'Mutation', removeUserRecipes: { __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string } };
 
 export type CreateUserMutationVariables = Exact<{
   id: Scalars['String'];
@@ -351,21 +384,21 @@ export type GetTopRatedRecipesByCuisineQuery = { __typename?: 'Query', topRecipe
 export type GetAllUserrecipesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllUserrecipesQuery = { __typename?: 'Query', userRecipes: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean }> };
+export type GetAllUserrecipesQuery = { __typename?: 'Query', userRecipes: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string }> };
 
 export type GetUserrecipesByUserIdQueryVariables = Exact<{
   userID: Scalars['String'];
 }>;
 
 
-export type GetUserrecipesByUserIdQuery = { __typename?: 'Query', userRecipesByUser: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean }> };
+export type GetUserrecipesByUserIdQuery = { __typename?: 'Query', userRecipesByUser: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string }> };
 
 export type GetUserrecipesByRecipeIndexQueryVariables = Exact<{
   recipeID: Scalars['Float'];
 }>;
 
 
-export type GetUserrecipesByRecipeIndexQuery = { __typename?: 'Query', userRecipesByRecipe: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean }> };
+export type GetUserrecipesByRecipeIndexQuery = { __typename?: 'Query', userRecipesByRecipe: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string }> };
 
 export type GetUserrecipesByRecipeIndexAndIsSavedQueryVariables = Exact<{
   recipeID: Scalars['Float'];
@@ -373,7 +406,7 @@ export type GetUserrecipesByRecipeIndexAndIsSavedQueryVariables = Exact<{
 }>;
 
 
-export type GetUserrecipesByRecipeIndexAndIsSavedQuery = { __typename?: 'Query', userRecipesByRecipeAndIsSaved: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean }> };
+export type GetUserrecipesByRecipeIndexAndIsSavedQuery = { __typename?: 'Query', userRecipesByRecipeAndIsSaved: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string }> };
 
 export type GetUserrecipesByUserAndIsSavedQueryVariables = Exact<{
   userID: Scalars['String'];
@@ -381,7 +414,37 @@ export type GetUserrecipesByUserAndIsSavedQueryVariables = Exact<{
 }>;
 
 
-export type GetUserrecipesByUserAndIsSavedQuery = { __typename?: 'Query', userRecipesByUserAndIsSaved: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean }> };
+export type GetUserrecipesByUserAndIsSavedQuery = { __typename?: 'Query', userRecipesByUserAndIsSaved: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string }> };
+
+export type GetUserrecipesByRecipeIndexAndIsUploadedQueryVariables = Exact<{
+  recipeID: Scalars['Float'];
+  isUploaded: Scalars['Boolean'];
+}>;
+
+
+export type GetUserrecipesByRecipeIndexAndIsUploadedQuery = { __typename?: 'Query', userRecipesByRecipeAndIsUploaded: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string }> };
+
+export type GetUserrecipesByUserAndIsUploadedQueryVariables = Exact<{
+  userID: Scalars['String'];
+  isUploaded: Scalars['Boolean'];
+}>;
+
+
+export type GetUserrecipesByUserAndIsUploadedQuery = { __typename?: 'Query', userRecipesByUserAndIsUploaded: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string }> };
+
+export type GetUserrecipesByRecipeIndexAndCommentQueryVariables = Exact<{
+  recipeID: Scalars['Float'];
+}>;
+
+
+export type GetUserrecipesByRecipeIndexAndCommentQuery = { __typename?: 'Query', userRecipesByRecipeAndIsCommentExists: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string }> };
+
+export type GetUserrecipesByUserAndCommentQueryVariables = Exact<{
+  userID: Scalars['String'];
+}>;
+
+
+export type GetUserrecipesByUserAndCommentQuery = { __typename?: 'Query', userRecipesByUserAndIsCommentExists: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string }> };
 
 export type GetUserrecipesByRecipeAndUserQueryVariables = Exact<{
   userID: Scalars['String'];
@@ -389,14 +452,14 @@ export type GetUserrecipesByRecipeAndUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserrecipesByRecipeAndUserQuery = { __typename?: 'Query', userRecipesByUserAndRecipe: { __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean } };
+export type GetUserrecipesByRecipeAndUserQuery = { __typename?: 'Query', userRecipesByUserAndRecipe: { __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string } };
 
 export type GetUserrecipesByUserWithRecipeQueryVariables = Exact<{
   userID: Scalars['String'];
 }>;
 
 
-export type GetUserrecipesByUserWithRecipeQuery = { __typename?: 'Query', userRecipesByUserWithRecipe: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, recipe: { __typename?: 'Recipes', index: number, recipe_title: string, url: string, record_health: string, vote_count: number, rating: number, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number } }> };
+export type GetUserrecipesByUserWithRecipeQuery = { __typename?: 'Query', userRecipesByUserWithRecipe: Array<{ __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string, recipe: { __typename?: 'Recipes', index: number, recipe_title: string, url: string, record_health: string, vote_count: number, rating: number, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number } }> };
 
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -532,15 +595,19 @@ export type CreateRecipeMutationHookResult = ReturnType<typeof useCreateRecipeMu
 export type CreateRecipeMutationResult = Apollo.MutationResult<CreateRecipeMutation>;
 export type CreateRecipeMutationOptions = Apollo.BaseMutationOptions<CreateRecipeMutation, CreateRecipeMutationVariables>;
 export const CreateUserRecipesDocument = gql`
-    mutation createUserRecipes($user_id: String!, $recipe_index: Float!, $is_saved: Boolean!) {
+    mutation createUserRecipes($user_id: String!, $recipe_index: Float!, $is_saved: Boolean!, $is_uploaded: Boolean!, $given_comment: String!) {
   createUserRecipes(
     user_id: $user_id
     recipe_index: $recipe_index
     is_saved: $is_saved
+    is_uploaded: $is_uploaded
+    given_comment: $given_comment
   ) {
     user_id
     recipe_index
     is_saved
+    is_uploaded
+    given_comment
   }
 }
     `;
@@ -562,6 +629,8 @@ export type CreateUserRecipesMutationFn = Apollo.MutationFunction<CreateUserReci
  *      user_id: // value for 'user_id'
  *      recipe_index: // value for 'recipe_index'
  *      is_saved: // value for 'is_saved'
+ *      is_uploaded: // value for 'is_uploaded'
+ *      given_comment: // value for 'given_comment'
  *   },
  * });
  */
@@ -578,6 +647,8 @@ export const RemoveUserRecipesDocument = gql`
     user_id
     recipe_index
     is_saved
+    is_uploaded
+    given_comment
   }
 }
     `;
@@ -1087,6 +1158,8 @@ export const GetAllUserrecipesDocument = gql`
     user_id
     recipe_index
     is_saved
+    is_uploaded
+    given_comment
   }
 }
     `;
@@ -1123,6 +1196,8 @@ export const GetUserrecipesByUserIdDocument = gql`
     user_id
     recipe_index
     is_saved
+    is_uploaded
+    given_comment
   }
 }
     `;
@@ -1160,6 +1235,8 @@ export const GetUserrecipesByRecipeIndexDocument = gql`
     user_id
     recipe_index
     is_saved
+    is_uploaded
+    given_comment
   }
 }
     `;
@@ -1197,6 +1274,8 @@ export const GetUserrecipesByRecipeIndexAndIsSavedDocument = gql`
     user_id
     recipe_index
     is_saved
+    is_uploaded
+    given_comment
   }
 }
     `;
@@ -1235,6 +1314,8 @@ export const GetUserrecipesByUserAndIsSavedDocument = gql`
     user_id
     recipe_index
     is_saved
+    is_uploaded
+    given_comment
   }
 }
     `;
@@ -1267,12 +1348,172 @@ export function useGetUserrecipesByUserAndIsSavedLazyQuery(baseOptions?: Apollo.
 export type GetUserrecipesByUserAndIsSavedQueryHookResult = ReturnType<typeof useGetUserrecipesByUserAndIsSavedQuery>;
 export type GetUserrecipesByUserAndIsSavedLazyQueryHookResult = ReturnType<typeof useGetUserrecipesByUserAndIsSavedLazyQuery>;
 export type GetUserrecipesByUserAndIsSavedQueryResult = Apollo.QueryResult<GetUserrecipesByUserAndIsSavedQuery, GetUserrecipesByUserAndIsSavedQueryVariables>;
+export const GetUserrecipesByRecipeIndexAndIsUploadedDocument = gql`
+    query getUserrecipesByRecipeIndexAndIsUploaded($recipeID: Float!, $isUploaded: Boolean!) {
+  userRecipesByRecipeAndIsUploaded(recipeID: $recipeID, isUploaded: $isUploaded) {
+    user_id
+    recipe_index
+    is_saved
+    is_uploaded
+    given_comment
+  }
+}
+    `;
+
+/**
+ * __useGetUserrecipesByRecipeIndexAndIsUploadedQuery__
+ *
+ * To run a query within a React component, call `useGetUserrecipesByRecipeIndexAndIsUploadedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserrecipesByRecipeIndexAndIsUploadedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserrecipesByRecipeIndexAndIsUploadedQuery({
+ *   variables: {
+ *      recipeID: // value for 'recipeID'
+ *      isUploaded: // value for 'isUploaded'
+ *   },
+ * });
+ */
+export function useGetUserrecipesByRecipeIndexAndIsUploadedQuery(baseOptions: Apollo.QueryHookOptions<GetUserrecipesByRecipeIndexAndIsUploadedQuery, GetUserrecipesByRecipeIndexAndIsUploadedQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserrecipesByRecipeIndexAndIsUploadedQuery, GetUserrecipesByRecipeIndexAndIsUploadedQueryVariables>(GetUserrecipesByRecipeIndexAndIsUploadedDocument, options);
+      }
+export function useGetUserrecipesByRecipeIndexAndIsUploadedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserrecipesByRecipeIndexAndIsUploadedQuery, GetUserrecipesByRecipeIndexAndIsUploadedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserrecipesByRecipeIndexAndIsUploadedQuery, GetUserrecipesByRecipeIndexAndIsUploadedQueryVariables>(GetUserrecipesByRecipeIndexAndIsUploadedDocument, options);
+        }
+export type GetUserrecipesByRecipeIndexAndIsUploadedQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeIndexAndIsUploadedQuery>;
+export type GetUserrecipesByRecipeIndexAndIsUploadedLazyQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeIndexAndIsUploadedLazyQuery>;
+export type GetUserrecipesByRecipeIndexAndIsUploadedQueryResult = Apollo.QueryResult<GetUserrecipesByRecipeIndexAndIsUploadedQuery, GetUserrecipesByRecipeIndexAndIsUploadedQueryVariables>;
+export const GetUserrecipesByUserAndIsUploadedDocument = gql`
+    query getUserrecipesByUserAndIsUploaded($userID: String!, $isUploaded: Boolean!) {
+  userRecipesByUserAndIsUploaded(userID: $userID, isUploaded: $isUploaded) {
+    user_id
+    recipe_index
+    is_saved
+    is_uploaded
+    given_comment
+  }
+}
+    `;
+
+/**
+ * __useGetUserrecipesByUserAndIsUploadedQuery__
+ *
+ * To run a query within a React component, call `useGetUserrecipesByUserAndIsUploadedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserrecipesByUserAndIsUploadedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserrecipesByUserAndIsUploadedQuery({
+ *   variables: {
+ *      userID: // value for 'userID'
+ *      isUploaded: // value for 'isUploaded'
+ *   },
+ * });
+ */
+export function useGetUserrecipesByUserAndIsUploadedQuery(baseOptions: Apollo.QueryHookOptions<GetUserrecipesByUserAndIsUploadedQuery, GetUserrecipesByUserAndIsUploadedQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserrecipesByUserAndIsUploadedQuery, GetUserrecipesByUserAndIsUploadedQueryVariables>(GetUserrecipesByUserAndIsUploadedDocument, options);
+      }
+export function useGetUserrecipesByUserAndIsUploadedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserrecipesByUserAndIsUploadedQuery, GetUserrecipesByUserAndIsUploadedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserrecipesByUserAndIsUploadedQuery, GetUserrecipesByUserAndIsUploadedQueryVariables>(GetUserrecipesByUserAndIsUploadedDocument, options);
+        }
+export type GetUserrecipesByUserAndIsUploadedQueryHookResult = ReturnType<typeof useGetUserrecipesByUserAndIsUploadedQuery>;
+export type GetUserrecipesByUserAndIsUploadedLazyQueryHookResult = ReturnType<typeof useGetUserrecipesByUserAndIsUploadedLazyQuery>;
+export type GetUserrecipesByUserAndIsUploadedQueryResult = Apollo.QueryResult<GetUserrecipesByUserAndIsUploadedQuery, GetUserrecipesByUserAndIsUploadedQueryVariables>;
+export const GetUserrecipesByRecipeIndexAndCommentDocument = gql`
+    query getUserrecipesByRecipeIndexAndComment($recipeID: Float!) {
+  userRecipesByRecipeAndIsCommentExists(recipeID: $recipeID) {
+    user_id
+    recipe_index
+    is_saved
+    is_uploaded
+    given_comment
+  }
+}
+    `;
+
+/**
+ * __useGetUserrecipesByRecipeIndexAndCommentQuery__
+ *
+ * To run a query within a React component, call `useGetUserrecipesByRecipeIndexAndCommentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserrecipesByRecipeIndexAndCommentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserrecipesByRecipeIndexAndCommentQuery({
+ *   variables: {
+ *      recipeID: // value for 'recipeID'
+ *   },
+ * });
+ */
+export function useGetUserrecipesByRecipeIndexAndCommentQuery(baseOptions: Apollo.QueryHookOptions<GetUserrecipesByRecipeIndexAndCommentQuery, GetUserrecipesByRecipeIndexAndCommentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserrecipesByRecipeIndexAndCommentQuery, GetUserrecipesByRecipeIndexAndCommentQueryVariables>(GetUserrecipesByRecipeIndexAndCommentDocument, options);
+      }
+export function useGetUserrecipesByRecipeIndexAndCommentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserrecipesByRecipeIndexAndCommentQuery, GetUserrecipesByRecipeIndexAndCommentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserrecipesByRecipeIndexAndCommentQuery, GetUserrecipesByRecipeIndexAndCommentQueryVariables>(GetUserrecipesByRecipeIndexAndCommentDocument, options);
+        }
+export type GetUserrecipesByRecipeIndexAndCommentQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeIndexAndCommentQuery>;
+export type GetUserrecipesByRecipeIndexAndCommentLazyQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeIndexAndCommentLazyQuery>;
+export type GetUserrecipesByRecipeIndexAndCommentQueryResult = Apollo.QueryResult<GetUserrecipesByRecipeIndexAndCommentQuery, GetUserrecipesByRecipeIndexAndCommentQueryVariables>;
+export const GetUserrecipesByUserAndCommentDocument = gql`
+    query getUserrecipesByUserAndComment($userID: String!) {
+  userRecipesByUserAndIsCommentExists(userID: $userID) {
+    user_id
+    recipe_index
+    is_saved
+    is_uploaded
+    given_comment
+  }
+}
+    `;
+
+/**
+ * __useGetUserrecipesByUserAndCommentQuery__
+ *
+ * To run a query within a React component, call `useGetUserrecipesByUserAndCommentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserrecipesByUserAndCommentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserrecipesByUserAndCommentQuery({
+ *   variables: {
+ *      userID: // value for 'userID'
+ *   },
+ * });
+ */
+export function useGetUserrecipesByUserAndCommentQuery(baseOptions: Apollo.QueryHookOptions<GetUserrecipesByUserAndCommentQuery, GetUserrecipesByUserAndCommentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserrecipesByUserAndCommentQuery, GetUserrecipesByUserAndCommentQueryVariables>(GetUserrecipesByUserAndCommentDocument, options);
+      }
+export function useGetUserrecipesByUserAndCommentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserrecipesByUserAndCommentQuery, GetUserrecipesByUserAndCommentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserrecipesByUserAndCommentQuery, GetUserrecipesByUserAndCommentQueryVariables>(GetUserrecipesByUserAndCommentDocument, options);
+        }
+export type GetUserrecipesByUserAndCommentQueryHookResult = ReturnType<typeof useGetUserrecipesByUserAndCommentQuery>;
+export type GetUserrecipesByUserAndCommentLazyQueryHookResult = ReturnType<typeof useGetUserrecipesByUserAndCommentLazyQuery>;
+export type GetUserrecipesByUserAndCommentQueryResult = Apollo.QueryResult<GetUserrecipesByUserAndCommentQuery, GetUserrecipesByUserAndCommentQueryVariables>;
 export const GetUserrecipesByRecipeAndUserDocument = gql`
     query getUserrecipesByRecipeAndUser($userID: String!, $recipeID: Float!) {
   userRecipesByUserAndRecipe(userID: $userID, recipeID: $recipeID) {
     user_id
     recipe_index
     is_saved
+    is_uploaded
+    given_comment
   }
 }
     `;
@@ -1311,6 +1552,8 @@ export const GetUserrecipesByUserWithRecipeDocument = gql`
     user_id
     recipe_index
     is_saved
+    is_uploaded
+    given_comment
     recipe {
       index
       recipe_title

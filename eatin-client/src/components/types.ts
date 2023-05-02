@@ -20,6 +20,8 @@ export interface Recipe {
     difficulty: string;
     total_time: number;
     is_saved?: boolean;
+    is_uploaded?: boolean;
+    given_comment?: string;
 }
 
 export interface FilterOptions {
@@ -33,7 +35,7 @@ export interface RecipesSection {
     recipes: Recipe[];
 }
 
-export type FilterableKeys = keyof Omit<Recipe, "is_saved">;
+export type FilterableKeys = keyof Omit<Recipe, "is_saved" | "is_uploaded" | "given_comment">;
 
 export interface FilterWrapper {
     field: FilterableKeys;
