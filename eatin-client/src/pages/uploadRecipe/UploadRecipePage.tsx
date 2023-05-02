@@ -9,9 +9,10 @@ import { RecipeStages } from "./RecipeStages";
 
 import { AutocompleteItem } from "../../components/ui/Autocomplete";
 import { useCreateRecipeMutation } from "../../generated/graphql";
-import { SelectInput, UploadRecipeSelect } from "./UploadRecipeSelect";
+import { UploadRecipeSelect } from "./UploadRecipeSelect";
 import { UploadRecipeAutocomplete } from "./UploadRecipeAutocomplete";
 import { Recipe } from "../../components/types";
+import { SelectInput } from "../../components/ui/SelectInput";
 
 export interface SelectRecipeMetadata {
     cuisine: string;
