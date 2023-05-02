@@ -1,10 +1,12 @@
 .upload-recipe-page {
-    margin: 0.5em 2em;
+    margin: 1.5em 2em 0.5em 2em;
 }
 
 .upload-recipe-page form {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
 }
 
 form > div {
@@ -13,30 +15,37 @@ form > div {
 }
 
 .upload-recipe-page .recipe-inputs {
+    max-width: 60%;
     text-align: left;
+}
+
+.upload-recipe-page .recipe-inputs h4 {
+    text-align: center !important;
+}
+
+.upload-recipe-page .instructions-title {
+    color: #808080;
 }
 
 .upload-recipe-page .recipe-inputs > div {
     margin: 0.8em 0;
+    display: inherit;
 }
 
 .upload-recipe-page .form-button {
-    position: absolute;
-    bottom: 0;
-    right: 50%;
-    transform: translateX(50%);
     margin: 0.5em;
 }
 
 .upload-recipe-page .select-inputs {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .upload-recipe-page .select-inputs > div {
-    margin: 0.5em 0.5em 0.5em 0;
+    margin: 0 0.5em 0.5em 0;
 }
 
-.pink-button {
-    background-color: #fd7269 !important;
+.red-button {
+    background-color: #e14026 !important;
 }

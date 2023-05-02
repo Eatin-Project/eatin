@@ -1,3 +1,5 @@
+import "./MediaUpload.css";
+
 import { FileUpload } from "../../components/ui/FileUpload";
 import { FC, useState } from "react";
 import { UploadImagesList } from "./UploadImagesList";
@@ -8,25 +10,40 @@ export type Image = {
     type: string;
 };
 
-export const MediaUpload: FC = () => {
-    const [images, setImages] = useState<Image[]>([]);
+interface Props {
+    onChange: (image: string) => void;
+}
+
+export const MediaUpload: FC<Props> = ({ onChange }) => {
+    const [image, setImage] = useState<Image>();
 
     const uploadMedia = (file: File) => {
-        setImages((prev) => [
-            ...prev,
-            {
-                url: URL.createObjectURL(file),
-                name: file.name,
-                type: file.type,
-            },
-        ]);
+        const url = URL.createObjectURL(file);
+        setImage({
+            url,
+            name: file.name,
+            type: file.type,
+        });
+
+        // convert to base64
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            console.log("called: ", reader);
+            // onChange(reader.result as string);
+        };
     };
 
     return (
         <div className="media-upload">
-            <h3>Add photos and videos</h3>
             <FileUpload onUploadFile={uploadMedia} />
-            <UploadImagesList images={images} />
+            {image && (
+                <div key={image.url} className="image-item">
+                    <img src={image.url} alt={image.name} />
+                    <div className="image-card">{image.name}</div>
+                </div>
+            )}
+            {/* <UploadImagesList images={images} /> */}
         </div>
     );
 };

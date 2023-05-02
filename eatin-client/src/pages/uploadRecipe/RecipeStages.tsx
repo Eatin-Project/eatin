@@ -1,7 +1,8 @@
 import "./RecipeStages.css";
 
-import { Button, TextField } from "@mui/material";
-import { FC } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Button, IconButton, TextField } from "@mui/material";
+import { FC, useState } from "react";
 
 interface Props {
     stages: string[];
@@ -9,29 +10,48 @@ interface Props {
 }
 
 export const RecipeStages: FC<Props> = ({ stages, onChange }) => {
+    const [keys, setKeys] = useState([Math.random()]);
+
     const onTextFieldChange = (
         e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
         index: number,
     ) => onChange(stages.map((value, i) => (i === index ? e.target.value : value)));
 
-    const addStage = () => onChange([...stages, ""]);
+    const addStage = () => {
+        onChange([...stages, ""]);
+        setKeys((prev) => [...prev, Math.random()]);
+    };
+
+    const deleteStage = (index: number) => {
+        onChange(stages.filter((_, i) => i !== index));
+        setKeys((keys) => keys.filter((_, i) => i !== index));
+    };
 
     return (
         <div className="recipe-stages">
-            {stages.map((_, index) => (
-                <div key={index} className="recipe-stage">
-                    <span>{index + 1})</span>
+            {stages.map((value, index) => (
+                <div key={keys[index]} className="recipe-stage">
+                    <span className="index">{index + 1})</span>
                     <TextField
-                        value={stages[index]}
+                        value={value}
                         label="stage"
                         multiline
                         fullWidth
                         size="small"
                         onChange={(e) => onTextFieldChange(e, index)}
                     />
+                    {stages.length > 1 && (
+                        <IconButton
+                            className="delete-btn"
+                            size="small"
+                            onClick={() => deleteStage(index)}
+                        >
+                            <DeleteIcon />
+                        </IconButton>
+                    )}
                 </div>
             ))}
-            <Button className="pink-button" variant="contained" onClick={addStage}>
+            <Button className="red-button" variant="contained" onClick={addStage}>
                 Add stage
             </Button>
         </div>
