@@ -28,6 +28,7 @@ export const RecipePage: FC = () => {
     const navigate = useNavigate();
     const { data: ratingData, loading: ratingLoading } = useGetRatingByRecipeAndUserQuery({
         variables: { id: currentUser ? currentUser?.uid : "", index: Number(id) },
+        fetchPolicy: "no-cache",
     });
     const { data: recipeData, loading: recipeLoading } = useGetRecipeByIdQuery({
         variables: { index: Number(id) },
@@ -52,7 +53,9 @@ export const RecipePage: FC = () => {
     const [createRating] = useCreateRatingMutation();
 
     useEffect(() => {
-        setRating(ratingData ? ratingData.ratingByUserAndRecipe.rating : 0);
+        setRating(
+            ratingData?.ratingByUserAndRecipe?.rating ? ratingData.ratingByUserAndRecipe.rating : 0,
+        );
         setIsSaved(!!isRecipeSaved);
     }, [isRecipeSaved, ratingData]);
 
