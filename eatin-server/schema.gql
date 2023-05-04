@@ -65,7 +65,7 @@ type Query {
   topRecipesByCuisine(cuisine: String!): [Recipes!]!
   ratingsByRecipe(index: Float!): [Ratings!]!
   ratingsByUser(id: String!): [Ratings!]!
-  ratingByUserAndRecipe(id: String!, index: Float!): Ratings!
+  ratingByUserAndRecipe(id: String!, index: Float!): Ratings
   ratings: [Ratings!]!
   userRecipesByRecipe(recipeID: Float!): [Userrecipes!]!
   userRecipesByUser(userID: String!): [Userrecipes!]!
