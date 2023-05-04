@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function useGetSimilarRecipes(recipeIndex: number) {
+export function useGetSimilarRecipes(recipeIndex: number, userId: string) {
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
@@ -16,7 +16,7 @@ export function useGetSimilarRecipes(recipeIndex: number) {
                     },
                     body: JSON.stringify({
                         query: `query {
-                            similar_recipes(recipe_index: ${recipeIndex}) {
+                            similar_recipes(recipe_index: ${recipeIndex}, user_id: "${userId}") {
                                 name
                                 recipes {
                                       author
@@ -39,6 +39,7 @@ export function useGetSimilarRecipes(recipeIndex: number) {
                                       total_time
                                       url
                                       vote_count
+                                      is_saved
                                 }
                             }
                         }`,

@@ -39,6 +39,7 @@ export const RecipePage: FC = () => {
     const [isSaved, setIsSaved] = useState(false);
     const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSimilarRecipes(
         Number(id),
+        currentUser ? currentUser.uid : "",
     );
 
     const {
