@@ -22,7 +22,7 @@ export const Profile: FC = () => {
     const { data, error, loading } = useGetUserByIdQuery({
         variables: { id: !!currentUser?.uid ? currentUser?.uid : "" },
     });
-
+    debugger;
     const {
         data: cakes,
         loading: cakesLoading,
