@@ -19,9 +19,9 @@ export interface Recipe {
     image: string;
     difficulty: string;
     total_time: number;
-    is_saved?: boolean;
-    is_uploaded?: boolean;
-    given_comment?: string;
+    is_saved: boolean;
+    is_uploaded: boolean;
+    given_comment: string;
 }
 
 export interface FilterOptions {

@@ -34,7 +34,7 @@ export const RecipeItemOverlay: FC<Props> = ({
                     onChange={() => updateSavedRecipes(index)}
                     recipeID={index}
                     recipeName={recipe_title}
-                    isClicked={is_saved ? true : false}
+                    isClicked={is_saved ? is_saved : false}
                     className="is-saved"
                 ></BookmarkButton>
             </div>

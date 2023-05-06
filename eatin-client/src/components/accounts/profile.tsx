@@ -13,7 +13,6 @@ import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
 import { RecipesCatalog } from "../ui/RecipesCatalog";
-import { useGetSavedRecipes } from "../functions/useGetSavedRecipes";
 import { useGetRecipesConnectionIsSaved } from "../../graphql/queries/recipes_connection_is_saved.query";
 
 export const Profile: FC = () => {
@@ -28,13 +27,14 @@ export const Profile: FC = () => {
         data: cakes,
         loading: cakesLoading,
         error: cakesErrors,
-    } = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Cake } });
+    } = useGetTopRatedRecipesByCategoryQuery({
+        variables: { category: Category.Cake, userID: currentUser ? currentUser.uid : "" },
+    });
 
-    const {
-        data: savedRecipes,
-        loading: savedRecipesLoading,
-        updateIsSaved,
-    } = useGetRecipesConnectionIsSaved(currentUser ? currentUser.uid : "", true);
+    const { data: savedRecipes, loading: savedRecipesLoading } = useGetRecipesConnectionIsSaved(
+        currentUser ? currentUser.uid : "",
+        true,
+    );
 
     const currentFilterOptions: FilterOptions[] = [
         {
@@ -75,7 +75,6 @@ export const Profile: FC = () => {
                                             ? cakes?.topRecipesByCategory
                                             : []
                                     }
-                                    specificSavedUpdateFunc={updateIsSaved}
                                 />
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
@@ -84,10 +83,7 @@ export const Profile: FC = () => {
                                 loading={savedRecipesLoading}
                                 text="loading saved recipes..."
                             >
-                                <RecipesCatalog
-                                    recipes={savedRecipes}
-                                    specificSavedUpdateFunc={updateIsSaved}
-                                />
+                                <RecipesCatalog recipes={savedRecipes} />
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
                     </Tabs>

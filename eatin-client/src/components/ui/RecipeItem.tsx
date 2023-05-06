@@ -4,6 +4,7 @@ import { FC } from "react";
 import { Recipe } from "../types";
 import { RecipeItemOverlay } from "./RecipeItemOverlay";
 import { NavigateFunction, useNavigate } from "react-router";
+import { useAuth } from "../../context/auth-context";
 
 type Props = {
     recipe: Recipe;
@@ -11,10 +12,13 @@ type Props = {
 };
 
 export const RecipeItem: FC<Props> = ({ recipe, updateSavedRecipes }) => {
+    const { currentUser } = useAuth();
+
     const navigate: NavigateFunction = useNavigate();
     const navigateToRecipePage = () => {
         navigate(`/recipe/${recipe.index}`);
     };
+
     return (
         <div className="recipe-item" onClick={navigateToRecipePage}>
             <h2 className="item-name">{recipe.recipe_title}</h2>

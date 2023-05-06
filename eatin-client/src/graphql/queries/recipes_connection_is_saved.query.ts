@@ -41,7 +41,11 @@ export function useGetRecipesConnectionIsSaved(userId: string, isSaved: boolean)
                 }),
             });
             const resJson = await res.json();
-            setData(resJson.data.recipe);
+            const newData = resJson.data.recipes_connection_is_saved;
+            newData.forEach((i: any) => {
+                i["is_saved"] = true;
+            });
+            setData(newData);
             setLoading(false);
         } catch (e) {
             console.log(`Error has occured in recipes_connection_is_saved query - ${e}`);
@@ -49,19 +53,19 @@ export function useGetRecipesConnectionIsSaved(userId: string, isSaved: boolean)
         }
     }, [isSaved, userId]);
 
-    const updateIsSaved = useCallback(
-        (recipeIndex: number) => {
-            const updatedData = data;
-            const index: number = updatedData.findIndex((val) => val.index === recipeIndex);
-            updatedData[index].is_saved = !updatedData[index].is_saved;
-            setData([...updatedData]);
-        },
-        [data],
-    );
+    // const updateIsSaved = useCallback(
+    //     (recipeIndex: number) => {
+    //         const updatedData = data;
+    //         const index: number = updatedData.findIndex((val) => val.index === recipeIndex);
+    //         updatedData[index].is_saved = !updatedData[index].is_saved;
+    //         setData([...updatedData]);
+    //     },
+    //     [data],
+    // );
 
     useEffect(() => {
         getRecipesConnectionIsSaved();
     }, [getRecipesConnectionIsSaved]);
 
-    return { data, loading, error, updateIsSaved };
+    return { data, loading, error };
 }

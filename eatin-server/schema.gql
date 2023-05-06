@@ -39,6 +39,17 @@ type Recipes {
   image: String!
   difficulty: String!
   total_time: Float!
+  is_saved: Boolean!
+  is_uploaded: Boolean!
+  given_comment: String!
+}
+
+type Userrecipes {
+  user_id: String!
+  recipe_index: Float!
+  is_saved: Boolean!
+  is_uploaded: Boolean!
+  given_comment: String!
 }
 
 type Ratings {
@@ -48,23 +59,14 @@ type Ratings {
   rating_timestamp: DateTime!
 }
 
-type Userrecipes {
-  user_id: String!
-  recipe_index: Float!
-  is_saved: Boolean!
-  is_uploaded: Boolean!
-  given_comment: String!
-  recipe: Recipes!
-}
-
 type Query {
   user(id: String!): Users!
   users: [Users!]!
-  recipe(index: Float!): Recipes!
-  recipes: [Recipes!]!
-  recipesByValue(value: String!): [Recipes!]!
-  topRecipesByCategory(category: String!): [Recipes!]!
-  topRecipesByCuisine(cuisine: String!): [Recipes!]!
+  recipe(index: Float!, userID: String!): Recipes!
+  recipes(userID: String!): [Recipes!]!
+  recipesByValue(value: String!, userID: String!): [Recipes!]!
+  topRecipesByCategory(category: String!, userID: String!): [Recipes!]!
+  topRecipesByCuisine(cuisine: String!, userID: String!): [Recipes!]!
   ratingsByRecipe(index: Float!): [Ratings!]!
   ratingsByUser(id: String!): [Ratings!]!
   ratingByUserAndRecipe(id: String!, index: Float!): Ratings!
@@ -78,7 +80,6 @@ type Query {
   userRecipesByUserAndIsCommentExists(userID: String!): [Userrecipes!]!
   userRecipesByRecipeAndIsCommentExists(recipeID: Float!): [Userrecipes!]!
   userRecipesByUserAndRecipe(userID: String!, recipeID: Float!): Userrecipes!
-  userRecipesByUserWithRecipe(userID: String!): [Userrecipes!]!
   userRecipes: [Userrecipes!]!
 }
 

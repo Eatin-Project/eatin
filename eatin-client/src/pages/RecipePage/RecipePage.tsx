@@ -10,7 +10,6 @@ import {
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 import { useAuth } from "../../context/auth-context";
 import { useToastNotification } from "../../components/functions/useToastNotification";
-import { useAddIsSavedToRecipesSection } from "../../components/functions/useAddIsSavedToRecipesSection";
 import { useGetSimilarRecipes } from "../../graphql/queries/similar_recipes.query";
 import styled from "styled-components";
 import { Rating } from "@mui/material";
@@ -30,7 +29,7 @@ export const RecipePage: FC = () => {
         variables: { id: currentUser ? currentUser?.uid : "", index: Number(id) },
     });
     const { data: recipeData, loading: recipeLoading } = useGetRecipeByIdQuery({
-        variables: { index: Number(id) },
+        variables: { index: Number(id), userID: currentUser ? currentUser.uid : "" },
     });
     const { data: isRecipeSaved, loading: recipeSavedLoading } =
         useGetUserrecipesByRecipeAndUserQuery({
@@ -42,11 +41,6 @@ export const RecipePage: FC = () => {
         currentUser ? currentUser.uid : "",
     );
 
-    const {
-        recipesWithIsSaved: recipesData,
-        isLoading: updateSavedStateLoading,
-        updateIsSaved,
-    } = useAddIsSavedToRecipesSection(recommendedRecipes);
     const { insertNewUserRecipe } = useInsertNewUserRecipe();
     const { deleteNewUserRecipe } = useDeleteUserRecipe();
     const recipe = useMemo(() => recipeData?.recipe, [recipeData?.recipe]);
@@ -60,26 +54,6 @@ export const RecipePage: FC = () => {
     if (recipeLoading || ratingLoading || recipeSavedLoading)
         return <AsyncDataLoaderWrapper loading text="loading recipe page..." />;
     if (!recipe) return <h2>Recipe does not exist :)</h2>;
-
-    const {
-        author,
-        image,
-        recipe_title,
-        ingredients,
-        instructions,
-        description,
-        cuisine,
-        course,
-        cook_time,
-        tags,
-        category,
-        diet,
-        difficulty,
-        record_health,
-        prep_time,
-        vote_count,
-        url,
-    } = recipe;
 
     function insertNewRating(newValue: number | null) {
         if (!!newValue && currentUser?.uid) {
@@ -97,25 +71,24 @@ export const RecipePage: FC = () => {
         event.stopPropagation();
         if (isSaved) {
             deleteNewUserRecipe(Number(id));
-            notify(`${recipe_title}, was removed`);
+            notify(`${recipe.recipe_title}, was removed`);
         } else {
             insertNewUserRecipe(Number(id), true);
-            notify(`${recipe_title}, was saved`);
+            notify(`${recipe.recipe_title}, was saved`);
         }
-
         setIsSaved(!isSaved);
     };
 
     const updateRating = (newValue: number | null) => {
         setRating(newValue);
         insertNewRating(newValue);
-        notify(`You have given a rating of ${newValue} to the recipe ${recipe_title}`);
+        notify(`You have given a rating of ${newValue} to the recipe ${recipe.recipe_title}`);
     };
 
     return (
         <PageWrapper>
             <LeftSection>
-                <RecipeImage src={image}></RecipeImage>
+                <RecipeImage src={recipe.image}></RecipeImage>
                 <AsyncDataLoaderWrapper
                     loading={recommendedRecipesLoading}
                     text="loading similar recipes..."
@@ -163,7 +136,7 @@ export const RecipePage: FC = () => {
                         sx={{ color: isSaved ? "#E14026" : "#B0B0B0" }}
                         onClick={(event) => handleBookmarkClicked(event)}
                     />
-                    <RecipeTitle>{recipe_title}</RecipeTitle>
+                    <RecipeTitle>{recipe.recipe_title}</RecipeTitle>
                 </TitleContainer>
                 <RecipeRating>
                     <Rating
@@ -177,12 +150,12 @@ export const RecipePage: FC = () => {
                         precision={0.5}
                     />
                 </RecipeRating>
-                <RecipeDescription>{description}</RecipeDescription>
+                <RecipeDescription>{recipe.description}</RecipeDescription>
                 <Separator />
                 <RecipeContentTitle>INGREDIENTS</RecipeContentTitle>
                 <RecipeContentList>
                     <ul className="ingredients-list">
-                        {_parseStringArray(ingredients).map((ingredient, i) => (
+                        {_parseStringArray(recipe.ingredients).map((ingredient, i) => (
                             <li key={`${ingredient}-${i}`}>{ingredient}</li>
                         ))}
                     </ul>
@@ -190,7 +163,7 @@ export const RecipePage: FC = () => {
                 <RecipeContentTitle>INSTRUCTIONS</RecipeContentTitle>
                 <RecipeContentList>
                     <ul>
-                        {_parseStringArray(instructions).map((instruction, i) => (
+                        {_parseStringArray(recipe.instructions).map((instruction, i) => (
                             <li key={`${instruction}-${i}`}>{instruction}</li>
                         ))}
                     </ul>

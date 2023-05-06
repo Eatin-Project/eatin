@@ -133,13 +133,13 @@ export class UserrecipesService {
       .getOne();
   }
 
-  async findByUserWithRecipe(userID: string): Promise<Userrecipes[]> {
-    return await this.userRecipesRepository
-      .createQueryBuilder('userrecipe')
-      .leftJoinAndSelect('userrecipe.recipe', 'recipe')
-      .where('userrecipe.user_id = :userID', { userID })
-      .getMany();
-  }
+  // async findByUserWithRecipe(userID: string): Promise<Userrecipes[]> {
+  //   return await this.userRecipesRepository
+  //     .createQueryBuilder('userrecipe')
+  //     .leftJoinAndSelect('userrecipe.recipe', 'recipe')
+  //     .where('userrecipe.user_id = :userID', { userID })
+  //     .getMany();
+  // }
 
   async removeUserRecipe(
     userID: string,

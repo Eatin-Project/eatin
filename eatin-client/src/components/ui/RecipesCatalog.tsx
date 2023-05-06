@@ -6,17 +6,21 @@ import { RecipeItem } from "./RecipeItem";
 
 type Props = {
     recipes: Recipe[];
-    specificSavedUpdateFunc: (recipeIndex: number) => void;
 };
 
-export const RecipesCatalog: FC<Props> = ({ recipes, specificSavedUpdateFunc }) => {
+export const RecipesCatalog: FC<Props> = ({ recipes }) => {
+    const updatedRecipesSavedState = (recipeIndex: number) => {
+        const index = recipes.findIndex((item) => item.index === recipeIndex);
+        recipes[index].is_saved = !recipes[index].is_saved;
+    };
+
     return (
         <div className="recipes-catalog">
             {recipes.map((recipe) => (
                 <RecipeItem
                     recipe={recipe}
                     key={recipe.index}
-                    updateSavedRecipes={specificSavedUpdateFunc}
+                    updateSavedRecipes={updatedRecipesSavedState}
                 />
             ))}
         </div>
