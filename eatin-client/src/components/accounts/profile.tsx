@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import "./profile.css";
 import { useAuth } from "../../context/auth-context";
 import { useGetTopRatedRecipesByCategoryQuery, useGetUserByIdQuery } from "../../generated/graphql";
@@ -19,8 +19,11 @@ export const Profile: FC = () => {
     const [categoryFilter, setCategoryFilter] = useState("");
     const [cuisineFilter, setCuisineFilter] = useState("");
     const { currentUser } = useAuth();
+
+    const userID = useMemo(() => (currentUser ? currentUser.uid : ""), [currentUser]);
+
     const { data, error, loading } = useGetUserByIdQuery({
-        variables: { id: currentUser ? currentUser.uid : "" },
+        variables: { id: userID },
     });
 
     const {
@@ -28,11 +31,11 @@ export const Profile: FC = () => {
         loading: cakesLoading,
         error: cakesErrors,
     } = useGetTopRatedRecipesByCategoryQuery({
-        variables: { category: Category.Cake, userID: currentUser ? currentUser.uid : "" },
+        variables: { category: Category.Cake, userID: userID },
     });
 
     const { data: savedRecipes, loading: savedRecipesLoading } = useGetRecipesConnectionIsSaved(
-        currentUser ? currentUser.uid : "",
+        userID,
         true,
     );
 

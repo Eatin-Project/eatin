@@ -1,15 +1,5 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
-import { Userrecipes } from '../userRecipes/userRecipes.model';
 @ObjectType()
 @Entity()
 export class Recipes {
@@ -79,18 +69,4 @@ export class Recipes {
   is_uploaded: boolean;
   @Field()
   given_comment: string;
-  // @Field(() => [Userrecipes])
-  // @OneToMany(() => Userrecipes, (userrecipes) => userrecipes.recipe)
-  // @JoinColumn({ name: 'index', referencedColumnName: 'recipe_index' })
-  // recipeRelations: Userrecipes[];
-
-  // @OneToOne(() => Userrecipes)
-  // @JoinColumn({ name: 'index', referencedColumnName: 'recipe_index' })
-  // recipeRelations: Userrecipes[];
-  // @OneToMany((type) => Userrecipes, (userrecipes) => userrecipes.recipe)
-  // recipeRelations: Userrecipes[];
-  //   @JoinTable()
-  //   recipeRelations: Userrecipes[];
-  //   @OneToOne(() => Recipes)
-  //   recipeRelations: Userrecipes;
 }

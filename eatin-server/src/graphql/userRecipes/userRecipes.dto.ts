@@ -6,5 +6,4 @@ export interface UserrecipeDTO {
   is_saved: boolean;
   is_uploaded: boolean;
   given_comment: string;
-  // recipe?: Recipes;
 }

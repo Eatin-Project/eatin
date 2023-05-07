@@ -53,16 +53,6 @@ export function useGetRecipesConnectionIsSaved(userId: string, isSaved: boolean)
         }
     }, [isSaved, userId]);
 
-    // const updateIsSaved = useCallback(
-    //     (recipeIndex: number) => {
-    //         const updatedData = data;
-    //         const index: number = updatedData.findIndex((val) => val.index === recipeIndex);
-    //         updatedData[index].is_saved = !updatedData[index].is_saved;
-    //         setData([...updatedData]);
-    //     },
-    //     [data],
-    // );
-
     useEffect(() => {
         getRecipesConnectionIsSaved();
     }, [getRecipesConnectionIsSaved]);

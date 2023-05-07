@@ -119,37 +119,3 @@ export const GET_USERRECIPES_BY_RECIPE_AND_USER = gql`
         }
     }
 `;
-
-// export const GET_USERRECIPES_BY_USER_WITH_RECIPE = gql`
-//     query getUserrecipesByUserWithRecipe($userID: String!) {
-//         userRecipesByUserWithRecipe(userID: $userID) {
-//             user_id
-//             recipe_index
-//             is_saved
-//             is_uploaded
-//             given_comment
-//             recipe {
-//                 index
-//                 recipe_title
-//                 url
-//                 record_health
-//                 vote_count
-//                 rating
-//                 description
-//                 cuisine
-//                 course
-//                 diet
-//                 prep_time
-//                 cook_time
-//                 ingredients
-//                 instructions
-//                 author
-//                 tags
-//                 category
-//                 image
-//                 difficulty
-//                 total_time
-//             }
-//         }
-//     }
-// `;

@@ -1,13 +1,5 @@
-import {
-  Entity,
-  Column,
-  PrimaryColumn,
-  OneToOne,
-  JoinColumn,
-  ManyToOne,
-} from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
-import { Recipes } from '../recipes/recipes.model';
 @ObjectType()
 @Entity()
 export class Userrecipes {
@@ -26,11 +18,4 @@ export class Userrecipes {
   @Field()
   @Column('varchar', { length: 100, nullable: false })
   given_comment: string;
-  // @OneToOne(() => Recipes)
-  // @JoinColumn({ name: 'recipe_index' })
-  // recipe: Recipes;
-  // @ManyToOne(() => Recipes, (recipes) => recipes.recipeRelations)
-  // @JoinColumn({ name: 'recipe_index', referencedColumnName: 'index' })
-  // recipe: Recipes;
-  // @JoinColumn({ name: 'recipe_index' })
 }

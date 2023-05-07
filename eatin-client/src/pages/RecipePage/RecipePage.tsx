@@ -25,6 +25,9 @@ export const RecipePage: FC = () => {
     const { currentUser } = useAuth();
     const { notify } = useToastNotification();
     const navigate = useNavigate();
+
+    const userID = useMemo(() => (currentUser ? currentUser.uid : ""), [currentUser]);
+
     const { data: ratingData, loading: ratingLoading } = useGetRatingByRecipeAndUserQuery({
         variables: { id: currentUser ? currentUser?.uid : "", index: Number(id) },
         fetchPolicy: "no-cache",
@@ -34,7 +37,7 @@ export const RecipePage: FC = () => {
     });
     const { data: isRecipeSaved, loading: recipeSavedLoading } =
         useGetUserrecipesByRecipeAndUserQuery({
-            variables: { recipeID: Number(id), userID: currentUser ? currentUser?.uid : "" },
+            variables: { recipeID: Number(id), userID: userID },
         });
     const [isSaved, setIsSaved] = useState(false);
     const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSimilarRecipes(
