@@ -39,6 +39,17 @@ type Recipes {
   image: String!
   difficulty: String!
   total_time: Float!
+  is_saved: Boolean!
+  is_uploaded: Boolean!
+  given_comment: String!
+}
+
+type Userrecipes {
+  user_id: String!
+  recipe_index: Float!
+  is_saved: Boolean!
+  is_uploaded: Boolean!
+  given_comment: String!
 }
 
 type Ratings {
@@ -48,21 +59,14 @@ type Ratings {
   rating_timestamp: DateTime!
 }
 
-type Userrecipes {
-  user_id: String!
-  recipe_index: Float!
-  is_saved: Boolean!
-  recipe: Recipes!
-}
-
 type Query {
   user(id: String!): Users!
   users: [Users!]!
-  recipe(index: Float!): Recipes!
-  recipes: [Recipes!]!
-  recipesByValue(value: String!): [Recipes!]!
-  topRecipesByCategory(category: String!): [Recipes!]!
-  topRecipesByCuisine(cuisine: String!): [Recipes!]!
+  recipe(index: Float!, userID: String!): Recipes!
+  recipes(userID: String!): [Recipes!]!
+  recipesByValue(value: String!, userID: String!): [Recipes!]!
+  topRecipesByCategory(category: String!, userID: String!): [Recipes!]!
+  topRecipesByCuisine(cuisine: String!, userID: String!): [Recipes!]!
   ratingsByRecipe(index: Float!): [Ratings!]!
   ratingsByUser(id: String!): [Ratings!]!
   ratingByUserAndRecipe(id: String!, index: Float!): Ratings
@@ -71,8 +75,11 @@ type Query {
   userRecipesByUser(userID: String!): [Userrecipes!]!
   userRecipesByUserAndIsSaved(userID: String!, isSaved: Boolean!): [Userrecipes!]!
   userRecipesByRecipeAndIsSaved(recipeID: Float!, isSaved: Boolean!): [Userrecipes!]!
+  userRecipesByUserAndIsUploaded(userID: String!, isUploaded: Boolean!): [Userrecipes!]!
+  userRecipesByRecipeAndIsUploaded(recipeID: Float!, isUploaded: Boolean!): [Userrecipes!]!
+  userRecipesByUserAndIsCommentExists(userID: String!): [Userrecipes!]!
+  userRecipesByRecipeAndIsCommentExists(recipeID: Float!): [Userrecipes!]!
   userRecipesByUserAndRecipe(userID: String!, recipeID: Float!): Userrecipes!
-  userRecipesByUserWithRecipe(userID: String!): [Userrecipes!]!
   userRecipes: [Userrecipes!]!
 }
 
@@ -81,5 +88,5 @@ type Mutation {
   createRecipe(recipe_title: String!, url: String!, record_health: String!, description: String!, cuisine: String!, course: String!, diet: String!, prep_time: Float!, cook_time: Float!, ingredients: String!, instructions: String!, author: String!, tags: String!, category: String!, image: String!, difficulty: String!, total_time: Float!): Recipes!
   createRating(user_id: String!, recipe_index: Float!, rating: Float!): Ratings!
   removeUserRecipes(userID: String!, recipeID: Float!): Userrecipes!
-  createUserRecipes(user_id: String!, recipe_index: Float!, is_saved: Boolean!): Userrecipes!
+  createUserRecipes(user_id: String!, recipe_index: Float!, is_saved: Boolean!, is_uploaded: Boolean!, given_comment: String!): Userrecipes!
 }

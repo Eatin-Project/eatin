@@ -43,19 +43,50 @@ export class UserrecipeResolver {
     );
   }
 
+  @Query((returns) => [Userrecipes])
+  async userRecipesByUserAndIsUploaded(
+    @Args('userID') userID: string,
+    @Args('isUploaded') isUploaded: boolean,
+  ): Promise<Userrecipes[]> {
+    return await this.userRecipesService.findByUserAndIsUploaded(
+      userID,
+      isUploaded,
+    );
+  }
+
+  @Query((returns) => [Userrecipes])
+  async userRecipesByRecipeAndIsUploaded(
+    @Args('recipeID') recipeID: number,
+    @Args('isUploaded') isUploaded: boolean,
+  ): Promise<Userrecipes[]> {
+    return await this.userRecipesService.findByRecipeAndIsUploaded(
+      recipeID,
+      isUploaded,
+    );
+  }
+
+  @Query((returns) => [Userrecipes])
+  async userRecipesByUserAndIsCommentExists(
+    @Args('userID') userID: string,
+  ): Promise<Userrecipes[]> {
+    return await this.userRecipesService.findByUserAndisCommentExists(userID);
+  }
+
+  @Query((returns) => [Userrecipes])
+  async userRecipesByRecipeAndIsCommentExists(
+    @Args('recipeID') recipeID: number,
+  ): Promise<Userrecipes[]> {
+    return await this.userRecipesService.findByRecipeAndisCommentExists(
+      recipeID,
+    );
+  }
+
   @Query((returns) => Userrecipes)
   async userRecipesByUserAndRecipe(
     @Args('userID') userID: string,
     @Args('recipeID') recipeID: number,
   ): Promise<Userrecipes> {
     return await this.userRecipesService.findByUserAndRecipe(userID, recipeID);
-  }
-
-  @Query((returns) => [Userrecipes])
-  async userRecipesByUserWithRecipe(
-    @Args('userID') userID: string,
-  ): Promise<Userrecipes[]> {
-    return await this.userRecipesService.findByUserWithRecipe(userID);
   }
 
   @Query((returns) => [Userrecipes])
@@ -76,11 +107,15 @@ export class UserrecipeResolver {
     @Args('user_id') user_id: string,
     @Args('recipe_index') recipe_index: number,
     @Args('is_saved') is_saved: boolean,
+    @Args('is_uploaded') is_uploaded: boolean,
+    @Args('given_comment') given_comment: string,
   ): Promise<Userrecipes> {
     return await this.userRecipesService.create({
       user_id,
       recipe_index,
       is_saved,
+      given_comment,
+      is_uploaded,
     });
   }
 }
