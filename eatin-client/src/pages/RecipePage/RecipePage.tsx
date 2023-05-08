@@ -8,7 +8,6 @@ import {
     useGetUserrecipesByRecipeAndUserQuery,
 } from "../../generated/graphql";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
-import { useAuth } from "../../context/auth-context";
 import { useToastNotification } from "../../components/functions/useToastNotification";
 import { useGetSimilarRecipes } from "../../graphql/queries/similar_recipes.query";
 import styled from "styled-components";
@@ -18,22 +17,21 @@ import { redRatingStyle } from "../../components/ui/rating-styles";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useInsertNewUserRecipe } from "../../components/functions/useInsertNewUserRecipe";
 import { useDeleteUserRecipe } from "../../components/functions/useDeleteUserRecipe";
+import { useGetUsersName } from "../../components/hooks/useGetUsersName";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
     const [rating, setRating] = useState<number | null>(0);
-    const { currentUser } = useAuth();
+    const userID = useGetUsersName();
     const { notify } = useToastNotification();
     const navigate = useNavigate();
 
-    const userID = useMemo(() => (currentUser ? currentUser.uid : ""), [currentUser]);
-
     const { data: ratingData, loading: ratingLoading } = useGetRatingByRecipeAndUserQuery({
-        variables: { id: currentUser ? currentUser?.uid : "", index: Number(id) },
+        variables: { id: userID, index: Number(id) },
         fetchPolicy: "no-cache",
     });
     const { data: recipeData, loading: recipeLoading } = useGetRecipeByIdQuery({
-        variables: { index: Number(id), userID: currentUser ? currentUser.uid : "" },
+        variables: { index: Number(id), userID: userID },
     });
     const { data: isRecipeSaved, loading: recipeSavedLoading } =
         useGetUserrecipesByRecipeAndUserQuery({
@@ -42,7 +40,7 @@ export const RecipePage: FC = () => {
     const [isSaved, setIsSaved] = useState(false);
     const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSimilarRecipes(
         Number(id),
-        currentUser ? currentUser.uid : "",
+        userID,
     );
 
     const { insertNewUserRecipe } = useInsertNewUserRecipe();
@@ -62,10 +60,10 @@ export const RecipePage: FC = () => {
     if (!recipe) return <h2>Recipe does not exist :)</h2>;
 
     function insertNewRating(newValue: number | null) {
-        if (!!newValue && currentUser?.uid) {
+        if (!!newValue && userID.length !== 0) {
             createRating({
                 variables: {
-                    user_id: currentUser?.uid,
+                    user_id: userID,
                     recipe_index: Number(id),
                     rating: newValue,
                 },

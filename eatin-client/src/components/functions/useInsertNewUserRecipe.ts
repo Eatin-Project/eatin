@@ -1,18 +1,18 @@
 import { useCallback, useState } from "react";
 import { CreateUserRecipesMutation, useCreateUserRecipesMutation } from "../../generated/graphql";
-import { useAuth } from "../../context/auth-context";
+import { useGetUsersName } from "../hooks/useGetUsersName";
 
 export function useInsertNewUserRecipe() {
     const [createSavedUserRecipe] = useCreateUserRecipesMutation();
     const [data, setData] = useState<CreateUserRecipesMutation | null | undefined>(null);
-    const { currentUser } = useAuth();
+    const userID = useGetUsersName();
 
     const insertNewUserRecipe = useCallback(
         (recipeIndex: Number, isSaved: boolean) => {
-            if (currentUser)
+            if (userID.length !== 0)
                 createSavedUserRecipe({
                     variables: {
-                        user_id: currentUser.uid,
+                        user_id: userID,
                         recipe_index: Number(recipeIndex),
                         is_saved: isSaved,
                         given_comment: "",
@@ -22,7 +22,7 @@ export function useInsertNewUserRecipe() {
                     setData(userRecipe.data);
                 });
         },
-        [createSavedUserRecipe, currentUser],
+        [createSavedUserRecipe, userID],
     );
 
     return { data, insertNewUserRecipe };

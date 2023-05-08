@@ -1,6 +1,5 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useState } from "react";
 import "./profile.css";
-import { useAuth } from "../../context/auth-context";
 import { useGetTopRatedRecipesByCategoryQuery, useGetUserByIdQuery } from "../../generated/graphql";
 import { Category } from "../../pages/homePage/entities/categories.enum";
 import { Cuisine } from "../../pages/homePage/entities/cuisines.enum";
@@ -14,13 +13,13 @@ import Tab from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
 import { RecipesCatalog } from "../ui/RecipesCatalog";
 import { useGetRecipesConnectionIsSaved } from "../../graphql/queries/recipes_connection_is_saved.query";
+import { useGetUsersName } from "../hooks/useGetUsersName";
 
 export const Profile: FC = () => {
     const [categoryFilter, setCategoryFilter] = useState("");
     const [cuisineFilter, setCuisineFilter] = useState("");
-    const { currentUser } = useAuth();
 
-    const userID = useMemo(() => (currentUser ? currentUser.uid : ""), [currentUser]);
+    const userID = useGetUsersName();
 
     const { data, error, loading } = useGetUserByIdQuery({
         variables: { id: userID },

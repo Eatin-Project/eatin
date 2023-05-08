@@ -2,17 +2,17 @@ import { useCallback, useEffect, useState } from "react";
 import { useGetRecipesBySearchQuery } from "../../generated/graphql";
 import { Recipe } from "../types";
 import { useSearch } from "../../context/search-context";
-import { useAuth } from "../../context/auth-context";
+import { useGetUsersName } from "../hooks/useGetUsersName";
 
 export function useGetRecipesBySearch() {
     const { searchValue } = useSearch();
-    const { currentUser } = useAuth();
+    const userID = useGetUsersName();
     const {
         data: searchResultRecipes,
         loading: searchResultRecipesLoading,
         refetch,
     } = useGetRecipesBySearchQuery({
-        variables: { value: searchValue, userID: currentUser ? currentUser.uid : "" },
+        variables: { value: searchValue, userID: userID },
     });
 
     const [recipes, setRecipes] = useState<Recipe[]>([]);
