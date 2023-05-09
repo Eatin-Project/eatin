@@ -1,83 +1,99 @@
-import {Args, Mutation, Query, Resolver} from '@nestjs/graphql';
-import {Inject} from '@nestjs/common';
-import {Recipes} from "./recipes.model";
-import {RecipesService} from "./recipes.service";
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Inject } from '@nestjs/common';
+import { Recipes } from './recipes.model';
+import { RecipesService } from './recipes.service';
 
-@Resolver(of => Recipes)
+@Resolver((of) => Recipes)
 export class RecipesResolver {
-    constructor(
-        @Inject(RecipesService) private recipesService: RecipesService) {
-    }
+  constructor(@Inject(RecipesService) private recipesService: RecipesService) {}
 
-    @Query(returns => Recipes)
-    async recipe(@Args('index') index: number): Promise<Recipes> {
-        return await this.recipesService.findOne(index);
-    }
+  @Query((returns) => Recipes)
+  async recipe(
+    @Args('index') index: number,
+    @Args('userID') userID: string,
+  ): Promise<Recipes> {
+    return await this.recipesService.findOne(index, userID);
+  }
 
-    @Query(returns => [Recipes])
-    async recipes(): Promise<Recipes[]> {
-        return await this.recipesService.findAll();
-    }
+  @Query((returns) => [Recipes])
+  async recipes(@Args('userID') userID: string): Promise<Recipes[]> {
+    return await this.recipesService.findAll(userID);
+  }
 
-    @Query(returns => [Recipes])
-    async recipesByValue(@Args('value') value: string): Promise<Recipes[]> {
-        return await this.recipesService.runQuery(`select *
-                                                    from recipes r
-                                                    where r.recipe_title like '%${value}%'
-                                                       or r.description like '%${value}%'
-                                                       or r.author like '%${value}%'
-                                                    order by r.vote_count desc;`);
-    }
+  @Query((returns) => [Recipes])
+  async recipesByValue(
+    @Args('value') value: string,
+    @Args('userID') userID: string,
+  ): Promise<Recipes[]> {
+    return await this.recipesService
+      .runQuery(`select index, recipe_title, url, record_health, vote_count, rating, description, cuisine, course,
+    diet, prep_time, cook_time, ingredients, instructions, author, tags, category, image, difficulty, 
+    total_time, 
+case when userrecipes.is_saved is NULL then false else userrecipes.is_saved end as is_saved,
+case when userrecipes.is_uploaded is NULL then false else userrecipes.is_uploaded end as is_uploaded,
+case when userrecipes.given_comment is NULL then '' else userrecipes.given_comment end as given_comment
+                                                    from recipes
+                                                    left outer join userrecipes on recipes.index = userrecipes.recipe_index and userrecipes.user_id = '${userID}'
+                                                    where recipes.recipe_title like '%${value}%'
+                                                       or recipes.description like '%${value}%'
+                                                       or recipes.author like '%${value}%'
+                                                    order by recipes.vote_count desc;`);
+  }
 
-    @Query(returns => [Recipes])
-    async topRecipesByCategory(@Args('category') category: string): Promise<Recipes[]> {
-        return await this.recipesService.findTopRatedByCategory(category);
-    }
+  @Query((returns) => [Recipes])
+  async topRecipesByCategory(
+    @Args('category') category: string,
+    @Args('userID') userID: string,
+  ): Promise<Recipes[]> {
+    return await this.recipesService.findTopRatedByCategory(category, userID);
+  }
 
-    @Query(returns => [Recipes])
-    async topRecipesByCuisine(@Args('cuisine') cuisine: string): Promise<Recipes[]> {
-        return await this.recipesService.findTopRatedByCuisine(cuisine);
-    }
+  @Query((returns) => [Recipes])
+  async topRecipesByCuisine(
+    @Args('cuisine') cuisine: string,
+    @Args('userID') userID: string,
+  ): Promise<Recipes[]> {
+    return await this.recipesService.findTopRatedByCuisine(cuisine, userID);
+  }
 
-    @Mutation(returns => Recipes)
-    async createRecipe(
-        @Args('recipe_title') recipe_title: string,
-        @Args('url') url: string,
-        @Args('record_health') record_health: string,
-        @Args('description') description: string,
-        @Args('cuisine') cuisine: string,
-        @Args('course') course: string,
-        @Args('diet') diet: string,
-        @Args('prep_time') prep_time: number,
-        @Args('cook_time') cook_time: number,
-        @Args('ingredients') ingredients: string,
-        @Args('instructions') instructions: string,
-        @Args('author') author: string,
-        @Args('tags') tags: string,
-        @Args('category') category: string,
-        @Args('image') image: string,
-        @Args('difficulty') difficulty: string,
-        @Args('total_time') total_time: number
-
-    ): Promise<Recipes> {
-        return await this.recipesService.create({
-            recipe_title,
-            url,
-            record_health,
-            description,
-            cuisine,
-            course,
-            diet,
-            prep_time,
-            cook_time,
-            ingredients,
-            instructions,
-            author,
-            tags,
-            category,
-            image,
-            difficulty,
-            total_time
-        })
-    }
+  @Mutation((returns) => Recipes)
+  async createRecipe(
+    @Args('recipe_title') recipe_title: string,
+    @Args('url') url: string,
+    @Args('record_health') record_health: string,
+    @Args('description') description: string,
+    @Args('cuisine') cuisine: string,
+    @Args('course') course: string,
+    @Args('diet') diet: string,
+    @Args('prep_time') prep_time: number,
+    @Args('cook_time') cook_time: number,
+    @Args('ingredients') ingredients: string,
+    @Args('instructions') instructions: string,
+    @Args('author') author: string,
+    @Args('tags') tags: string,
+    @Args('category') category: string,
+    @Args('image') image: string,
+    @Args('difficulty') difficulty: string,
+    @Args('total_time') total_time: number,
+  ): Promise<Recipes> {
+    return await this.recipesService.create({
+      recipe_title,
+      url,
+      record_health,
+      description,
+      cuisine,
+      course,
+      diet,
+      prep_time,
+      cook_time,
+      ingredients,
+      instructions,
+      author,
+      tags,
+      category,
+      image,
+      difficulty,
+      total_time,
+    });
+  }
 }

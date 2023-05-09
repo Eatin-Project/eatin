@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import "./profile.css";
-import { useAuth } from "../../context/auth-context";
 import { useGetTopRatedRecipesByCategoryQuery, useGetUserByIdQuery } from "../../generated/graphql";
 import { Category } from "../../pages/homePage/entities/categories.enum";
 import { Cuisine } from "../../pages/homePage/entities/cuisines.enum";
@@ -13,27 +12,31 @@ import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
 import { RecipesCatalog } from "../ui/RecipesCatalog";
-import { useGetSavedRecipes } from "../functions/useGetSavedRecipes";
+import { useGetRecipesConnectionIsSaved } from "../../graphql/queries/recipes_connection_is_saved.query";
+import { useGetUsersName } from "../hooks/useGetUsersName";
 
 export const Profile: FC = () => {
     const [categoryFilter, setCategoryFilter] = useState("");
     const [cuisineFilter, setCuisineFilter] = useState("");
-    const { currentUser } = useAuth();
+
+    const userID = useGetUsersName();
+
     const { data, error, loading } = useGetUserByIdQuery({
-        variables: { id: !!currentUser?.uid ? currentUser?.uid : "" },
+        variables: { id: userID },
     });
     debugger;
     const {
         data: cakes,
         loading: cakesLoading,
         error: cakesErrors,
-    } = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Cake } });
+    } = useGetTopRatedRecipesByCategoryQuery({
+        variables: { category: Category.Cake, userID: userID },
+    });
 
-    const {
-        recipes: savedRecipes,
-        isLoading: savedRecipesLoading,
-        updateIsSaved,
-    } = useGetSavedRecipes();
+    const { data: savedRecipes, loading: savedRecipesLoading } = useGetRecipesConnectionIsSaved(
+        userID,
+        true,
+    );
 
     const currentFilterOptions: FilterOptions[] = [
         {
@@ -74,7 +77,6 @@ export const Profile: FC = () => {
                                             ? cakes?.topRecipesByCategory
                                             : []
                                     }
-                                    specificSavedUpdateFunc={updateIsSaved}
                                 />
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
@@ -83,10 +85,7 @@ export const Profile: FC = () => {
                                 loading={savedRecipesLoading}
                                 text="loading saved recipes..."
                             >
-                                <RecipesCatalog
-                                    recipes={savedRecipes}
-                                    specificSavedUpdateFunc={updateIsSaved}
-                                />
+                                <RecipesCatalog recipes={savedRecipes} />
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
                     </Tabs>

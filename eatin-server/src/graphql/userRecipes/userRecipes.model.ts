@@ -1,6 +1,5 @@
-import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
-import { Recipes } from '../recipes/recipes.model';
 @ObjectType()
 @Entity()
 export class Userrecipes {
@@ -14,7 +13,9 @@ export class Userrecipes {
   @Column('boolean', { nullable: false })
   is_saved: boolean;
   @Field()
-  @OneToOne(() => Recipes)
-  @JoinColumn({ name: 'recipe_index' })
-  recipe: Recipes;
+  @Column('boolean', { nullable: false })
+  is_uploaded: boolean;
+  @Field()
+  @Column('varchar', { length: 100, nullable: false })
+  given_comment: string;
 }

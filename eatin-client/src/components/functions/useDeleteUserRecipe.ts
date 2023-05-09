@@ -1,25 +1,25 @@
 import { useCallback, useState } from "react";
 import { RemoveUserRecipesMutation, useRemoveUserRecipesMutation } from "../../generated/graphql";
-import { useAuth } from "../../context/auth-context";
+import { useGetUsersName } from "../hooks/useGetUsersName";
 
 export function useDeleteUserRecipe() {
     const [removeSavedUserRecipe] = useRemoveUserRecipesMutation();
     const [data, setData] = useState<RemoveUserRecipesMutation | null | undefined>(null);
-    const { currentUser } = useAuth();
+    const userID = useGetUsersName();
 
     const deleteNewUserRecipe = useCallback(
         (recipeIndex: Number) => {
-            if (currentUser)
+            if (userID.length !== 0)
                 removeSavedUserRecipe({
                     variables: {
-                        user_id: currentUser.uid,
+                        user_id: userID,
                         recipe_index: Number(recipeIndex),
                     },
                 }).then((userRecipe) => {
                     setData(userRecipe.data);
                 });
         },
-        [removeSavedUserRecipe, currentUser],
+        [removeSavedUserRecipe, userID],
     );
 
     return { data, deleteNewUserRecipe };
