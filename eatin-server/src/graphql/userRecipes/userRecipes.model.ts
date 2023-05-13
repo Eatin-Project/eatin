@@ -12,4 +12,10 @@ export class Userrecipes {
   @Field()
   @Column('boolean', { nullable: false })
   is_saved: boolean;
+  @Field()
+  @Column('boolean', { nullable: false })
+  is_uploaded: boolean;
+  @Field()
+  @Column('varchar', { length: 100, nullable: false })
+  given_comment: string;
 }

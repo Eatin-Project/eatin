@@ -1,5 +1,10 @@
 import "./HomePage.css";
 
+import { FC } from "react";
+import { RecommendedFeed } from "./RecommendedFeed";
+import { useGetSections } from "../../graphql/queries/sections.query";
+import { RecipesCatalog } from "../../components/ui/RecipesCatalog";
+import { useSearch } from "../../context/search-context";
 import {FC, useEffect, useState} from "react";
 import {RecommendedFeed} from "./RecommendedFeed";
 import {Recipe, RecipesSection} from "../../components/types";
@@ -12,42 +17,26 @@ import {useCatalogFilterRecipes} from "../../components/hooks/useCatalogFilterRe
 import { useAddIsSavedToRecipesSection } from "../../components/functions/useAddIsSavedToRecipesSection";
 import {useSearch} from "../../context/search-context";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
+import { useGetRecipesBySearch } from "../../components/functions/useGetRecipesBySearch";
+import { useGetUsersName } from "../../components/hooks/useGetUsersName";
 import {FilterRecipes} from "./FilterRecipes";
 
 export const HomePage: FC = () => {
-    const [allRecipes, setAllRecipes] = useState<RecipesSection[]>([]);
-    const [resultRecipes, setResultRecipes] = useState<Recipe[]>([]);
-    const {currentUser} = useAuth();
-    const {searchValue} = useSearch();
-    const {data: recommendedRecipes, loading: recommendedRecipesLoading} = useGetSections(
-        currentUser ? currentUser.uid : "",
-    );
-    const {data: searchResultRecipes, loading: searchResultRecipesLoading} = useGetRecipesBySearchQuery(
-        {variables: {value: searchValue}});
-    const {filteredRecipes} = useSectionsFilterRecipes(allRecipes);
-    const {currentCatalogFilterOptions, catalogFilteredRecipes} = useCatalogFilterRecipes(resultRecipes);
+    const { searchValue } = useSearch();
+    const userID = useGetUsersName();
 
-    useEffect(() => {
-        setResultRecipes(!!searchResultRecipes?.recipesByValue ? searchResultRecipes.recipesByValue : []);
-    }, [searchResultRecipes]);
-
-    const {
-        recipesWithIsSaved: recipesData,
-        isLoading: updateSavedStateLoading,
-        updateIsSaved,
-    } = useAddIsSavedToRecipesSection(recommendedRecipes);
-
-    useEffect(() => {
-        const initialRecipes: { name: string; recipes: Recipe[] }[] = recipesData?.map(
-            (section: { name: any; recipes: any }) => ({
-                name: section.name,
-                recipes: section.recipes,
-            }),
-        );
-        setAllRecipes(initialRecipes);
-    }, [currentUser, recipesData]);
+    const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSections(userID);
+    const { recipes: searchResultRecipes, isLoading: searchResultRecipesLoading } =
+        useGetRecipesBySearch();
 
     return (
+        <div>
+            {!!searchValue ? (
+                <AsyncDataLoaderWrapper
+                    loading={searchResultRecipesLoading}
+                    text="Finding the perfect recipes for you..."
+                >
+                    <RecipesCatalog recipes={searchResultRecipes} />
         <>
             <FilterRecipes key={currentCatalogFilterOptions.length} filterOptions={currentCatalogFilterOptions} isSearch={!!searchValue && !!resultRecipes}/>
             { !!searchValue && !!resultRecipes ?
@@ -58,7 +47,17 @@ export const HomePage: FC = () => {
                                         text="Finding the perfect recipes for you...">
                     <RecommendedFeed currentRecipes={filteredRecipes} isLoadingCurrentRecipes={updateSavedStateLoading} updateSavedStateInRecipesSection={updateIsSaved}/>
                 </AsyncDataLoaderWrapper>
-            }
-        </>
+            ) : (
+                <AsyncDataLoaderWrapper
+                    loading={recommendedRecipesLoading}
+                    text="Finding the perfect recipes for you..."
+                >
+                    <RecommendedFeed
+                        currentRecipes={recommendedRecipes}
+                        isLoadingCurrentRecipes={recommendedRecipesLoading}
+                    />
+                </AsyncDataLoaderWrapper>
+            )}
+        </div>
     );
 };

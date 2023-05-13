@@ -15,7 +15,7 @@ export interface ICarouselItem<T = unknown> {
     title?: string;
     rating: number;
     isSaved: boolean | undefined;
-    updateSavedRecipes: (isSaved: boolean, recipeIndex: number) => void;
+    updatedRecipesSavedState: (recipeIndex: number) => void;
 }
 
 export type CarouselItemProps = ICarouselItem & {
@@ -34,7 +34,7 @@ export const CarouselItem: FC<CarouselItemProps> = ({
     onClick,
     rating,
     isSaved,
-    updateSavedRecipes,
+    updatedRecipesSavedState,
     itemValue,
     title,
 }) => {
@@ -53,7 +53,7 @@ export const CarouselItem: FC<CarouselItemProps> = ({
             insertNewUserRecipe(id, true);
             notify(`${title}, was saved`);
         }
-
+        updatedRecipesSavedState(id);
         setIsRecipeSaved(!isRecipeSaved);
     };
 
@@ -111,7 +111,7 @@ const CarouselItemImageWrapper = styled.div`
 const CarouselItemTitle = styled.div`
     font-style: normal;
     font-weight: 600;
-    font-size: 10px;
+    font-size: 13px;
     line-height: 15px;
     text-align: left;
     color: #263238;

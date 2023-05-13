@@ -4,9 +4,9 @@ import { Cuisine } from "../../pages/homePage/entities/cuisines.enum";
 import { Diet } from "../../pages/homePage/entities/diets.enum";
 import { Difficulty } from "../../pages/homePage/entities/difficulties.enum";
 import { FilterWrapper, Recipe, FilterOptions } from "../types";
-import {Category} from "../../pages/homePage/entities/categories.enum";
-import {Rating} from "../../pages/homePage/entities/ratings.enum";
-import {assertBigger, assertEquals, assertSmaller, filterRecipes} from "./FilterUtils";
+import { Category } from "../../pages/homePage/entities/categories.enum";
+import { Rating } from "../../pages/homePage/entities/ratings.enum";
+import { assertBigger, assertEquals, assertSmaller, filterRecipes } from "./FilterUtils";
 
 const _ = require("lodash");
 
@@ -43,7 +43,7 @@ export function useCatalogFilterRecipes(initialRecipes: Recipe[]) {
 
     useEffect(() => {
         resetFilters();
-    }, [initialRecipes])
+    }, [initialRecipes]);
 
     function resetFilters() {
         setCategoryFilter([]);

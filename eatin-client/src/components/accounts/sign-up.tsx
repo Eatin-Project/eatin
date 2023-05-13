@@ -1,24 +1,27 @@
 import "./auth-style.css";
-import {ChangeEvent, FormEvent, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     A,
+    AnimationText,
     ButtonWrapper,
     Card,
+    ColumnWrapper,
+    Container,
     Form,
     FormInput,
-    Wrapper, Container, ColumnWrapper, AnimationText,
+    Wrapper,
 } from "./auth-style";
-import {Gender} from "./genders.enum";
-import {useAuth} from "../../context/auth-context";
-import {Country} from "./countries.enum";
-import {useCreateUserMutation} from "../../generated/graphql";
-import {Autocomplete, FormControl, InputLabel, Select, SelectChangeEvent} from "@mui/material";
+import { Gender } from "./genders.enum";
+import { useAuth } from "../../context/auth-context";
+import { Country } from "./countries.enum";
+import { useCreateUserMutation } from "../../generated/graphql";
+import { Autocomplete, FormControl, InputLabel, Select, SelectChangeEvent } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {ReactComponent as ChefAnimation} from '../../assets/Chef.svg';
-import {ReactComponent as MediumLogo} from '../../assets/MediumLogo.svg';
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { ReactComponent as ChefAnimation } from "../../assets/Chef.svg";
+import { ReactComponent as MediumLogo } from "../../assets/MediumLogo.svg";
 
 const defaultFormFields = {
     firstName: "",
@@ -33,11 +36,10 @@ const defaultFormFields = {
 function SignUp() {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const [birthDate, setBirthDate] = useState<Date | null>(null);
-    const {firstName, lastName, email, password, phone, gender, country} =
-        formFields;
+    const { firstName, lastName, email, password, phone, gender, country } = formFields;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const {signUpUser} = useAuth();
+    const { signUpUser } = useAuth();
     const resetFormFields = () => {
         return setFormFields(defaultFormFields);
     };
@@ -57,8 +59,8 @@ function SignUp() {
                 phone,
                 gender,
                 birthDate,
-                country
-            ).then((userCredential: { user: { uid: any; }; }) => {
+                country,
+            ).then((userCredential: { user: { uid: any } }) => {
                 if (userCredential) {
                     createUser({
                         variables: {
@@ -69,8 +71,8 @@ function SignUp() {
                             phone: phone,
                             gender: gender,
                             birthdate: birthDate,
-                            country: country
-                        }
+                            country: country,
+                        },
                     }).then((user) => {
                         console.log(user.data?.createUser);
                     });
@@ -86,16 +88,16 @@ function SignUp() {
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
-        setFormFields({...formFields, [name]: value});
+        const { name, value } = event.target;
+        setFormFields({ ...formFields, [name]: value });
     };
 
     const handleGenderChange = (event: SelectChangeEvent) => {
-        setFormFields({...formFields, gender: event.target.value});
+        setFormFields({ ...formFields, gender: event.target.value });
     };
 
     const handleCountryChange = (country: string) => {
-        setFormFields({...formFields, country: country});
+        setFormFields({ ...formFields, country: country });
     };
 
     return (
@@ -104,11 +106,11 @@ function SignUp() {
                 <ColumnWrapper>
                     <AnimationText>Let’s Meet!</AnimationText>
                     <AnimationText>Create an Account</AnimationText>
-                    <ChefAnimation style={{marginTop: '20%'}}/>
+                    <ChefAnimation style={{ marginTop: "20%" }} />
                 </ColumnWrapper>
                 <Card>
                     <div className="d-flex ms-3 mt-3">
-                        <MediumLogo/>
+                        <MediumLogo />
                     </div>
                     <div className="d-flex align-items-center justify-content-center w-100 h-100">
                         <Form onSubmit={handleSubmit}>
@@ -184,7 +186,7 @@ function SignUp() {
                                 <LocalizationProvider className="w-50" dateAdapter={AdapterDayjs}>
                                     <DatePicker
                                         className="ms-3"
-                                        slotProps={{textField: {variant: 'standard'}}}
+                                        slotProps={{textField: {variant: "standard"}}}
                                         label="Date Of Birth"
                                         value={birthDate}
                                         onChange={(date) => setBirthDate(date)}
@@ -197,12 +199,13 @@ function SignUp() {
                                     id="combo-box-country"
                                     options={Object.values(Country)}
                                     onChange={(event: any, newValue: string | null) => {
-                                        handleCountryChange(!!newValue ? newValue : '');
+                                        handleCountryChange(!!newValue ? newValue : "");
                                     }}
-                                    renderInput={(params) => <FormInput {...params} variant="standard" required
-                                                                        label="Country"/>}
+                                    renderInput={(params) => (<FormInput {...params} variant="standard" required
+                                                                        label="Country"
                                 />
-                            </div>
+                            )}
+                                /></div>
                             <div className="d-grid mb-2">
                                 <ButtonWrapper
                                     type="submit"

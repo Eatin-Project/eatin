@@ -7,7 +7,7 @@ import { NavigateFunction, useNavigate } from "react-router";
 
 type Props = {
     recipe: Recipe;
-    updateSavedRecipes: (isSaved: boolean, recipeIndex: number) => void;
+    updateSavedRecipes: (recipeIndex: number) => void;
 };
 
 export const RecipeItem: FC<Props> = ({ recipe, updateSavedRecipes }) => {
@@ -15,6 +15,7 @@ export const RecipeItem: FC<Props> = ({ recipe, updateSavedRecipes }) => {
     const navigateToRecipePage = () => {
         navigate(`/recipe/${recipe.index}`);
     };
+
     return (
         <div className="recipe-item" onClick={navigateToRecipePage}>
             <h2 className="item-name">{recipe.recipe_title}</h2>

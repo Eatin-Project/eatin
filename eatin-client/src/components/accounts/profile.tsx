@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import "./profile.css";
-import { useAuth } from "../../context/auth-context";
 import { useGetTopRatedRecipesByCategoryQuery, useGetUserByIdQuery } from "../../generated/graphql";
 import { Category } from "../../pages/homePage/entities/categories.enum";
 import { Cuisine } from "../../pages/homePage/entities/cuisines.enum";
@@ -12,27 +11,30 @@ import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
-import {RecipesCatalog} from "../ui/RecipesCatalog";
+import { RecipesCatalog } from "../ui/RecipesCatalog";
+import { useGetRecipesConnectionIsSaved } from "../../graphql/queries/recipes_connection_is_saved.query";
+import { useGetUsersName } from "../hooks/useGetUsersName";
 
 export const Profile: FC = () => {
-    const [categoryFilter, setCategoryFilter] = useState([""]);
-    const [cuisineFilter, setCuisineFilter] = useState([""]);
-    const { currentUser } = useAuth();
+    const [categoryFilter, setCategoryFilter] = useState("");
+    const [cuisineFilter, setCuisineFilter] = useState("");
+    const userID = useGetUsersName();
     const { data, error, loading } = useGetUserByIdQuery({
-        variables: { id: !!currentUser?.uid ? currentUser?.uid : "" },
+        variables: { id: userID },
     });
 
     const {
         data: cakes,
         loading: cakesLoading,
         error: cakesErrors,
-    } = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Cake } });
+    } = useGetTopRatedRecipesByCategoryQuery({
+        variables: { category: Category.Cake, userID: userID },
+    });
 
-    const {
-        data: drinks,
-        loading: drinksLoading,
-        error: drinksErrors,
-    } = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Drink } });
+    const { data: savedRecipes, loading: savedRecipesLoading } = useGetRecipesConnectionIsSaved(
+        userID,
+        true,
+    );
 
     const currentFilterOptions: FilterOptions[] = [
         {
@@ -50,7 +52,7 @@ export const Profile: FC = () => {
     ];
 
     return (
-        <AsyncDataLoaderWrapper loading={loading} text="loading user...">
+        <AsyncDataLoaderWrapper loading={loading || savedRecipesLoading} text="loading user...">
             <div className="profile-container">
                 <div className="profile-header">
                     <User size="large" name={data?.user.firstname + " " + data?.user.lastname} />
@@ -69,15 +71,21 @@ export const Profile: FC = () => {
                                 loading={cakesLoading}
                                 text="loading my recipes..."
                             >
-                                <RecipesCatalog recipes={cakes?.topRecipesByCategory ? cakes?.topRecipesByCategory : []}/>
+                                <RecipesCatalog
+                                    recipes={
+                                        cakes?.topRecipesByCategory
+                                            ? cakes?.topRecipesByCategory
+                                            : []
+                                    }
+                                />
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
                         <TabPanel value={1} sx={{ p: 2 }}>
                             <AsyncDataLoaderWrapper
-                                loading={drinksLoading}
+                                loading={savedRecipesLoading}
                                 text="loading saved recipes..."
                             >
-                                <RecipesCatalog recipes={drinks?.topRecipesByCategory ? drinks?.topRecipesByCategory : []}/>
+                                <RecipesCatalog recipes={savedRecipes} />
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
                     </Tabs>

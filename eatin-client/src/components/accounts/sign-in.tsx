@@ -1,10 +1,20 @@
 import "./auth-style.css";
-import {ChangeEvent, FormEvent, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {A, AnimationText, ButtonWrapper, Card, ColumnWrapper, Container, Form, FormInput, Wrapper} from "./auth-style";
-import {useAuth} from "../../context/auth-context";
-import {ReactComponent as ChefAnimation} from '../../assets/Chef.svg';
-import {ReactComponent as MediumLogo} from '../../assets/MediumLogo.svg';
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+    A,
+    AnimationText,
+    ButtonWrapper,
+    Card,
+    ColumnWrapper,
+    Container,
+    Form,
+    FormInput,
+    Wrapper,
+} from "./auth-style";
+import { useAuth } from "../../context/auth-context";
+import { ReactComponent as ChefAnimation } from "../../assets/Chef.svg";
+import { ReactComponent as MediumLogo } from "../../assets/MediumLogo.svg";
 
 const defaultFormFields = {
     email: "",
@@ -13,10 +23,10 @@ const defaultFormFields = {
 
 function SignIn() {
     const [formFields, setFormFields] = useState(defaultFormFields);
-    const {email, password} = formFields;
+    const { email, password } = formFields;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const {signInUser} = useAuth();
+    const { signInUser } = useAuth();
     const resetFormFields = () => {
         return setFormFields(defaultFormFields);
     };
@@ -41,8 +51,8 @@ function SignIn() {
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
-        setFormFields({...formFields, [name]: value});
+        const { name, value } = event.target;
+        setFormFields({ ...formFields, [name]: value });
     };
 
     return (
@@ -51,11 +61,11 @@ function SignIn() {
                 <ColumnWrapper>
                     <AnimationText>Let’s Find Some Recipes!</AnimationText>
                     <AnimationText>Sign In First</AnimationText>
-                    <ChefAnimation style={{marginTop: '20%'}}/>
+                    <ChefAnimation style={{ marginTop: "20%" }} />
                 </ColumnWrapper>
                 <Card>
                     <div className="d-flex ms-3 mt-3">
-                        <MediumLogo/>
+                        <MediumLogo />
                     </div>
                     <div className="d-flex align-items-center justify-content-center w-100 h-100">
                         <Form onSubmit={handleSubmit}>

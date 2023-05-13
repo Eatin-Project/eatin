@@ -3,9 +3,9 @@ import { CookingTime } from "../../pages/homePage/entities/cooking-times.enum";
 import { Diet } from "../../pages/homePage/entities/diets.enum";
 import { Difficulty } from "../../pages/homePage/entities/difficulties.enum";
 import { RecipesSection, FilterWrapper, FilterOptions } from "../types";
-import {Rating} from "../../pages/homePage/entities/ratings.enum";
-import {assertBigger, assertEquals, assertSmaller, filterRecipes} from "./FilterUtils";
-import {useSearch} from "../../context/search-context";
+import { Rating } from "../../pages/homePage/entities/ratings.enum";
+import { assertBigger, assertEquals, assertSmaller, filterRecipes } from "./FilterUtils";
+import { useSearch } from "../../context/search-context";
 
 const _ = require("lodash");
 
@@ -15,7 +15,7 @@ export function useSectionsFilterRecipes(initialRecipes: RecipesSection[]) {
     const [difficultyFilter, setDifficultyFilter] = useState("");
     const [ratingFilter, setRatingFilter] = useState("");
     const [totalTimeFilter, setTotalTimeFilter] = useState("");
-    const {searchValue} = useSearch();
+    const { searchValue } = useSearch();
 
     const filters: FilterWrapper[] = [
         // { field: "diet", filter: dietFilter, operator: assertEquals },
@@ -26,21 +26,18 @@ export function useSectionsFilterRecipes(initialRecipes: RecipesSection[]) {
 
     useEffect(() => {
         const tempRecipes: RecipesSection[] = _.cloneDeep(initialRecipes);
-        tempRecipes?.forEach((section) => (section.recipes = filterRecipes(section.recipes, filters)));
+        tempRecipes?.forEach(
+            (section: RecipesSection) =>
+                (section.recipes = filterRecipes(section.recipes, filters)),
+        );
         setFilteredRecipes(tempRecipes);
-    }, [
-        initialRecipes,
-        dietFilter,
-        difficultyFilter,
-        ratingFilter,
-        totalTimeFilter,
-    ]);
+    }, [initialRecipes, dietFilter, difficultyFilter, ratingFilter, totalTimeFilter]);
 
     useEffect(() => {
         if (!!searchValue) {
             resetFilters();
         }
-    }, [searchValue])
+    }, [searchValue]);
 
     function resetFilters() {
         setDietFilter("");

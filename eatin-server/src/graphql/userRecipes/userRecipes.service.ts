@@ -31,7 +31,7 @@ export class UserrecipesService {
     return this.userRecipesRepository.findBy({ recipe_index: recipeID });
   }
 
-  findByUser(userID: string): Promise<Userrecipes[]> {
+  async findByUser(userID: string): Promise<Userrecipes[]> {
     return this.userRecipesRepository.findBy({ user_id: userID });
   }
 
@@ -45,6 +45,24 @@ export class UserrecipesService {
     });
   }
 
+  findByUserAndIsUploaded(
+    userID: string,
+    isUploaded: boolean,
+  ): Promise<Userrecipes[]> {
+    return this.userRecipesRepository.findBy({
+      user_id: userID,
+      is_uploaded: isUploaded,
+    });
+  }
+
+  findByUserAndisCommentExists(userID: string): Promise<Userrecipes[]> {
+    return this.userRecipesRepository
+      .createQueryBuilder('userrecipe')
+      .where('userrecipe.user_id = :userID', { userID })
+      .where('length(given_comment)>0')
+      .getMany();
+  }
+
   findByRecipeAndIsSaved(
     recipeID: number,
     isSaved: boolean,
@@ -55,10 +73,25 @@ export class UserrecipesService {
     });
   }
 
-  async findByUserAndRecipe(
-    userID: string,
+  findByRecipeAndIsUploaded(
     recipeID: number,
-  ): Promise<Userrecipes> {
+    isUploaded: boolean,
+  ): Promise<Userrecipes[]> {
+    return this.userRecipesRepository.findBy({
+      recipe_index: recipeID,
+      is_uploaded: isUploaded,
+    });
+  }
+
+  findByRecipeAndisCommentExists(recipeID: number): Promise<Userrecipes[]> {
+    return this.userRecipesRepository
+      .createQueryBuilder('userrecipe')
+      .where('userrecipe.recipe_index = :recipeID', { recipeID })
+      .where('length(given_comment)>0')
+      .getMany();
+  }
+
+  findByUserAndRecipe(userID: string, recipeID: number): Promise<Userrecipes> {
     return this.userRecipesRepository.findOne({
       where: { user_id: userID, recipe_index: recipeID },
     });
@@ -72,6 +105,32 @@ export class UserrecipesService {
     return this.userRecipesRepository.findOne({
       where: { user_id: userID, recipe_index: recipeID, is_saved: isSaved },
     });
+  }
+
+  findByUserAndRecipeAndIsUploaded(
+    userID: string,
+    recipeID: number,
+    isUploaded: boolean,
+  ): Promise<Userrecipes> {
+    return this.userRecipesRepository.findOne({
+      where: {
+        user_id: userID,
+        recipe_index: recipeID,
+        is_uploaded: isUploaded,
+      },
+    });
+  }
+
+  findByUserAndRecipeAndisCommentExists(
+    userID: string,
+    recipeID: number,
+  ): Promise<Userrecipes> {
+    return this.userRecipesRepository
+      .createQueryBuilder('userrecipe')
+      .where('userrecipe.recipe_index = :recipeID', { recipeID })
+      .where('userrecipe.user_id = :userID', { userID })
+      .where('length(given_comment)>0')
+      .getOne();
   }
 
   async removeUserRecipe(

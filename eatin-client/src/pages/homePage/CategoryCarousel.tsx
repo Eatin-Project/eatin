@@ -6,11 +6,15 @@ import { ICarouselItem } from "../../components/ui/CarouselItem";
 
 type Props = Omit<CarouselProps, "items"> & {
     items: Recipe[];
-    updateSavedRecipes: (isSaved: boolean, recipeIndex: number) => void;
 };
 
-export const CategoryCarousel: FC<Props> = ({ items, updateSavedRecipes, ...props }) => {
+export const CategoryCarousel: FC<Props> = ({ items, ...props }) => {
     const navigate = useNavigate();
+
+    const updatedRecipesSavedState = (recipeIndex: number) => {
+        const index = items.findIndex((item) => item.index === recipeIndex);
+        items[index].is_saved = !items[index].is_saved;
+    };
 
     const carouselItems: ICarouselItem<any>[] = items.map(
         ({ image, index, recipe_title, is_saved, rating }, i) => ({
@@ -20,7 +24,7 @@ export const CategoryCarousel: FC<Props> = ({ items, updateSavedRecipes, ...prop
             itemValue: items[i],
             rating: rating,
             isSaved: is_saved,
-            updateSavedRecipes: updateSavedRecipes,
+            updatedRecipesSavedState: updatedRecipesSavedState,
         }),
     );
 

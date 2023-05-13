@@ -12,12 +12,15 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, IconButton } from "@mui/material";
+import { useGetUsersName } from "../hooks/useGetUsersName";
 
 export const Navbar = () => {
     const navigate = useNavigate();
-    const { currentUser, signOutUser } = useAuth();
+    const userID = useGetUsersName();
+    const { signOutUser } = useAuth();
+    const location = useLocation();
     const { data } = useGetUserByIdQuery({
-        variables: { id: !!currentUser?.uid ? currentUser?.uid : "" },
+        variables: { id: userID },
     });
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);

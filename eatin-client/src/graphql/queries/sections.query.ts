@@ -19,26 +19,29 @@ export function useGetSections(userId: string) {
                             sections(user_id: "${userId}") {
                                 name
                                 recipes {
-                                      author
-                                      category
-                                      cook_time
-                                      course
-                                      cuisine
-                                      description
-                                      diet
-                                      difficulty
-                                      image
-                                      index
-                                      ingredients
-                                      instructions
-                                      prep_time
-                                      rating
-                                      recipe_title
-                                      record_health
-                                      tags
-                                      total_time
-                                      url
-                                      vote_count
+                                    author
+                                    category
+                                    cook_time
+                                    course
+                                    cuisine
+                                    description
+                                    diet
+                                    difficulty
+                                    image
+                                    index
+                                    ingredients
+                                    instructions
+                                    prep_time
+                                    rating
+                                    recipe_title
+                                    record_health
+                                    tags
+                                    total_time
+                                    url
+                                    vote_count
+                                    is_saved
+                                    is_uploaded
+                                    given_comment
                                 }
                             }
                         }`,
