@@ -41,40 +41,35 @@ export const FilterRecipes: FC<Props> = ({filterOptions, isSearch, isHidden, get
     // }
 
     return (
-        <>
-            {isHidden ?
-                '' :
-                <FiltersContainer className="p-2 mb-0">
-                    <SearchBar getSearchValue={getFilterSearchValue}/>
-                    {isSearch && filterOptions.map((filterOption, optionIndex) => (
-                        <FormControlWrapper variant="standard" className="w-50 mx-2"
-                                            key={`${optionIndex}-${filterOption.name}`}>
-                            <InputLabel>{filterOption.name}</InputLabel>
-                            <Select
-                                key={`${optionIndex}-${filterOption.name}-s`}
-                                value={!!filterValues[optionIndex] ? filterValues[optionIndex] : []}
-                                onChange={(event) => {
-                                    setNewValues(optionIndex, event);
-                                }}
-                                input={<OutlinedInput label="Tag"/>}
-                                renderValue={(selected) => selected.join(', ')}
-                                multiple={filterOption.isMulti}
-                                label={filterOption.name}
-                                IconComponent={ExpandMoreIcon}
-                            >
-                                {filterOption.options.map((option, i) => (
-                                    <MenuItem value={option} key={`${i}-${option}`}>
-                                        <Checkbox
-                                            checked={!!filterValues[optionIndex] && filterValues[optionIndex].indexOf(option) > -1}/>
-                                        <ListItemText primary={option}/>
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControlWrapper>
-                    ))}
-                </FiltersContainer>
-            }
-        </>
+        <FiltersContainer className={isHidden ? "hidden" : "" + "p-2 mb-0"}>
+            <SearchBar getSearchValue={getFilterSearchValue}/>
+            {isSearch && filterOptions.map((filterOption, optionIndex) => (
+                <FormControlWrapper variant="standard" className="w-50 mx-2"
+                                    key={`${optionIndex}-${filterOption.name}`}>
+                    <InputLabel>{filterOption.name}</InputLabel>
+                    <Select
+                        key={`${optionIndex}-${filterOption.name}-s`}
+                        value={!!filterValues[optionIndex] ? filterValues[optionIndex] : []}
+                        onChange={(event) => {
+                            setNewValues(optionIndex, event);
+                        }}
+                        input={<OutlinedInput label="Tag"/>}
+                        renderValue={(selected) => selected.join(', ')}
+                        multiple={filterOption.isMulti}
+                        label={filterOption.name}
+                        IconComponent={ExpandMoreIcon}
+                    >
+                        {filterOption.options.map((option, i) => (
+                            <MenuItem value={option} key={`${i}-${option}`}>
+                                <Checkbox
+                                    checked={!!filterValues[optionIndex] && filterValues[optionIndex].indexOf(option) > -1}/>
+                                <ListItemText primary={option}/>
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControlWrapper>
+            ))}
+        </FiltersContainer>
     );
 };
 

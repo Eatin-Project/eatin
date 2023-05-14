@@ -11,3 +11,7 @@
 .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
     background-color: inherit !important;
 }
+
+.hidden {
+    display: none !important;
+}
