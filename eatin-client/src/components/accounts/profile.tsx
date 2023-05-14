@@ -18,9 +18,7 @@ import { useGetUsersName } from "../hooks/useGetUsersName";
 export const Profile: FC = () => {
     const [categoryFilter, setCategoryFilter] = useState("");
     const [cuisineFilter, setCuisineFilter] = useState("");
-
     const userID = useGetUsersName();
-
     const { data, error, loading } = useGetUserByIdQuery({
         variables: { id: userID },
     });
@@ -39,16 +37,18 @@ export const Profile: FC = () => {
     );
 
     const currentFilterOptions: FilterOptions[] = [
-        {
-            name: "Category",
-            options: Object.values(Category),
-            setState: setCategoryFilter,
-        },
-        {
-            name: "Cuisine",
-            options: Object.values(Cuisine),
-            setState: setCuisineFilter,
-        },
+        // {
+        //     name: "Category",
+        //     options: Object.values(Category),
+        //     isMulti: true,
+        //     setState: setCategoryFilter,
+        // },
+        // {
+        //     name: "Cuisine",
+        //     options: Object.values(Cuisine),
+        //     isMulti: true,
+        //     setState: setCuisineFilter,
+        // },
     ];
 
     return (
@@ -57,7 +57,7 @@ export const Profile: FC = () => {
                 <div className="profile-header">
                     <User size="large" name={data?.user.firstname + " " + data?.user.lastname} />
                     <div className="profile-filters">
-                        {<FilterRecipes filterOptions={currentFilterOptions} />}
+                        {<FilterRecipes filterOptions={currentFilterOptions} isSearch={false} isHidden={false} getFilterSearchValue={() => {}}/>}
                     </div>
                 </div>
                 <div>

@@ -179,16 +179,14 @@ function SignUp() {
                                         label="Gender"
                                     >
                                         {Object.keys(Gender)?.map((gender) => (
-                                            <MenuItem key={gender} value={gender}>
-                                                {gender}
-                                            </MenuItem>
+                                            <MenuItem key={gender} value={gender}>{gender}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
                                 <LocalizationProvider className="w-50" dateAdapter={AdapterDayjs}>
                                     <DatePicker
                                         className="ms-3"
-                                        slotProps={{ textField: { variant: "standard" } }}
+                                        slotProps={{textField: {variant: "standard"}}}
                                         label="Date Of Birth"
                                         value={birthDate}
                                         onChange={(date) => setBirthDate(date)}
@@ -203,16 +201,11 @@ function SignUp() {
                                     onChange={(event: any, newValue: string | null) => {
                                         handleCountryChange(!!newValue ? newValue : "");
                                     }}
-                                    renderInput={(params) => (
-                                        <FormInput
-                                            {...params}
-                                            variant="standard"
-                                            required
-                                            label="Country"
-                                        />
-                                    )}
+                                    renderInput={(params) => (<FormInput {...params} variant="standard" required
+                                                                        label="Country"
                                 />
-                            </div>
+                            )}
+                                /></div>
                             <div className="d-grid mb-2">
                                 <ButtonWrapper
                                     type="submit"
