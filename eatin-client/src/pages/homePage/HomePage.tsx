@@ -27,8 +27,8 @@ export const HomePage: FC = () => {
     return (
         <>
             <div className="d-flex align-items-center justify-content-center w-100">
-                <FilterRecipes filterOptions={currentCatalogFilterOptions}
-                               isSearch={!!searchValue && !!catalogFilteredRecipes} getFilterSearchValue={getFilterSearchValue}/>
+                <FilterRecipes filterOptions={currentCatalogFilterOptions} isSearch={!!searchValue && !!catalogFilteredRecipes}
+                               isHidden={searchResultRecipesLoading || recommendedRecipesLoading} getFilterSearchValue={getFilterSearchValue}/>
             </div>
             {!!searchValue && !!catalogFilteredRecipes ?
                 <AsyncDataLoaderWrapper loading={searchResultRecipesLoading}
