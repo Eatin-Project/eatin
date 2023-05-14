@@ -2,39 +2,41 @@ import styled from "styled-components";
 import { Spinner } from "react-bootstrap";
 import { FC, PropsWithChildren } from "react";
 
+interface IStyledSpinner {
+    size: string;
+}
+
 interface Props {
-    loading: boolean;
-    text: string;
-    spinnerSize?: string;
-    spinnerHeight?: string;
+  loading: boolean;
+  text: string;
+  spinnerSize?: string;
+  spinnerHeight?: string;
 }
 
 const AsyncDataLoaderWrapper: FC<PropsWithChildren<Props>> = ({
                                                                 loading,
                                                                 text,
-                                                                spinnerSize = "8em",
+                                                                spinnerSize = "8rem",
                                                                 spinnerHeight = "100%",
                                                                 children,
                                                               }) => {
   return (
     <>
       {loading ? (
-        <SpinnerContainer size={spinnerHeight}>
-          <div>
-            <StyledSpinner size={spinnerSize} />
-            <h6>{text}</h6>
-          </div>
-        </SpinnerContainer>
+        <LoaderWrapper>
+          <SpinnerContainer size={spinnerHeight}>
+            <div>
+              <StyledSpinner size={spinnerSize} />
+              <h6>{text}</h6>
+            </div>
+          </SpinnerContainer>
+        </LoaderWrapper>
       ) : (
         children
       )}
     </>
   );
 };
-
-interface IStyledSpinner {
-  size: string;
-}
 
 const StyledSpinner = styled(Spinner)<IStyledSpinner | any>`
   width: ${(props) => props.size};
@@ -65,12 +67,17 @@ const StyledSpinner = styled(Spinner)<IStyledSpinner | any>`
   }
 `;
 
+const LoaderWrapper = styled.div`
+  height: 70%;
+`;
+
 const SpinnerContainer = styled.div<IStyledSpinner>`
   display: flex;
   align-items: center;
   justify-content: center;
   height: ${(props) => props.size};
   width: 100%;
+  margin-top: 3rem;
 `;
 
 export default AsyncDataLoaderWrapper;
