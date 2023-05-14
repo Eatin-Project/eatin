@@ -3,20 +3,14 @@ import "./SearchBar.css";
 import {FC, useState} from "react";
 import {Fab, TextField} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import {useSearch} from "../../context/search-context";
 import styled from "styled-components";
 
-export const SearchBar: FC = ({}) => {
+interface Props {
+    getSearchValue: (typeValue: string) => void;
+}
+
+export const SearchBar: FC<Props> = ({getSearchValue}) => {
     const [typeValue, setTypeValue] = useState("");
-    const {setSearchValue} = useSearch();
-    const updateSearchValue = () => {
-        setSearchValue(typeValue);
-    };
-
-    const clickSearch = () => {
-        searchButton.click();
-    }
-
     let searchButton: HTMLButtonElement;
 
     return (
@@ -26,15 +20,14 @@ export const SearchBar: FC = ({}) => {
                     onChange={(event) => {
                         setTypeValue(event.target.value);
                     }}
-                    onBlur={clickSearch}
-                    onKeyDown={(event: { keyCode: number; }) => event.keyCode === 13 ? clickSearch() : ''}
+                    onKeyDown={(event: { keyCode: number; }) => event.keyCode === 13 ? searchButton.click() : ''}
                     placeholder="Search Recipe..."
                     variant='standard'
                     className="search-bar"
                     type="text"
                     autoComplete="off"
                 />
-                <SearchFab variant='extended' size="small" onClick={updateSearchValue} color="primary"
+                <SearchFab variant='extended' size="small" onClick={() => getSearchValue(typeValue)} color="primary"
                            aria-label="search" ref={node => (!!node ? searchButton = node : '')}>
                     <SearchIcon/>
                 </SearchFab>

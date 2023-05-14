@@ -18,9 +18,10 @@ import {SearchBar} from "../../components/ui/SearchBar";
 interface Props {
     filterOptions: FilterOptions[];
     isSearch: boolean;
+    getFilterSearchValue: (searchValue: string) => void;
 }
 
-export const FilterRecipes: FC<Props> = ({filterOptions, isSearch}) => {
+export const FilterRecipes: FC<Props> = ({filterOptions, isSearch, getFilterSearchValue}) => {
     const [filterValues, setFilterValues] = useState<string[][]>([[]]);
 
     const setNewValues = (optionIndex: number, event: SelectChangeEvent<string[]>) => {
@@ -31,21 +32,22 @@ export const FilterRecipes: FC<Props> = ({filterOptions, isSearch}) => {
         setFilterValues([...newFilterValues]);
     };
 
-    const clearValue = () => {
-        // const newFilterValues = filterValues;
-        // newFilterValues[optionIndex] = [];
-        // filterOptions[optionIndex].setState([]);
-        // setFilterValues([...newFilterValues]);
-    }
+    // const clearValue = () => {
+    //     // const newFilterValues = filterValues;
+    //     // newFilterValues[optionIndex] = [];
+    //     // filterOptions[optionIndex].setState([]);
+    //     // setFilterValues([...newFilterValues]);
+    // }
 
     return (
-        <FiltersContainer className="p-2">
-            <SearchBar/>
+        <FiltersContainer className="p-2 mb-0">
+            <SearchBar getSearchValue={getFilterSearchValue}/>
             {isSearch && filterOptions.map((filterOption, optionIndex) => (
-                <FormControlWrapper variant="standard" className="w-50 mx-2">
+                <FormControlWrapper variant="standard" className="w-50 mx-2"
+                                    key={`${optionIndex}-${filterOption.name}`}>
                     <InputLabel>{filterOption.name}</InputLabel>
                     <Select
-                        key={`${optionIndex}-${filterOption.name}}`}
+                        key={`${optionIndex}-${filterOption.name}-s`}
                         value={!!filterValues[optionIndex] ? filterValues[optionIndex] : []}
                         onChange={(event) => {
                             setNewValues(optionIndex, event);

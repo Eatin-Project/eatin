@@ -15,7 +15,7 @@ const RecipesWithFiltersWrapper: FC<PropsWithChildren<Props>> = ({filterOptions,
             <AsyncDataLoaderWrapper loading={loading}
                                     text="Finding the perfect recipes for you...">
                 <div className="header">
-                    <FilterRecipes key={filterOptions.length} filterOptions={filterOptions} isSearch={true}/>
+                    <FilterRecipes key={filterOptions.length} filterOptions={filterOptions} isSearch={true} getFilterSearchValue={() => {}}/>
                 </div>
                 {children}
             </AsyncDataLoaderWrapper>

@@ -13,12 +13,12 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, IconButton } from "@mui/material";
 import { useGetUsersName } from "../hooks/useGetUsersName";
+import {useSearch} from "../../context/search-context";
 
 export const Navbar = () => {
     const navigate = useNavigate();
     const userID = useGetUsersName();
     const { signOutUser } = useAuth();
-    const location = useLocation();
     const { data } = useGetUserByIdQuery({
         variables: { id: userID },
     });
