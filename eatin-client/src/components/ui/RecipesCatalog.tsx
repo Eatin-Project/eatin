@@ -2,7 +2,6 @@ import "./RecipesCatalog.css";
 
 import {FC} from "react";
 import {Recipe} from "../types";
-import {RecipeItem} from "./RecipeItem";
 import {CarouselItem} from "./CarouselItem";
 import {useNavigate} from "react-router-dom";
 
@@ -22,11 +21,6 @@ export const RecipesCatalog: FC<Props> = ({recipes}) => {
     return (
         <div className="recipes-catalog">
             {recipes.map((recipe) => (
-                // <RecipeItem
-                //     recipe={recipe}
-                //     key={recipe.index}
-                //     updateSavedRecipes={updatedRecipesSavedState}
-                // />
                 <CarouselItem
                     id={recipe.index} isSaved={recipe.is_saved} key={recipe.index}
                     updatedRecipesSavedState={updatedRecipesSavedState}
