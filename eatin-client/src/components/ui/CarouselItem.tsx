@@ -19,23 +19,16 @@ export interface ICarouselItem<T = unknown> {
 }
 
 export type CarouselItemProps = ICarouselItem & {
-    width: number;
-    itemIndex: number;
-    randomColors?: boolean;
     onClick?: (id: number) => void;
 };
 
 export const CarouselItem: FC<CarouselItemProps> = ({
-    width,
     id,
-    itemIndex,
     image,
-    randomColors,
     onClick,
     rating,
     isSaved,
     updatedRecipesSavedState,
-    itemValue,
     title,
 }) => {
     const handleClick = useCallback(() => onClick?.(id), [id, onClick]);

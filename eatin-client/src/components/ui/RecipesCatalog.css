@@ -4,4 +4,9 @@
     flex-wrap: wrap;
     margin: 0.5em 0;
     justify-content: center;
+    height: 10em;
+}
+
+.iWdjY {
+    width: 18.5em !important;
 }
