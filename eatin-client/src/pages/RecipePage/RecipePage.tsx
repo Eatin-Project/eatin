@@ -108,15 +108,3 @@ const PageWrapper = styled.div`
     width: 95vw;
     margin: 3em auto 2em 2em;
 `;
-
-const comments = [
-    { user: "shirley", content: "looks great!!" },
-    { user: "shirley", content: "cooked this at home, it was amazing!" },
-    { user: "shirley", content: "too much suger for me" },
-    { user: "shirley", content: "super tasty" },
-    { user: "shirley", content: "looks great!!!" },
-    {
-        user: "shirley",
-        content: `This cake is rich and wholesome at the same time. Once you have tasted it, you will want to make an extra one and save it for New Year's as well!`,
-    },
-];
