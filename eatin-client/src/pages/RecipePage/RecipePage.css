@@ -30,36 +30,6 @@
     margin: 2em 2em 0 2em;
 }
 
-.enter-comment-btn {
-    color: #f94f43;
-    font-size: 2em !important;
-}
-
-.specific-comment {
-    margin-bottom: 2em;
-}
-
-.comments-section-title {
-    margin-bottom: 0.5em;
-}
-
-.specific-comment-user {
-    font-weight: bold;
-    margin-bottom: 1em;
-}
-
-.specific-comment-content {
-    border: 1px transparent solid;
-    background-color: lightgray;
-    border-radius: 1em;
-    padding: 0.7em;
-}
-
-.comments {
-    max-height: 20vh !important;
-    margin-top: 2.5em;
-}
-
 .recipe-page .comment-card {
     display: flex;
     flex-direction: column;
@@ -102,16 +72,4 @@
 
 .recipe-page .recipe-data .url {
     margin-top: 1em;
-}
-
-.comments-section-content {
-    margin-left: 4em;
-}
-
-.comments-section-content fieldset {
-    border-radius: 20px !important;
-}
-
-.add-new-comment-text {
-    width: 100%;
 }

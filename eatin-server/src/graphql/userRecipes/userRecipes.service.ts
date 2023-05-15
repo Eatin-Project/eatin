@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Userrecipes } from './userRecipes.model';
 import { UserrecipeDTO } from './userRecipes.dto';
+import { Recipes } from '../recipes/recipes.model';
 
 @Injectable()
 export class UserrecipesService {
@@ -17,7 +18,11 @@ export class UserrecipesService {
       details.recipe_index,
     );
     if (!!previousRecipe) {
-      Object.assign(previousRecipe, { is_saved: details.is_saved });
+      Object.assign(previousRecipe, {
+        is_saved: details.is_saved,
+        is_uploaded: details.is_uploaded,
+        given_comment: details.given_comment,
+      });
       return this.userRecipesRepository.save(previousRecipe);
     }
     return this.userRecipesRepository.save(details);
@@ -143,5 +148,37 @@ export class UserrecipesService {
       return item;
     }
     return null;
+  }
+
+  getSavedRecipesOfUser(userID: string): Promise<Recipes[]> {
+    return this.userRecipesRepository
+      .createQueryBuilder('userrecipes')
+      .select('recipes.index', 'index')
+      .addSelect('recipes.recipe_title', 'recipe_title')
+      .addSelect('recipes.url', 'url')
+      .addSelect('recipes.record_health', 'record_health')
+      .addSelect('recipes.vote_count', 'vote_count')
+      .addSelect('recipes.rating', 'rating')
+      .addSelect('recipes.description', 'description')
+      .addSelect('recipes.cuisine', 'cuisine')
+      .addSelect('recipes.course', 'course')
+      .addSelect('recipes.diet', 'diet')
+      .addSelect('recipes.prep_time', 'prep_time')
+      .addSelect('recipes.cook_time', 'cook_time')
+      .addSelect('recipes.ingredients', 'ingredients')
+      .addSelect('recipes.instructions', 'instructions')
+      .addSelect('recipes.author', 'author')
+      .addSelect('recipes.tags', 'tags')
+      .addSelect('recipes.category', 'category')
+      .addSelect('recipes.image', 'image')
+      .addSelect('recipes.difficulty', 'difficulty')
+      .addSelect('recipes.total_time', 'total_time')
+      .addSelect('userrecipes.is_saved', 'is_saved')
+      .addSelect('userrecipes.is_uploaded', 'is_uploaded')
+      .addSelect('userrecipes.given_comment', 'given_comment')
+      .leftJoin(Recipes, 'recipes', `recipes.index = userrecipes.recipe_index`)
+      .where('userrecipes.user_id = :userID', { userID })
+      .where('userrecipes.is_saved = true')
+      .getRawMany();
   }
 }

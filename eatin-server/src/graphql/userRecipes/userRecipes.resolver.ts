@@ -3,6 +3,7 @@ import { Inject } from '@nestjs/common';
 import { Userrecipes } from './userRecipes.model';
 import { UserrecipesService } from './userRecipes.service';
 import { log } from 'console';
+import { Recipes } from '../recipes/recipes.model';
 
 @Resolver((of) => Userrecipes)
 export class UserrecipeResolver {
@@ -92,6 +93,11 @@ export class UserrecipeResolver {
   @Query((returns) => [Userrecipes])
   async userRecipes(): Promise<Userrecipes[]> {
     return await this.userRecipesService.findAll();
+  }
+
+  @Query((returns) => [Recipes])
+  async savedRecipesOfUser(@Args('userID') userID: string): Promise<Recipes[]> {
+    return await this.userRecipesService.getSavedRecipesOfUser(userID);
   }
 
   @Mutation((returns) => Userrecipes)

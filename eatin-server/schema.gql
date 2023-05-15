@@ -81,6 +81,7 @@ type Query {
   userRecipesByRecipeAndIsCommentExists(recipeID: Float!): [Userrecipes!]!
   userRecipesByUserAndRecipe(userID: String!, recipeID: Float!): Userrecipes!
   userRecipes: [Userrecipes!]!
+  savedRecipesOfUser(userID: String!): [Recipes!]!
 }
 
 type Mutation {

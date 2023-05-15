@@ -119,3 +119,33 @@ export const GET_USERRECIPES_BY_RECIPE_AND_USER = gql`
         }
     }
 `;
+
+export const GET_SAVED_RECIPES = gql`
+    query getSavedRecipes($userID: String!) {
+        savedRecipesOfUser(userID: $userID) {
+            index
+            recipe_title
+            url
+            record_health
+            vote_count
+            rating
+            description
+            cuisine
+            course
+            diet
+            prep_time
+            cook_time
+            ingredients
+            instructions
+            author
+            tags
+            category
+            image
+            difficulty
+            total_time
+            is_saved
+            is_uploaded
+            given_comment
+        }
+    }
+`;

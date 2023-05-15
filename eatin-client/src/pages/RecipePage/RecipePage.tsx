@@ -12,7 +12,6 @@ import { useToastNotification } from "../../components/functions/useToastNotific
 import { useGetSimilarRecipes } from "../../graphql/queries/similar_recipes.query";
 import styled from "styled-components";
 import { useInsertNewUserRecipe } from "../../components/functions/useInsertNewUserRecipe";
-import { useDeleteUserRecipe } from "../../components/functions/useDeleteUserRecipe";
 import { useGetUsersName } from "../../components/hooks/useGetUsersName";
 import { RecipePageLeftSection } from "./RecipePageLeftSection";
 import { RecipePageRightSection } from "./RecipePageRightSection";
@@ -40,8 +39,7 @@ export const RecipePage: FC = () => {
         userID,
     );
 
-    const { insertNewUserRecipe } = useInsertNewUserRecipe();
-    const { deleteNewUserRecipe } = useDeleteUserRecipe();
+    const { updateIsSaved } = useInsertNewUserRecipe(Number(id));
     const recipe = useMemo(() => recipeData?.recipe, [recipeData?.recipe]);
     const [createRating] = useCreateRatingMutation();
 
@@ -70,10 +68,10 @@ export const RecipePage: FC = () => {
 
     const handleBookmarkClicked = () => {
         if (isSaved) {
-            deleteNewUserRecipe(Number(id));
+            updateIsSaved(false);
             notify(`${recipe.recipe_title}, was removed`);
         } else {
-            insertNewUserRecipe(Number(id), true);
+            updateIsSaved(true);
             notify(`${recipe.recipe_title}, was saved`);
         }
         setIsSaved(!isSaved);

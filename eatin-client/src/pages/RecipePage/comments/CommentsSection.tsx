@@ -1,10 +1,27 @@
+import "./CommentsSection.css";
+
 import { IconButton, InputAdornment, TextField } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import CircleIcon from "@mui/icons-material/Circle";
 import styled from "styled-components";
+import { useGetUserrecipesByRecipeIndexAndCommentQuery } from "../../../generated/graphql";
+import { useInsertNewUserRecipe } from "../../../components/functions/useInsertNewUserRecipe";
+import AsyncDataLoaderWrapper from "../../../components/ui/AsyncDataLoaderWrapper";
 
-export const CommentsSection: FC = () => {
+interface Props {
+    recipeIndex: number;
+}
+export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
     const [newCommentVal, setNewCommentVal] = useState<string>("");
+    const [comments, setComments] = useState<any>([]);
+    const { updateGivenComment } = useInsertNewUserRecipe(recipeIndex);
+    const {
+        data: recipeComments,
+        loading: recipeCommentsLoading,
+        refetch: refetchRecipeComments,
+    } = useGetUserrecipesByRecipeIndexAndCommentQuery({
+        variables: { recipeID: recipeIndex },
+    });
 
     const keyPress = (e: any) => {
         // 13 is the keycode of Enter
@@ -13,8 +30,16 @@ export const CommentsSection: FC = () => {
         }
     };
 
-    const addNewComment = () => {
+    useEffect(() => {
+        setComments(recipeComments ? recipeComments.userRecipesByRecipeAndIsCommentExists : []);
+    }, [recipeComments]);
+
+    const addNewComment = async () => {
         console.log("lol", newCommentVal);
+        updateGivenComment(newCommentVal);
+        // refetchRecipeComments({ recipeID: recipeIndex });
+        // const updatedComments = comments;
+        console.log(comments);
     };
 
     return (
@@ -42,12 +67,23 @@ export const CommentsSection: FC = () => {
                 />
                 <Scrollable>
                     <div className="comments">
-                        {comments.map((comment, i) => (
-                            <div key={i} className="specific-comment">
-                                <h6 className="specific-comment-user">{comment.user}</h6>
-                                <span className="specific-comment-content">{comment.content}</span>
-                            </div>
-                        ))}
+                        <AsyncDataLoaderWrapper
+                            loading={recipeCommentsLoading}
+                            text="loading comments..."
+                        >
+                            {recipeComments?.userRecipesByRecipeAndIsCommentExists.map(
+                                (connection, i) => (
+                                    <div key={i} className="specific-comment">
+                                        <h6 className="specific-comment-user">
+                                            {connection.user_id}
+                                        </h6>
+                                        <span className="specific-comment-content">
+                                            {connection.given_comment}
+                                        </span>
+                                    </div>
+                                ),
+                            )}
+                        </AsyncDataLoaderWrapper>
                     </div>
                 </Scrollable>
             </div>

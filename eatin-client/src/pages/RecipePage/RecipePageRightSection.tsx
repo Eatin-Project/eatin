@@ -79,7 +79,7 @@ export const RecipePageRightSection: FC<Props> = ({
                 </ul>
             </RecipeContentList>
             <Separator />
-            <CommentsSection></CommentsSection>
+            <CommentsSection recipeIndex={shownRecipe?.index}></CommentsSection>
         </RightSection>
     );
 };
