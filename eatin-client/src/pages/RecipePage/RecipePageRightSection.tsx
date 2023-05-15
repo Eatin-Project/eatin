@@ -1,10 +1,10 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import styled from "styled-components";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { redRatingStyle } from "../../components/ui/rating-styles";
-import { Button, IconButton, InputAdornment, Rating, TextField } from "@mui/material";
+import { Rating } from "@mui/material";
 import { Recipe } from "../../components/types";
-import CircleIcon from "@mui/icons-material/Circle";
+import { CommentsSection } from "./comments/CommentsSection";
 
 interface Props {
     shownRecipe: Recipe;
@@ -20,7 +20,6 @@ export const RecipePageRightSection: FC<Props> = ({
     rating,
     isSaved,
 }) => {
-    const [newCommentVal, setNewCommentVal] = useState<string>("");
     const _parseStringArray = (str: string | undefined): string[] => {
         if (!str) return [];
         try {
@@ -35,17 +34,6 @@ export const RecipePageRightSection: FC<Props> = ({
         } catch (e) {
             return ["problem parsing string to json", "fix is coming soon! :D"];
         }
-    };
-
-    const keyPress = (e: any) => {
-        // 13 is the keycode of Enter
-        if (e.keyCode === 13) {
-            addNewComment();
-        }
-    };
-
-    const addNewComment = () => {
-        console.log("lol", newCommentVal);
     };
 
     return (
@@ -91,74 +79,15 @@ export const RecipePageRightSection: FC<Props> = ({
                 </ul>
             </RecipeContentList>
             <Separator />
-            <div className="comments-section">
-                <h3 className="comments-section-title">Comments</h3>
-                <div className="comments-section-content">
-                    <TextField
-                        className="add-new-comment-text"
-                        onChange={(e) => setNewCommentVal(e.target.value)}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton onClick={addNewComment}>
-                                        <CircleIcon className="enter-comment-btn" />
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                        inputProps={{
-                            maxLength: 50,
-                        }}
-                        label="Add a new comment..."
-                        variant="outlined"
-                        onKeyDown={keyPress}
-                    />
-                    <Scrollable>
-                        <div className="comments">
-                            {comments.map((comment, i) => (
-                                <div key={i} className="specific-comment">
-                                    <h6 className="specific-comment-user">{comment.user}</h6>
-                                    <span className="specific-comment-content">
-                                        {comment.content}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </Scrollable>
-                </div>
-            </div>
+            <CommentsSection></CommentsSection>
         </RightSection>
     );
 };
-
-const comments = [
-    { user: "shirley", content: "looks great!!" },
-    { user: "shirley", content: "cooked this at home, it was amazing!" },
-    { user: "shirley", content: "too much suger for me" },
-    { user: "shirley", content: "super tasty" },
-    { user: "shirley", content: "looks great!!!" },
-    { user: "shirley", content: "looks great!!!" },
-    { user: "shirley", content: "looks great!!!" },
-    { user: "shirley", content: "looks great!!!" },
-    { user: "shirley", content: "looks great!!!" },
-    { user: "shirley", content: "looks great!!!" },
-    {
-        user: "shirley",
-        content: `This cake is rich and wholesome at the same time. Once you have tasted it, you will want to make an extra one and save it for New Year's as well!`,
-    },
-];
 
 const RightSection = styled.div`
     width: 80%;
     margin-left: 1em;
     text-align: left;
-`;
-
-const Scrollable = styled.div`
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-    overflow-x: hidden;
 `;
 
 const RecipeBookmarkIcon = styled(BookmarkIcon)`
