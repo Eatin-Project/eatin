@@ -64,7 +64,7 @@ export class UserrecipesService {
     return this.userRecipesRepository
       .createQueryBuilder('userrecipe')
       .where('userrecipe.user_id = :userID', { userID })
-      .where('length(given_comment)>0')
+      .andWhere('length(given_comment)>0')
       .getMany();
   }
 
@@ -92,7 +92,7 @@ export class UserrecipesService {
     return this.userRecipesRepository
       .createQueryBuilder('userrecipe')
       .where('userrecipe.recipe_index = :recipeID', { recipeID })
-      .where('length(given_comment)>0')
+      .andWhere('length(given_comment)>0')
       .getMany();
   }
 
@@ -133,8 +133,8 @@ export class UserrecipesService {
     return this.userRecipesRepository
       .createQueryBuilder('userrecipe')
       .where('userrecipe.recipe_index = :recipeID', { recipeID })
-      .where('userrecipe.user_id = :userID', { userID })
-      .where('length(given_comment)>0')
+      .andWhere('userrecipe.user_id = :userID', { userID })
+      .andWhere('length(given_comment)>0')
       .getOne();
   }
 
@@ -178,7 +178,7 @@ export class UserrecipesService {
       .addSelect('userrecipes.given_comment', 'given_comment')
       .leftJoin(Recipes, 'recipes', `recipes.index = userrecipes.recipe_index`)
       .where('userrecipes.user_id = :userID', { userID })
-      .where('userrecipes.is_saved = true')
+      .andWhere('userrecipes.is_saved = true')
       .getRawMany();
   }
 }

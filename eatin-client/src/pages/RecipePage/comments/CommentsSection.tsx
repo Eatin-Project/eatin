@@ -7,21 +7,21 @@ import styled from "styled-components";
 import { useGetUserrecipesByRecipeIndexAndCommentQuery } from "../../../generated/graphql";
 import { useInsertNewUserRecipe } from "../../../components/functions/useInsertNewUserRecipe";
 import AsyncDataLoaderWrapper from "../../../components/ui/AsyncDataLoaderWrapper";
+import { useGetUsersName } from "../../../components/hooks/useGetUsersName";
 
 interface Props {
     recipeIndex: number;
 }
 export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
     const [newCommentVal, setNewCommentVal] = useState<string>("");
-    const [comments, setComments] = useState<any>([]);
+    const [comments, setComments] = useState<{ userID: string; comment: string }[]>([]);
     const { updateGivenComment } = useInsertNewUserRecipe(recipeIndex);
-    const {
-        data: recipeComments,
-        loading: recipeCommentsLoading,
-        refetch: refetchRecipeComments,
-    } = useGetUserrecipesByRecipeIndexAndCommentQuery({
-        variables: { recipeID: recipeIndex },
-    });
+    const userID = useGetUsersName();
+
+    const { data: recipeComments, loading: recipeCommentsLoading } =
+        useGetUserrecipesByRecipeIndexAndCommentQuery({
+            variables: { recipeID: recipeIndex },
+        });
 
     const keyPress = (e: any) => {
         // 13 is the keycode of Enter
@@ -31,15 +31,35 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
     };
 
     useEffect(() => {
-        setComments(recipeComments ? recipeComments.userRecipesByRecipeAndIsCommentExists : []);
-    }, [recipeComments]);
+        const initialComments = recipeComments?.userRecipesByRecipeAndIsCommentExists.map(
+            (item) => {
+                return { userID: item.user_id, comment: item.given_comment };
+            },
+        );
+        setComments(initialComments ? initialComments : []);
+    }, [recipeComments, recipeIndex]);
 
     const addNewComment = async () => {
-        console.log("lol", newCommentVal);
         updateGivenComment(newCommentVal);
-        // refetchRecipeComments({ recipeID: recipeIndex });
-        // const updatedComments = comments;
-        console.log(comments);
+        setNewCommentVal("");
+        if (personalComment()) {
+            const updatedComments = comments.map((item: { userID: string; comment: string }) => {
+                const newComment = { ...item };
+                if (item.userID === userID) {
+                    newComment.comment = newCommentVal;
+                }
+                return newComment;
+            });
+            setComments([...updatedComments]);
+        } else {
+            const updatedComments = comments;
+            updatedComments.push({ userID: userID, comment: newCommentVal });
+            setComments([...updatedComments]);
+        }
+    };
+
+    const personalComment = () => {
+        return comments.find((item: { userID: string; comment: string }) => item.userID === userID);
     };
 
     return (
@@ -48,6 +68,7 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
             <div className="comments-section-content">
                 <TextField
                     className="add-new-comment-text"
+                    value={newCommentVal}
                     onChange={(e) => setNewCommentVal(e.target.value)}
                     InputProps={{
                         endAdornment: (
@@ -65,27 +86,41 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
                     variant="outlined"
                     onKeyDown={keyPress}
                 />
-                <Scrollable>
-                    <div className="comments">
-                        <AsyncDataLoaderWrapper
-                            loading={recipeCommentsLoading}
-                            text="loading comments..."
-                        >
-                            {recipeComments?.userRecipesByRecipeAndIsCommentExists.map(
-                                (connection, i) => (
-                                    <div key={i} className="specific-comment">
-                                        <h6 className="specific-comment-user">
-                                            {connection.user_id}
-                                        </h6>
-                                        <span className="specific-comment-content">
-                                            {connection.given_comment}
-                                        </span>
-                                    </div>
-                                ),
-                            )}
-                        </AsyncDataLoaderWrapper>
+                {comments.length === 0 ? (
+                    <h4 className="no-comments-text">No comment were posted on this recipe...</h4>
+                ) : (
+                    <div>
+                        {personalComment() ? (
+                            <div className="personal-comment">
+                                <span>Your comment:</span>
+                                <h5 className="personal-comment-content">
+                                    {personalComment()?.comment}
+                                </h5>
+                            </div>
+                        ) : (
+                            ""
+                        )}
+                        <Scrollable>
+                            <div className="comments">
+                                <AsyncDataLoaderWrapper
+                                    loading={recipeCommentsLoading}
+                                    text="loading comments..."
+                                >
+                                    {comments.map((connection, i) => (
+                                        <div key={i} className="specific-comment">
+                                            <h6 className="specific-comment-user">
+                                                {connection.userID}
+                                            </h6>
+                                            <span className="specific-comment-content">
+                                                {connection.comment}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </AsyncDataLoaderWrapper>
+                            </div>
+                        </Scrollable>
                     </div>
-                </Scrollable>
+                )}
             </div>
         </div>
     );
@@ -97,20 +132,3 @@ const Scrollable = styled.div`
     overflow-y: scroll;
     overflow-x: hidden;
 `;
-
-const comments = [
-    { user: "shirley", content: "looks great!!" },
-    { user: "shirley", content: "cooked this at home, it was amazing!" },
-    { user: "shirley", content: "too much suger for me" },
-    { user: "shirley", content: "super tasty" },
-    { user: "shirley", content: "looks great!!!" },
-    { user: "shirley", content: "looks great!!!" },
-    { user: "shirley", content: "looks great!!!" },
-    { user: "shirley", content: "looks great!!!" },
-    { user: "shirley", content: "looks great!!!" },
-    { user: "shirley", content: "looks great!!!" },
-    {
-        user: "shirley",
-        content: `This cake is rich and wholesome at the same time. Once you have tasted it, you will want to make an extra one and save it for New Year's as well!`,
-    },
-];

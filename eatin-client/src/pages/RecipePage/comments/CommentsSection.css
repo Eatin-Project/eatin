@@ -16,6 +16,15 @@
     margin-bottom: 1em;
 }
 
+.edit-comment {
+    width: 100%;
+}
+
+.presonal-comment-content {
+    border: 1px solid black;
+    border-radius: 1em;
+}
+
 .specific-comment-content {
     border: 1px transparent solid;
     background-color: lightgray;
@@ -38,4 +47,25 @@
 
 .add-new-comment-text {
     width: 100%;
+}
+
+.personal-comment {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid transparent;
+    border-radius: 1em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    background: lightgray;
+    font-size: 15px;
+    padding-left: 4em;
+}
+
+.personal-comment-content {
+    margin-top: 0.2em;
+    padding-left: 1em;
+}
+
+.no-comments-text {
+    margin-top: 1em;
 }
