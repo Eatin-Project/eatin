@@ -59,6 +59,11 @@ type Ratings {
   rating_timestamp: DateTime!
 }
 
+type UserRecommendations {
+  user_id: String!
+  recommendations: String!
+}
+
 type Query {
   user(id: String!): Users!
   users: [Users!]!
@@ -81,6 +86,7 @@ type Query {
   userRecipesByRecipeAndIsCommentExists(recipeID: Float!): [Userrecipes!]!
   userRecipesByUserAndRecipe(userID: String!, recipeID: Float!): Userrecipes!
   userRecipes: [Userrecipes!]!
+  userRecommendations(userID: String!): UserRecommendations!
 }
 
 type Mutation {
