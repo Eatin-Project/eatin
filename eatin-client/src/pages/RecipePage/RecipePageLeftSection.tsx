@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Recipe, RecipesSection } from "../../components/types";
 import styled from "styled-components";
 import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";

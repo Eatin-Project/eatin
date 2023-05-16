@@ -30,6 +30,7 @@
     background-color: lightgray;
     border-radius: 1em;
     padding: 0.7em;
+    margin-left: 3em;
 }
 
 .comments {
@@ -37,8 +38,26 @@
     margin-top: 2.5em;
 }
 
-.comments-section-content {
-    margin-left: 4em;
+.edit-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 2em;
+    margin-top: 1.5em;
+}
+
+.user-info-comment {
+    display: flex;
+}
+
+.current-user-picture {
+    width: 2.5em;
+    height: 2.5em;
+    margin-right: 0.5em;
+}
+
+.scrollable-comments {
+    margin-top: 1.5em;
 }
 
 .comments-section-content fieldset {

@@ -1,13 +1,13 @@
 import "./CommentsSection.css";
 
-import { IconButton, InputAdornment, TextField } from "@mui/material";
+import { Avatar, IconButton, InputAdornment, TextField } from "@mui/material";
 import { FC, useEffect, useState } from "react";
-import CircleIcon from "@mui/icons-material/Circle";
 import styled from "styled-components";
 import { useGetUserrecipesByRecipeIndexAndCommentQuery } from "../../../generated/graphql";
 import { useInsertNewUserRecipe } from "../../../components/functions/useInsertNewUserRecipe";
 import AsyncDataLoaderWrapper from "../../../components/ui/AsyncDataLoaderWrapper";
 import { useGetUsersName } from "../../../components/hooks/useGetUsersName";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 
 interface Props {
     recipeIndex: number;
@@ -64,42 +64,40 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
 
     return (
         <div className="comments-section">
-            <h3 className="comments-section-title">Comments</h3>
+            <h4 className="comments-section-title">Comments</h4>
             <div className="comments-section-content">
-                <TextField
-                    className="add-new-comment-text"
-                    value={newCommentVal}
-                    onChange={(e) => setNewCommentVal(e.target.value)}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton onClick={addNewComment}>
-                                    <CircleIcon className="enter-comment-btn" />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                    inputProps={{
-                        maxLength: 50,
-                    }}
-                    label="Add a new comment..."
-                    variant="outlined"
-                    onKeyDown={keyPress}
-                />
+                <div className="edit-section">
+                    <Avatar
+                        className="current-user-picture"
+                        alt="Your picture"
+                        src="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2022-08/220805-domestic-cat-mjf-1540-382ba2.jpg"
+                    />
+                    <TextField
+                        className="add-new-comment-text"
+                        value={newCommentVal}
+                        onChange={(e) => setNewCommentVal(e.target.value)}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton onClick={addNewComment}>
+                                        <PlayCircleIcon className="enter-comment-btn" />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                        inputProps={{
+                            maxLength: 50,
+                        }}
+                        label="Add a new comment..."
+                        variant="outlined"
+                        onKeyDown={keyPress}
+                    />
+                </div>
+
                 {comments.length === 0 ? (
                     <h4 className="no-comments-text">No comment were posted on this recipe...</h4>
                 ) : (
-                    <div>
-                        {personalComment() ? (
-                            <div className="personal-comment">
-                                <span>Your comment:</span>
-                                <h5 className="personal-comment-content">
-                                    {personalComment()?.comment}
-                                </h5>
-                            </div>
-                        ) : (
-                            ""
-                        )}
+                    <div className="scrollable-comments">
                         <Scrollable>
                             <div className="comments">
                                 <AsyncDataLoaderWrapper
@@ -108,9 +106,17 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
                                 >
                                     {comments.map((connection, i) => (
                                         <div key={i} className="specific-comment">
-                                            <h6 className="specific-comment-user">
-                                                {connection.userID}
-                                            </h6>
+                                            <div className="user-info-comment">
+                                                <Avatar
+                                                    className="current-user-picture"
+                                                    alt="Your picture"
+                                                    src="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2022-08/220805-domestic-cat-mjf-1540-382ba2.jpg"
+                                                />
+                                                <h6 className="specific-comment-user">
+                                                    {connection.userID}
+                                                </h6>
+                                            </div>
+
                                             <span className="specific-comment-content">
                                                 {connection.comment}
                                             </span>
