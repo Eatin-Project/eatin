@@ -33,6 +33,12 @@ export const FilterRecipes: FC<Props> = ({filterOptions, isSearch, isHidden, get
         setFilterValues([...newFilterValues]);
     };
 
+    const searchAndClearFilters = (searchValue: string) => {
+        setFilterValues([[]]);
+        filterOptions.forEach(filterOptions => filterOptions.setState([]));
+        getFilterSearchValue(searchValue);
+    }
+
     // const clearValue = () => {
     //     // const newFilterValues = filterValues;
     //     // newFilterValues[optionIndex] = [];
@@ -42,7 +48,7 @@ export const FilterRecipes: FC<Props> = ({filterOptions, isSearch, isHidden, get
 
     return (
         <FiltersContainer className={isHidden ? "hidden" : "" + "p-2 mb-0"}>
-            <SearchBar getSearchValue={getFilterSearchValue}/>
+            <SearchBar getSearchValue={searchAndClearFilters}/>
             {isSearch && filterOptions.map((filterOption, optionIndex) => (
                 <FormControlWrapper variant="standard" className="w-50 mx-2"
                                     key={`${optionIndex}-${filterOption.name}`}>
