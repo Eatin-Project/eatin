@@ -1,20 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserRecommendations } from './userRecommendations.model';
+import {Userrecommendations} from "../userRecommendationsCopy/userRecommendationsCopy.model";
 
 @Injectable()
 export class UserRecommendationsService {
   constructor(
-    @InjectRepository(UserRecommendations)
-    private userRecommendationsRepository: Repository<UserRecommendations>,
+    @InjectRepository(Userrecommendations)
+    private userRecommendationsRepository: Repository<Userrecommendations>,
   ) {}
 
-  findByUserId(UserId: string): Promise<UserRecommendations> {
-    return this.userRecommendationsRepository.findOne({
-      where: {
-        user_id: UserId,
-      },
-    });
+  async findOneByUser(userID: string): Promise<Userrecommendations> {
+    return this.userRecommendationsRepository.findOne({ where: { user_id: userID }});
   }
 }

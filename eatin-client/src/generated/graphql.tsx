@@ -82,7 +82,7 @@ export type MutationRemoveUserRecipesArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  ratingByUserAndRecipe: Ratings;
+  ratingByUserAndRecipe?: Maybe<Ratings>;
   ratings: Array<Ratings>;
   ratingsByRecipe: Array<Ratings>;
   ratingsByUser: Array<Ratings>;
@@ -102,6 +102,7 @@ export type Query = {
   userRecipesByUserAndIsSaved: Array<Userrecipes>;
   userRecipesByUserAndIsUploaded: Array<Userrecipes>;
   userRecipesByUserAndRecipe: Userrecipes;
+  userRecommendations: UserRecommendations;
   users: Array<Users>;
 };
 
@@ -205,6 +206,11 @@ export type QueryUserRecipesByUserAndRecipeArgs = {
   userID: Scalars['String'];
 };
 
+
+export type QueryUserRecommendationsArgs = {
+  userID: Scalars['String'];
+};
+
 export type Ratings = {
   __typename?: 'Ratings';
   rating: Scalars['Float'];
@@ -238,6 +244,12 @@ export type Recipes = {
   total_time: Scalars['Float'];
   url: Scalars['String'];
   vote_count: Scalars['Float'];
+};
+
+export type UserRecommendations = {
+  __typename?: 'UserRecommendations';
+  recommendations: Scalars['String'];
+  user_id: Scalars['String'];
 };
 
 export type Userrecipes = {
@@ -351,7 +363,7 @@ export type GetRatingByRecipeAndUserQueryVariables = Exact<{
 }>;
 
 
-export type GetRatingByRecipeAndUserQuery = { __typename?: 'Query', ratingByUserAndRecipe: { __typename?: 'Ratings', user_id: string, recipe_index: number, rating: number } };
+export type GetRatingByRecipeAndUserQuery = { __typename?: 'Query', ratingByUserAndRecipe?: { __typename?: 'Ratings', user_id: string, recipe_index: number, rating: number } | null };
 
 export type GetAllRecipesQueryVariables = Exact<{
   userID: Scalars['String'];
@@ -464,6 +476,13 @@ export type GetUserrecipesByRecipeAndUserQueryVariables = Exact<{
 
 
 export type GetUserrecipesByRecipeAndUserQuery = { __typename?: 'Query', userRecipesByUserAndRecipe: { __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string } };
+
+export type UserRecommendationsQueryVariables = Exact<{
+  userID: Scalars['String'];
+}>;
+
+
+export type UserRecommendationsQuery = { __typename?: 'Query', userRecommendations: { __typename?: 'UserRecommendations', user_id: string, recommendations: string } };
 
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1570,6 +1589,42 @@ export function useGetUserrecipesByRecipeAndUserLazyQuery(baseOptions?: Apollo.L
 export type GetUserrecipesByRecipeAndUserQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeAndUserQuery>;
 export type GetUserrecipesByRecipeAndUserLazyQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeAndUserLazyQuery>;
 export type GetUserrecipesByRecipeAndUserQueryResult = Apollo.QueryResult<GetUserrecipesByRecipeAndUserQuery, GetUserrecipesByRecipeAndUserQueryVariables>;
+export const UserRecommendationsDocument = gql`
+    query userRecommendations($userID: String!) {
+  userRecommendations(userID: $userID) {
+    user_id
+    recommendations
+  }
+}
+    `;
+
+/**
+ * __useUserRecommendationsQuery__
+ *
+ * To run a query within a React component, call `useUserRecommendationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserRecommendationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserRecommendationsQuery({
+ *   variables: {
+ *      userID: // value for 'userID'
+ *   },
+ * });
+ */
+export function useUserRecommendationsQuery(baseOptions: Apollo.QueryHookOptions<UserRecommendationsQuery, UserRecommendationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserRecommendationsQuery, UserRecommendationsQueryVariables>(UserRecommendationsDocument, options);
+      }
+export function useUserRecommendationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserRecommendationsQuery, UserRecommendationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserRecommendationsQuery, UserRecommendationsQueryVariables>(UserRecommendationsDocument, options);
+        }
+export type UserRecommendationsQueryHookResult = ReturnType<typeof useUserRecommendationsQuery>;
+export type UserRecommendationsLazyQueryHookResult = ReturnType<typeof useUserRecommendationsLazyQuery>;
+export type UserRecommendationsQueryResult = Apollo.QueryResult<UserRecommendationsQuery, UserRecommendationsQueryVariables>;
 export const GetAllUsersDocument = gql`
     query getAllUsers {
   users {

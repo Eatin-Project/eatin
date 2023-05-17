@@ -1,19 +1,18 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Resolver, Query, Args } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
-import { UserRecommendations } from './userRecommendations.model';
 import { UserRecommendationsService } from './userRecommendations.service';
+import {Userrecommendations} from "./userRecommendations.model";
 
-@Resolver((of) => UserRecommendations)
+@Resolver((of) => Userrecommendations)
 export class UserRecommendationsResolver {
   constructor(
-    @Inject(UserRecommendationsService)
-    private userRecommendationsService: UserRecommendationsService,
+    @Inject(UserRecommendationsService) private userRecommendationsService: UserRecommendationsService,
   ) {}
 
-  @Query((returns) => UserRecommendations)
-  async userRecommendations(
+  @Query((returns) => Userrecommendations)
+  async userRecommendationsByUser(
     @Args('userID') userID: string,
-  ): Promise<UserRecommendations> {
-    return await this.userRecommendationsService.findByUserId(userID);
+  ): Promise<Userrecommendations> {
+    return await this.userRecommendationsService.findOneByUser(userID);
   }
 }
