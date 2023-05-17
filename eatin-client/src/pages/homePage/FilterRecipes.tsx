@@ -35,6 +35,7 @@ export const FilterRecipes: FC<Props> = ({filterOptions, isSearch, isHidden, get
 
     const searchAndClearFilters = (searchValue: string) => {
         setFilterValues([[]]);
+        filterOptions.forEach(filterOptions => filterOptions.setState([]));
         getFilterSearchValue(searchValue);
     }
 
