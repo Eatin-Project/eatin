@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { RecipesSection } from "../../components/types";
 
 export function useGetSections(userId: string) {
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<RecipesSection[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
 
@@ -41,7 +42,6 @@ export function useGetSections(userId: string) {
                                     vote_count
                                     is_saved
                                     is_uploaded
-                                    given_comment
                                 }
                             }
                         }`,

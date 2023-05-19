@@ -21,7 +21,6 @@ export class UserrecipesService {
       Object.assign(previousRecipe, {
         is_saved: details.is_saved,
         is_uploaded: details.is_uploaded,
-        given_comment: details.given_comment,
       });
       return this.userRecipesRepository.save(previousRecipe);
     }
@@ -60,14 +59,6 @@ export class UserrecipesService {
     });
   }
 
-  findByUserAndisCommentExists(userID: string): Promise<Userrecipes[]> {
-    return this.userRecipesRepository
-      .createQueryBuilder('userrecipe')
-      .where('userrecipe.user_id = :userID', { userID })
-      .andWhere('length(given_comment)>0')
-      .getMany();
-  }
-
   findByRecipeAndIsSaved(
     recipeID: number,
     isSaved: boolean,
@@ -86,14 +77,6 @@ export class UserrecipesService {
       recipe_index: recipeID,
       is_uploaded: isUploaded,
     });
-  }
-
-  findByRecipeAndisCommentExists(recipeID: number): Promise<Userrecipes[]> {
-    return this.userRecipesRepository
-      .createQueryBuilder('userrecipe')
-      .where('userrecipe.recipe_index = :recipeID', { recipeID })
-      .andWhere('length(given_comment)>0')
-      .getMany();
   }
 
   findByUserAndRecipe(userID: string, recipeID: number): Promise<Userrecipes> {
@@ -124,18 +107,6 @@ export class UserrecipesService {
         is_uploaded: isUploaded,
       },
     });
-  }
-
-  findByUserAndRecipeAndisCommentExists(
-    userID: string,
-    recipeID: number,
-  ): Promise<Userrecipes> {
-    return this.userRecipesRepository
-      .createQueryBuilder('userrecipe')
-      .where('userrecipe.recipe_index = :recipeID', { recipeID })
-      .andWhere('userrecipe.user_id = :userID', { userID })
-      .andWhere('length(given_comment)>0')
-      .getOne();
   }
 
   async removeUserRecipe(
@@ -175,7 +146,6 @@ export class UserrecipesService {
       .addSelect('recipes.total_time', 'total_time')
       .addSelect('userrecipes.is_saved', 'is_saved')
       .addSelect('userrecipes.is_uploaded', 'is_uploaded')
-      .addSelect('userrecipes.given_comment', 'given_comment')
       .leftJoin(Recipes, 'recipes', `recipes.index = userrecipes.recipe_index`)
       .where('userrecipes.user_id = :userID', { userID })
       .andWhere('userrecipes.is_saved = true')

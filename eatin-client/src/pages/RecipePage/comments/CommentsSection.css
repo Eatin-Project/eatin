@@ -1,6 +1,7 @@
 .enter-comment-btn {
-    color: #f94f43;
+    color: white;
     font-size: 2em !important;
+    transform: rotate(90deg);
 }
 
 .specific-comment {
@@ -13,7 +14,7 @@
 
 .specific-comment-user {
     font-weight: bold;
-    margin-bottom: 1em;
+    margin-right: 0.5em;
 }
 
 .edit-comment {
@@ -35,7 +36,7 @@
 
 .comments {
     max-height: 20vh !important;
-    margin-top: 2.5em;
+    margin-top: 0.5em;
 }
 
 .edit-section {
@@ -53,6 +54,12 @@
 .current-user-picture {
     width: 2.5em;
     height: 2.5em;
+    margin-right: 0.5em;
+}
+
+.commenter-picture {
+    width: 2em;
+    height: 2em;
     margin-right: 0.5em;
 }
 
@@ -86,5 +93,10 @@
 }
 
 .no-comments-text {
-    margin-top: 1em;
+    margin-top: 2em;
+    margin-left: 2em;
+}
+
+.comment-info {
+    display: flex;
 }

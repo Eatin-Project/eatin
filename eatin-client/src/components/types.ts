@@ -21,7 +21,16 @@ export interface Recipe {
     total_time: number;
     is_saved: boolean;
     is_uploaded: boolean;
+}
+
+export interface Comments {
+    id: string;
+    user_id: string;
+    recipe_index: number;
     given_comment: string;
+    comment_timestap: Date;
+    user_first_name: string;
+    user_last_name: string;
 }
 
 export interface FilterOptions {
@@ -36,7 +45,7 @@ export interface RecipesSection {
     recipes: Recipe[];
 }
 
-export type FilterableKeys = keyof Omit<Recipe, "is_saved" | "is_uploaded" | "given_comment">;
+export type FilterableKeys = keyof Omit<Recipe, "is_saved" | "is_uploaded">;
 
 export interface FilterWrapper {
     field: FilterableKeys;

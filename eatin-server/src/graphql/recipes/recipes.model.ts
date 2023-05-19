@@ -67,6 +67,4 @@ export class Recipes {
   is_saved: boolean;
   @Field()
   is_uploaded: boolean;
-  @Field()
-  given_comment: string;
 }

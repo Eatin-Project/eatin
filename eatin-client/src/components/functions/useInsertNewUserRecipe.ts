@@ -58,27 +58,5 @@ export function useInsertNewUserRecipe(recipeIndex: number) {
         [createSavedUserRecipe, recipeConnection, recipeIndex, userID],
     );
 
-    const updateGivenComment = useCallback(
-        (givenComment: string) => {
-            const val = {
-                user_id: userID,
-                recipe_index: Number(recipeIndex),
-                is_saved: false,
-                given_comment: givenComment,
-                is_uploaded: false,
-            };
-            if (recipeConnection) {
-                val.is_saved = recipeConnection.userRecipesByUserAndRecipe.is_saved;
-                val.is_uploaded = recipeConnection.userRecipesByUserAndRecipe.is_uploaded;
-            }
-            createSavedUserRecipe({
-                variables: val,
-            }).then((userRecipe) => {
-                setData(userRecipe.data);
-            });
-        },
-        [createSavedUserRecipe, recipeConnection, recipeIndex, userID],
-    );
-
-    return { data, updateGivenComment, updateIsSaved, updateIsUploaded };
+    return { data, updateIsSaved, updateIsUploaded };
 }

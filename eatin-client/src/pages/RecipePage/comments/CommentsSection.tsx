@@ -1,65 +1,73 @@
 import "./CommentsSection.css";
 
-import { Avatar, IconButton, InputAdornment, TextField } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { Avatar, InputAdornment, TextField } from "@mui/material";
+import { FC, useState } from "react";
 import styled from "styled-components";
-import { useGetUserrecipesByRecipeIndexAndCommentQuery } from "../../../generated/graphql";
-import { useInsertNewUserRecipe } from "../../../components/functions/useInsertNewUserRecipe";
 import AsyncDataLoaderWrapper from "../../../components/ui/AsyncDataLoaderWrapper";
-import { useGetUsersName } from "../../../components/hooks/useGetUsersName";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import NavigationIcon from "@mui/icons-material/Navigation";
+import { SearchFab } from "../../../components/ui/SearchBar";
+import { useGetRecipesComments } from "../../../components/hooks/useGetRecipesComments";
+import { useToastNotification } from "../../../components/functions/useToastNotification";
 
 interface Props {
     recipeIndex: number;
 }
 export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
     const [newCommentVal, setNewCommentVal] = useState<string>("");
-    const [comments, setComments] = useState<{ userID: string; comment: string }[]>([]);
-    const { updateGivenComment } = useInsertNewUserRecipe(recipeIndex);
-    const userID = useGetUsersName();
+    const { notify } = useToastNotification();
 
-    const { data: recipeComments, loading: recipeCommentsLoading } =
-        useGetUserrecipesByRecipeIndexAndCommentQuery({
-            variables: { recipeID: recipeIndex },
-        });
+    let addCommentButton: HTMLButtonElement;
+
+    const {
+        addNewComment,
+        currentComments,
+        isLoading: recipeCommentsLoading,
+    } = useGetRecipesComments(recipeIndex);
 
     const keyPress = (e: any) => {
         // 13 is the keycode of Enter
         if (e.keyCode === 13) {
-            addNewComment();
+            insertNewCommentToSection();
         }
     };
 
-    useEffect(() => {
-        const initialComments = recipeComments?.userRecipesByRecipeAndIsCommentExists.map(
-            (item) => {
-                return { userID: item.user_id, comment: item.given_comment };
-            },
-        );
-        setComments(initialComments ? initialComments : []);
-    }, [recipeComments, recipeIndex]);
-
-    const addNewComment = async () => {
-        updateGivenComment(newCommentVal);
+    const insertNewCommentToSection = async () => {
+        addNewComment(newCommentVal);
         setNewCommentVal("");
-        if (personalComment()) {
-            const updatedComments = comments.map((item: { userID: string; comment: string }) => {
-                const newComment = { ...item };
-                if (item.userID === userID) {
-                    newComment.comment = newCommentVal;
-                }
-                return newComment;
-            });
-            setComments([...updatedComments]);
-        } else {
-            const updatedComments = comments;
-            updatedComments.push({ userID: userID, comment: newCommentVal });
-            setComments([...updatedComments]);
-        }
+        notify("A new comment was added!");
     };
 
-    const personalComment = () => {
-        return comments.find((item: { userID: string; comment: string }) => item.userID === userID);
+    const timeAgo = (date: Date) => {
+        const seconds = Math.floor(((new Date() as any) - (date as any)) / 1000);
+
+        let interval = Math.floor(seconds / 31536000);
+        if (interval >= 1) {
+            return interval + " years ago";
+        }
+
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) {
+            return interval + " months ago";
+        }
+
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) {
+            return interval + " days ago";
+        }
+
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) {
+            return interval + " hours ago";
+        }
+
+        interval = Math.floor(seconds / 60);
+        if (interval >= 1) {
+            return interval + " minutes ago";
+        }
+
+        if (seconds < 10) return "just now";
+
+        return Math.floor(seconds) + " seconds ago";
     };
 
     return (
@@ -79,14 +87,24 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    <IconButton onClick={addNewComment}>
-                                        <PlayCircleIcon className="enter-comment-btn" />
-                                    </IconButton>
+                                    <SearchFab
+                                        variant="extended"
+                                        size="small"
+                                        onClick={insertNewCommentToSection}
+                                        color="primary"
+                                        aria-label="search"
+                                        ref={(node) => (!!node ? (addCommentButton = node) : "")}
+                                    >
+                                        <NavigationIcon className="enter-comment-btn" />
+                                    </SearchFab>
                                 </InputAdornment>
                             ),
                         }}
                         inputProps={{
                             maxLength: 50,
+                            style: {
+                                height: "16px",
+                            },
                         }}
                         label="Add a new comment..."
                         variant="outlined"
@@ -94,8 +112,8 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
                     />
                 </div>
 
-                {comments.length === 0 ? (
-                    <h4 className="no-comments-text">No comment were posted on this recipe...</h4>
+                {currentComments.length === 0 ? (
+                    <h5 className="no-comments-text">No comment were posted on this recipe...</h5>
                 ) : (
                     <div className="scrollable-comments">
                         <Scrollable>
@@ -104,21 +122,25 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
                                     loading={recipeCommentsLoading}
                                     text="loading comments..."
                                 >
-                                    {comments.map((connection, i) => (
+                                    {currentComments.map((comment, i) => (
                                         <div key={i} className="specific-comment">
                                             <div className="user-info-comment">
                                                 <Avatar
-                                                    className="current-user-picture"
+                                                    className="commenter-picture"
                                                     alt="Your picture"
                                                     src="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2022-08/220805-domestic-cat-mjf-1540-382ba2.jpg"
                                                 />
-                                                <h6 className="specific-comment-user">
-                                                    {connection.userID}
-                                                </h6>
+                                                <div className="comment-info">
+                                                    <span className="specific-comment-user">
+                                                        {comment.user_first_name}{" "}
+                                                        {comment.user_last_name}
+                                                    </span>
+                                                    <span>{timeAgo(comment.comment_timestap)}</span>
+                                                </div>
                                             </div>
 
                                             <span className="specific-comment-content">
-                                                {connection.comment}
+                                                {comment.given_comment}
                                             </span>
                                         </div>
                                     ))}

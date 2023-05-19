@@ -9,6 +9,7 @@ import { Recipes } from './graphql/recipes/recipes.model';
 import { Users } from './graphql/users/users.model';
 import { Ratings } from './graphql/ratings/ratings.model';
 import { Userrecipes } from './graphql/userRecipes/userRecipes.model';
+import { Comments } from './graphql/comments/comments.model';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { Userrecipes } from './graphql/userRecipes/userRecipes.model';
       username: 'eatin',
       password: 'eatin',
       database: 'postgres',
-      entities: [Recipes, Users, Ratings, Userrecipes],
+      entities: [Recipes, Users, Ratings, Userrecipes, Comments],
       synchronize: false,
     }),
     GraphqlModule,
