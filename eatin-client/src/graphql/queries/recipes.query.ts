@@ -25,7 +25,6 @@ export const GET_ALL_RECIPES = gql`
             total_time
             is_saved
             is_uploaded
-            given_comment
         }
     }
 `;
@@ -55,7 +54,6 @@ export const GET_RECIPE_BY_ID = gql`
             total_time
             is_saved
             is_uploaded
-            given_comment
         }
     }
 `;
@@ -85,7 +83,6 @@ export const GET_RECIPES_BY_VALUE = gql`
             total_time
             is_saved
             is_uploaded
-            given_comment
         }
     }
 `;
@@ -115,7 +112,6 @@ export const GET_RECIPE_BY_CATEGORY = gql`
             total_time
             is_saved
             is_uploaded
-            given_comment
         }
     }
 `;
@@ -145,7 +141,6 @@ export const GET_RECIPE_BY_CUISINE = gql`
             total_time
             is_saved
             is_uploaded
-            given_comment
         }
     }
 `;

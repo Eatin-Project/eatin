@@ -7,6 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "migrate": "flyway -c flyway.ts migrate",
+    "repair": "flyway -c flyway.ts repair",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",

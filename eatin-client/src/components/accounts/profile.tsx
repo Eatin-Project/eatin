@@ -1,6 +1,10 @@
 import { FC, useState } from "react";
 import "./profile.css";
-import { useGetTopRatedRecipesByCategoryQuery, useGetUserByIdQuery } from "../../generated/graphql";
+import {
+    useGetTopRatedRecipesByCategoryQuery,
+    useGetUserByIdQuery,
+    useGetSavedRecipesQuery,
+} from "../../generated/graphql";
 import { Category } from "../../pages/homePage/entities/categories.enum";
 import { Cuisine } from "../../pages/homePage/entities/cuisines.enum";
 import { FilterRecipes } from "../../pages/homePage/FilterRecipes";
@@ -12,7 +16,6 @@ import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
 import { RecipesCatalog } from "../ui/RecipesCatalog";
-import { useGetRecipesConnectionIsSaved } from "../../graphql/queries/recipes_connection_is_saved.query";
 import { useGetUsersName } from "../hooks/useGetUsersName";
 
 export const Profile: FC = () => {
@@ -31,10 +34,9 @@ export const Profile: FC = () => {
         variables: { category: Category.Cake, userID: userID },
     });
 
-    const { data: savedRecipes, loading: savedRecipesLoading } = useGetRecipesConnectionIsSaved(
-        userID,
-        true,
-    );
+    const { data: savedRecipes, loading: savedRecipesLoading } = useGetSavedRecipesQuery({
+        variables: { userID: userID },
+    });
 
     const currentFilterOptions: FilterOptions[] = [
         // {
@@ -52,12 +54,19 @@ export const Profile: FC = () => {
     ];
 
     return (
-        <AsyncDataLoaderWrapper loading={loading || savedRecipesLoading} text="loading user...">
+        <AsyncDataLoaderWrapper loading={loading} text="loading user...">
             <div className="profile-container">
                 <div className="profile-header">
                     <User size="large" name={data?.user.firstname + " " + data?.user.lastname} />
                     <div className="profile-filters">
-                        {<FilterRecipes filterOptions={currentFilterOptions} isSearch={false} isHidden={false} getFilterSearchValue={() => {}}/>}
+                        {
+                            <FilterRecipes
+                                filterOptions={currentFilterOptions}
+                                isSearch={false}
+                                isHidden={false}
+                                getFilterSearchValue={() => {}}
+                            />
+                        }
                     </div>
                 </div>
                 <div>
@@ -85,7 +94,9 @@ export const Profile: FC = () => {
                                 loading={savedRecipesLoading}
                                 text="loading saved recipes..."
                             >
-                                <RecipesCatalog recipes={savedRecipes} />
+                                <RecipesCatalog
+                                    recipes={savedRecipes ? savedRecipes.savedRecipesOfUser : []}
+                                />
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
                     </Tabs>

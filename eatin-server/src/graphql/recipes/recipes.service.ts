@@ -48,8 +48,8 @@ export class RecipesService {
         'is_uploaded',
       )
       .addSelect(
-        `case when userrecipes.given_comment is NULL then '' else userrecipes.given_comment end`,
-        'given_comment',
+        `case when userrecipes.is_uploaded is NULL then false else userrecipes.is_uploaded end`,
+        'is_uploaded',
       )
       .leftJoin(
         Userrecipes,
@@ -59,7 +59,7 @@ export class RecipesService {
       .getRawMany();
   }
 
-  async findOne(index: number, userID: string): Promise<Recipes> {
+  findOne(index: number, userID: string): Promise<Recipes> {
     return this.recipesRepository
       .createQueryBuilder('recipes')
       .select('recipes.index', 'index')
@@ -89,10 +89,6 @@ export class RecipesService {
       .addSelect(
         `case when userrecipes.is_uploaded is NULL then false else userrecipes.is_uploaded end`,
         'is_uploaded',
-      )
-      .addSelect(
-        `case when userrecipes.given_comment is NULL then '' else userrecipes.given_comment end`,
-        'given_comment',
       )
       .leftJoin(
         Userrecipes,
@@ -138,10 +134,6 @@ export class RecipesService {
         `case when userrecipes.is_uploaded is NULL then false else userrecipes.is_uploaded end`,
         'is_uploaded',
       )
-      .addSelect(
-        `case when userrecipes.given_comment is NULL then '' else userrecipes.given_comment end`,
-        'given_comment',
-      )
       .leftJoin(
         Userrecipes,
         'userrecipes',
@@ -183,10 +175,6 @@ export class RecipesService {
       .addSelect(
         `case when userrecipes.is_uploaded is NULL then false else userrecipes.is_uploaded end`,
         'is_uploaded',
-      )
-      .addSelect(
-        `case when userrecipes.given_comment is NULL then '' else userrecipes.given_comment end`,
-        'given_comment',
       )
       .leftJoin(
         Userrecipes,
