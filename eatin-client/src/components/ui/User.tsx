@@ -1,5 +1,5 @@
 import "./User.css";
-import { Avatar } from "@mui/material";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { FC, PropsWithChildren } from "react";
 import classNames from "classnames";
 
@@ -16,11 +16,11 @@ function getUserProfilePicture(): string {
 export const User: FC<PropsWithChildren<Props>> = ({ name, children, size = "small", onClick }) => {
     return (
         <div className={classNames("eatin-user", size, { clickable: !!onClick })} onClick={onClick}>
-            <Avatar
+            <PersonOutlineOutlinedIcon
                 className="avatar"
-                src={getUserProfilePicture()}
-                sx={{ backgroundColor: "transparent" }}
+                sx={{ backgroundColor: "transparent", fontSize: "small" }}
             />
+            {/* src={getUserProfilePicture()} */}
             <span>{name}</span>
             {children}
         </div>

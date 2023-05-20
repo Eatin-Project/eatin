@@ -1,6 +1,6 @@
 import "./Navbar.css";
 
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import { AppLogo } from "./AppLogo";
 import { useCallback, useState } from "react";
@@ -12,14 +12,13 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, IconButton } from "@mui/material";
-import { SearchBar } from "../ui/SearchBar";
 import { useGetUsersName } from "../hooks/useGetUsersName";
+import {useSearch} from "../../context/search-context";
 
 export const Navbar = () => {
     const navigate = useNavigate();
     const userID = useGetUsersName();
     const { signOutUser } = useAuth();
-    const location = useLocation();
     const { data } = useGetUserByIdQuery({
         variables: { id: userID },
     });
@@ -43,7 +42,6 @@ export const Navbar = () => {
             <div className="navbar">
                 <AppLogo onClick={goToHomePage} />
                 <div className="navbar-end">
-                    {location.pathname === "/home" && <SearchBar />}
                     <Button
                         variant="outlined"
                         sx={{ color: "#EBEBEB", borderRadius: 35 }}

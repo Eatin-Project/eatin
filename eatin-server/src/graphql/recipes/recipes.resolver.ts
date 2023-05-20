@@ -37,7 +37,8 @@ case when userrecipes.given_comment is NULL then '' else userrecipes.given_comme
                                                     where recipes.recipe_title like '%${value}%'
                                                        or recipes.description like '%${value}%'
                                                        or recipes.author like '%${value}%'
-                                                    order by recipes.vote_count desc;`);
+                                                    order by recipes.vote_count desc
+                                                    limit 100;`);
   }
 
   @Query((returns) => [Recipes])
