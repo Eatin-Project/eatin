@@ -16,7 +16,7 @@ export function useInsertNewUserRecipe(recipeIndex: number) {
 
     const updateIsSaved = useCallback(
         (isSaved: boolean) => {
-            const val = {
+            const newValueToAdd = {
                 user_id: userID,
                 recipe_index: Number(recipeIndex),
                 is_saved: isSaved,
@@ -24,11 +24,12 @@ export function useInsertNewUserRecipe(recipeIndex: number) {
                 is_uploaded: false,
             };
             if (recipeConnection) {
-                val.given_comment = recipeConnection.userRecipesByUserAndRecipe.given_comment;
-                val.is_uploaded = recipeConnection.userRecipesByUserAndRecipe.is_uploaded;
+                newValueToAdd.given_comment =
+                    recipeConnection.userRecipesByUserAndRecipe.given_comment;
+                newValueToAdd.is_uploaded = recipeConnection.userRecipesByUserAndRecipe.is_uploaded;
             }
             createSavedUserRecipe({
-                variables: val,
+                variables: newValueToAdd,
             }).then((userRecipe) => {
                 setData(userRecipe.data);
             });
@@ -38,7 +39,7 @@ export function useInsertNewUserRecipe(recipeIndex: number) {
 
     const updateIsUploaded = useCallback(
         (isUploaded: boolean) => {
-            const val = {
+            const newValueToAdd = {
                 user_id: userID,
                 recipe_index: Number(recipeIndex),
                 is_saved: isUploaded,
@@ -46,11 +47,12 @@ export function useInsertNewUserRecipe(recipeIndex: number) {
                 is_uploaded: false,
             };
             if (recipeConnection) {
-                val.given_comment = recipeConnection.userRecipesByUserAndRecipe.given_comment;
-                val.is_saved = recipeConnection.userRecipesByUserAndRecipe.is_saved;
+                newValueToAdd.given_comment =
+                    recipeConnection.userRecipesByUserAndRecipe.given_comment;
+                newValueToAdd.is_saved = recipeConnection.userRecipesByUserAndRecipe.is_saved;
             }
             createSavedUserRecipe({
-                variables: val,
+                variables: newValueToAdd,
             }).then((userRecipe) => {
                 setData(userRecipe.data);
             });

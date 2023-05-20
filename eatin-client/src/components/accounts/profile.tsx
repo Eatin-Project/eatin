@@ -34,9 +34,9 @@ export const Profile: FC = () => {
         variables: { category: Category.Cake, userID: userID },
     });
 
-    // const { data: savedRecipes, loading: savedRecipesLoading } = useGetSavedRecipesQuery({
-    //     variables: { userID: userID },
-    // });
+    const { data: savedRecipes, loading: savedRecipesLoading } = useGetSavedRecipesQuery({
+        variables: { userID: userID },
+    });
 
     const currentFilterOptions: FilterOptions[] = [
         // {
@@ -90,8 +90,13 @@ export const Profile: FC = () => {
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
                         <TabPanel value={1} sx={{ p: 2 }}>
-                            <AsyncDataLoaderWrapper loading={false} text="loading saved recipes...">
-                                <RecipesCatalog recipes={[]} />
+                            <AsyncDataLoaderWrapper
+                                loading={savedRecipesLoading}
+                                text="loading saved recipes..."
+                            >
+                                <RecipesCatalog
+                                    recipes={savedRecipes ? savedRecipes.savedRecipesOfUser : []}
+                                />
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
                     </Tabs>

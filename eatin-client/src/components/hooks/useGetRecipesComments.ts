@@ -21,14 +21,14 @@ export function useGetRecipesComments(recipeIndex: number) {
         const updatedCommentes = comments?.commentsByRecipeIndex.map((comment) => {
             return {
                 ...comment,
-                comment_timestap: updatedTimestap(comment.comment_timestap),
+                comment_timestap: turnTimestapToDate(comment.comment_timestap),
             };
         });
         setCurrentComments(updatedCommentes ? [...updatedCommentes] : []);
         setIsLoading(false);
     }, [comments]);
 
-    const updatedTimestap = (timestamp: string) => {
+    const turnTimestapToDate = (timestamp: string) => {
         // For some reason postgres returns the time 3 hours early then it saves...
         const seperatedDate = timestamp.replace("Z", "").split("T");
         const seperatedTime = seperatedDate[1].split(":");

@@ -37,7 +37,7 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
         notify("A new comment was added!");
     };
 
-    const timeAgo = (date: Date) => {
+    const getHowMuchTimeAgo = (date: Date) => {
         const seconds = Math.floor(((new Date() as any) - (date as any)) / 1000);
 
         let interval = Math.floor(seconds / 31536000);
@@ -135,7 +135,11 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
                                                         {comment.user_first_name}{" "}
                                                         {comment.user_last_name}
                                                     </span>
-                                                    <span>{timeAgo(comment.comment_timestap)}</span>
+                                                    <span>
+                                                        {getHowMuchTimeAgo(
+                                                            comment.comment_timestap,
+                                                        )}
+                                                    </span>
                                                 </div>
                                             </div>
 
