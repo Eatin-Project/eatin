@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {Userrecommendations} from "../userRecommendationsCopy/userRecommendationsCopy.model";
+import { Userrecommendations } from './userRecommendations.model';
 
 @Injectable()
 export class UserRecommendationsService {
@@ -11,6 +11,8 @@ export class UserRecommendationsService {
   ) {}
 
   async findOneByUser(userID: string): Promise<Userrecommendations> {
-    return this.userRecommendationsRepository.findOne({ where: { user_id: userID }});
+    return this.userRecommendationsRepository.findOne({
+      where: { user_id: userID },
+    });
   }
 }

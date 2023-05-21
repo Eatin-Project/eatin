@@ -18,6 +18,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useInsertNewUserRecipe } from "../../components/functions/useInsertNewUserRecipe";
 import { useDeleteUserRecipe } from "../../components/functions/useDeleteUserRecipe";
 import { useGetUsersName } from "../../components/hooks/useGetUsersName";
+import { useUpdateUserRecommendations } from "../../graphql/queries/update_user_recommendations.query";
 
 export const RecipePage: FC = () => {
     const { id } = useParams();
@@ -47,7 +48,12 @@ export const RecipePage: FC = () => {
     const { deleteNewUserRecipe } = useDeleteUserRecipe();
     const recipe = useMemo(() => recipeData?.recipe, [recipeData?.recipe]);
     const [createRating] = useCreateRatingMutation();
-
+    const [updateRecommendations, setUpdateRecommendations] = useState<Boolean>(false);
+    const {} = useUpdateUserRecommendations(
+        userID,
+        updateRecommendations,
+        setUpdateRecommendations,
+    );
     useEffect(() => {
         setRating(
             ratingData?.ratingByUserAndRecipe?.rating ? ratingData.ratingByUserAndRecipe.rating : 0,
@@ -67,7 +73,7 @@ export const RecipePage: FC = () => {
                     recipe_index: Number(id),
                     rating: newValue,
                 },
-            }).then((rating) => console.log(rating.data));
+            }).then(() => setUpdateRecommendations(true));
         }
     }
 

@@ -48,7 +48,7 @@ export function useGetRecipesConnectionIsSaved(userId: string, isSaved: boolean)
             setData(newData);
             setLoading(false);
         } catch (e) {
-            console.log(`Error has occured in recipes_connection_is_saved query - ${e}`);
+            console.log(`Error has occurred in recipes_connection_is_saved query - ${e}`);
             setError(e);
         }
     }, [isSaved, userId]);

@@ -102,7 +102,7 @@ export type Query = {
   userRecipesByUserAndIsSaved: Array<Userrecipes>;
   userRecipesByUserAndIsUploaded: Array<Userrecipes>;
   userRecipesByUserAndRecipe: Userrecipes;
-  userRecommendations: UserRecommendations;
+  userRecommendationsByUser: Userrecommendations;
   users: Array<Users>;
 };
 
@@ -207,7 +207,7 @@ export type QueryUserRecipesByUserAndRecipeArgs = {
 };
 
 
-export type QueryUserRecommendationsArgs = {
+export type QueryUserRecommendationsByUserArgs = {
   userID: Scalars['String'];
 };
 
@@ -246,18 +246,18 @@ export type Recipes = {
   vote_count: Scalars['Float'];
 };
 
-export type UserRecommendations = {
-  __typename?: 'UserRecommendations';
-  recommendations: Scalars['String'];
-  user_id: Scalars['String'];
-};
-
 export type Userrecipes = {
   __typename?: 'Userrecipes';
   given_comment: Scalars['String'];
   is_saved: Scalars['Boolean'];
   is_uploaded: Scalars['Boolean'];
   recipe_index: Scalars['Float'];
+  user_id: Scalars['String'];
+};
+
+export type Userrecommendations = {
+  __typename?: 'Userrecommendations';
+  recommendations: Scalars['String'];
   user_id: Scalars['String'];
 };
 
@@ -477,12 +477,12 @@ export type GetUserrecipesByRecipeAndUserQueryVariables = Exact<{
 
 export type GetUserrecipesByRecipeAndUserQuery = { __typename?: 'Query', userRecipesByUserAndRecipe: { __typename?: 'Userrecipes', user_id: string, recipe_index: number, is_saved: boolean, is_uploaded: boolean, given_comment: string } };
 
-export type UserRecommendationsQueryVariables = Exact<{
+export type GetUserRecommendationsQueryVariables = Exact<{
   userID: Scalars['String'];
 }>;
 
 
-export type UserRecommendationsQuery = { __typename?: 'Query', userRecommendations: { __typename?: 'UserRecommendations', user_id: string, recommendations: string } };
+export type GetUserRecommendationsQuery = { __typename?: 'Query', userRecommendationsByUser: { __typename?: 'Userrecommendations', user_id: string, recommendations: string } };
 
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1589,9 +1589,9 @@ export function useGetUserrecipesByRecipeAndUserLazyQuery(baseOptions?: Apollo.L
 export type GetUserrecipesByRecipeAndUserQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeAndUserQuery>;
 export type GetUserrecipesByRecipeAndUserLazyQueryHookResult = ReturnType<typeof useGetUserrecipesByRecipeAndUserLazyQuery>;
 export type GetUserrecipesByRecipeAndUserQueryResult = Apollo.QueryResult<GetUserrecipesByRecipeAndUserQuery, GetUserrecipesByRecipeAndUserQueryVariables>;
-export const UserRecommendationsDocument = gql`
-    query userRecommendations($userID: String!) {
-  userRecommendations(userID: $userID) {
+export const GetUserRecommendationsDocument = gql`
+    query getUserRecommendations($userID: String!) {
+  userRecommendationsByUser(userID: $userID) {
     user_id
     recommendations
   }
@@ -1599,32 +1599,32 @@ export const UserRecommendationsDocument = gql`
     `;
 
 /**
- * __useUserRecommendationsQuery__
+ * __useGetUserRecommendationsQuery__
  *
- * To run a query within a React component, call `useUserRecommendationsQuery` and pass it any options that fit your needs.
- * When your component renders, `useUserRecommendationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserRecommendationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserRecommendationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useUserRecommendationsQuery({
+ * const { data, loading, error } = useGetUserRecommendationsQuery({
  *   variables: {
  *      userID: // value for 'userID'
  *   },
  * });
  */
-export function useUserRecommendationsQuery(baseOptions: Apollo.QueryHookOptions<UserRecommendationsQuery, UserRecommendationsQueryVariables>) {
+export function useGetUserRecommendationsQuery(baseOptions: Apollo.QueryHookOptions<GetUserRecommendationsQuery, GetUserRecommendationsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UserRecommendationsQuery, UserRecommendationsQueryVariables>(UserRecommendationsDocument, options);
+        return Apollo.useQuery<GetUserRecommendationsQuery, GetUserRecommendationsQueryVariables>(GetUserRecommendationsDocument, options);
       }
-export function useUserRecommendationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserRecommendationsQuery, UserRecommendationsQueryVariables>) {
+export function useGetUserRecommendationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserRecommendationsQuery, GetUserRecommendationsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UserRecommendationsQuery, UserRecommendationsQueryVariables>(UserRecommendationsDocument, options);
+          return Apollo.useLazyQuery<GetUserRecommendationsQuery, GetUserRecommendationsQueryVariables>(GetUserRecommendationsDocument, options);
         }
-export type UserRecommendationsQueryHookResult = ReturnType<typeof useUserRecommendationsQuery>;
-export type UserRecommendationsLazyQueryHookResult = ReturnType<typeof useUserRecommendationsLazyQuery>;
-export type UserRecommendationsQueryResult = Apollo.QueryResult<UserRecommendationsQuery, UserRecommendationsQueryVariables>;
+export type GetUserRecommendationsQueryHookResult = ReturnType<typeof useGetUserRecommendationsQuery>;
+export type GetUserRecommendationsLazyQueryHookResult = ReturnType<typeof useGetUserRecommendationsLazyQuery>;
+export type GetUserRecommendationsQueryResult = Apollo.QueryResult<GetUserRecommendationsQuery, GetUserRecommendationsQueryVariables>;
 export const GetAllUsersDocument = gql`
     query getAllUsers {
   users {
