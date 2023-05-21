@@ -13,8 +13,10 @@ import {
     Wrapper,
 } from "./auth-style";
 import { useAuth } from "../../context/auth-context";
+import { AuthErrorCodes } from "@firebase/auth";
 import { ReactComponent as ChefAnimation } from "../../assets/Chef.svg";
 import { ReactComponent as MediumLogo } from "../../assets/MediumLogo.svg";
+import { useToastNotification } from "../../components/functions/useToastNotification";
 
 const defaultFormFields = {
     email: "",
@@ -25,6 +27,8 @@ function SignIn() {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { email, password } = formFields;
     const navigate = useNavigate();
+    const { notify } = useToastNotification();
+
     const [loading, setLoading] = useState(false);
     const { signInUser } = useAuth();
     const resetFormFields = () => {
@@ -33,21 +37,30 @@ function SignIn() {
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
+        setLoading(true);
         try {
-            // TODO: validate fields
-            setLoading(true);
             const userCredential = await signInUser(email, password);
 
             if (userCredential) {
                 resetFormFields();
                 navigate("/home");
             }
-        } catch (error: any) {
-            console.log("User Sign In Failed", error.message);
-        }
+        } catch (e: any) {
+            console.log(e.code);
 
-        setLoading(false);
+            if (e.code === AuthErrorCodes.INVALID_PASSWORD) {
+                notify("The given password is invalid");
+            } else if (e.code === AuthErrorCodes.USER_DELETED) {
+                notify("The user was not found");
+            } else if (e.code === AuthErrorCodes.TOO_MANY_ATTEMPTS_TRY_LATER) {
+                notify("Too many attempts to connect were made. Please try again later");
+            } else {
+                console.log(e);
+                notify("Something went wrong when signing in. Please try again later");
+            }
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
