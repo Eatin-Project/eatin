@@ -131,6 +131,8 @@ function SignUp() {
                 });
                 console.log(user.data?.createUser);
                 navigate("/home");
+            } else {
+                notify("Something went wrong when creating the user. Please try again later");
             }
         } catch (e: any) {
             if (e.code === AuthErrorCodes.WEAK_PASSWORD) {

@@ -44,6 +44,8 @@ function SignIn() {
             if (userCredential) {
                 resetFormFields();
                 navigate("/home");
+            } else {
+                notify("Something went wrong when signing in. Please try again later");
             }
         } catch (e: any) {
             console.log(e.code);
