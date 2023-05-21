@@ -4,6 +4,7 @@ export function useUpdateUserRecommendations(userId: string, isActive: Boolean, 
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
+    const [isUpdated, setIsUpdated] = useState<Boolean>(false);
 
     useEffect(() => {
         if (isActive || isActive === undefined) {
@@ -23,6 +24,7 @@ export function useUpdateUserRecommendations(userId: string, isActive: Boolean, 
                     });
                     const resJson = await res.json();
                     setData(resJson.data.similar_recipes);
+                    setIsUpdated(true);
                     setLoading(false);
                 } catch (e) {
                     console.log(`Error has occurred in similar_recipes query - ${e}`);
@@ -36,5 +38,5 @@ export function useUpdateUserRecommendations(userId: string, isActive: Boolean, 
         }
     }, [userId, isActive]);
 
-    return { data, loading, error };
+    return { data, loading, error, isUpdated };
 }
