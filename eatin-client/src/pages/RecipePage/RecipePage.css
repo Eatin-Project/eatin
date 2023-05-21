@@ -30,11 +30,7 @@
     margin: 2em 2em 0 2em;
 }
 
-.recipe-page .recipe-data .ingredients-list {
-    /* list-style-type: none; */
-}
-
-.recipe-page .comments .comment-card {
+.recipe-page .comment-card {
     display: flex;
     flex-direction: column;
     background-color: #e7e7e7;

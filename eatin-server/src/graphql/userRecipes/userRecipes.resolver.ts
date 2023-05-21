@@ -2,7 +2,7 @@ import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { Userrecipes } from './userRecipes.model';
 import { UserrecipesService } from './userRecipes.service';
-import { log } from 'console';
+import { Recipes } from '../recipes/recipes.model';
 
 @Resolver((of) => Userrecipes)
 export class UserrecipeResolver {
@@ -65,22 +65,6 @@ export class UserrecipeResolver {
     );
   }
 
-  @Query((returns) => [Userrecipes])
-  async userRecipesByUserAndIsCommentExists(
-    @Args('userID') userID: string,
-  ): Promise<Userrecipes[]> {
-    return await this.userRecipesService.findByUserAndisCommentExists(userID);
-  }
-
-  @Query((returns) => [Userrecipes])
-  async userRecipesByRecipeAndIsCommentExists(
-    @Args('recipeID') recipeID: number,
-  ): Promise<Userrecipes[]> {
-    return await this.userRecipesService.findByRecipeAndisCommentExists(
-      recipeID,
-    );
-  }
-
   @Query((returns) => Userrecipes)
   async userRecipesByUserAndRecipe(
     @Args('userID') userID: string,
@@ -92,6 +76,11 @@ export class UserrecipeResolver {
   @Query((returns) => [Userrecipes])
   async userRecipes(): Promise<Userrecipes[]> {
     return await this.userRecipesService.findAll();
+  }
+
+  @Query((returns) => [Recipes])
+  async savedRecipesOfUser(@Args('userID') userID: string): Promise<Recipes[]> {
+    return await this.userRecipesService.getSavedRecipesOfUser(userID);
   }
 
   @Mutation((returns) => Userrecipes)
@@ -108,13 +97,12 @@ export class UserrecipeResolver {
     @Args('recipe_index') recipe_index: number,
     @Args('is_saved') is_saved: boolean,
     @Args('is_uploaded') is_uploaded: boolean,
-    @Args('given_comment') given_comment: string,
   ): Promise<Userrecipes> {
     return await this.userRecipesService.create({
       user_id,
       recipe_index,
       is_saved,
-      given_comment,
+      given_comment: '',
       is_uploaded,
     });
   }
