@@ -23,11 +23,8 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { ReactComponent as ChefAnimation } from "../../assets/Chef.svg";
 import { ReactComponent as MediumLogo } from "../../assets/MediumLogo.svg";
-<<<<<<< main:eatin-client/src/components/accounts/sign-up.tsx
 import { useUpdateUserRecommendations } from "../../graphql/queries/update_user_recommendations.query";
-=======
 import { useToastNotification } from "./../../components/functions/useToastNotification";
->>>>>>> Adding notification when the user does something wrong:eatin-client/src/pages/loginPage/sign-up.tsx
 
 const defaultFormFields = {
     firstName: "",
@@ -42,12 +39,8 @@ const defaultFormFields = {
 function SignUp() {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const [birthDate, setBirthDate] = useState<Date | null>(null);
-<<<<<<< main:eatin-client/src/components/accounts/sign-up.tsx
     const [userId, setUserId] = useState<string>("");
     const [updateRecommendations, setUpdateRecommendations] = useState<Boolean>(false);
-=======
-
->>>>>>> Adding notification when the user does something wrong:eatin-client/src/pages/loginPage/sign-up.tsx
     const { firstName, lastName, email, password, phone, gender, country } = formFields;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -59,7 +52,6 @@ function SignUp() {
     };
 
     const [createUser] = useCreateUserMutation();
-<<<<<<< main:eatin-client/src/components/accounts/sign-up.tsx
     const { isUpdated: areUserRecommendationsUpdated } = useUpdateUserRecommendations(
         userId,
         updateRecommendations,
@@ -72,9 +64,7 @@ function SignUp() {
             navigate("/home");
         }
     }, [areUserRecommendationsUpdated, navigate]);
-=======
     const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
->>>>>>> Adding notification when the user does something wrong:eatin-client/src/pages/loginPage/sign-up.tsx
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -89,32 +79,6 @@ function SignUp() {
                 gender,
                 birthDate,
                 country,
-<<<<<<< main:eatin-client/src/components/accounts/sign-up.tsx
-            ).then((userCredential: { user: { uid: any } }) => {
-                if (userCredential) {
-                    createUser({
-                        variables: {
-                            id: userCredential.user.uid,
-                            firstname: firstName,
-                            lastname: lastName,
-                            email: email,
-                            phone: phone,
-                            gender: gender,
-                            birthdate: birthDate,
-                            country: country,
-                        },
-                    }).then((user) => {
-                        setUserId(userCredential.user.uid);
-                        setUpdateRecommendations(true);
-                        console.log(user.data?.createUser);
-                    });
-                }
-            });
-        } catch (error: any) {
-            console.log("User Sign Up Failed", error.message);
-            setLoading(false);
-        }
-=======
             );
             if (userCredential) {
                 const user = await createUser({
@@ -128,9 +92,11 @@ function SignUp() {
                         birthdate: birthDate,
                         country: country,
                     },
+                }).then((user) => {
+                    setUserId(userCredential.user.uid);
+                    setUpdateRecommendations(true);
+                    console.log(user.data?.createUser);
                 });
-                console.log(user.data?.createUser);
-                navigate("/home");
             } else {
                 notify("Something went wrong when creating the user. Please try again later");
             }
@@ -164,7 +130,6 @@ function SignUp() {
         } else {
             notify("You can't have more then ten numbers in a phone number");
         }
->>>>>>> Adding notification when the user does something wrong:eatin-client/src/pages/loginPage/sign-up.tsx
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -271,13 +236,9 @@ function SignUp() {
                                 <LocalizationProvider className="w-50" dateAdapter={AdapterDayjs}>
                                     <DatePicker
                                         className="ms-3"
-<<<<<<< main:eatin-client/src/components/accounts/sign-up.tsx
-                                        slotProps={{ textField: { variant: "standard" } }}
-=======
                                         slotProps={{
                                             textField: { variant: "standard", required: true },
                                         }}
->>>>>>> Adding notification when the user does something wrong:eatin-client/src/pages/loginPage/sign-up.tsx
                                         label="Date Of Birth"
                                         value={birthDate}
                                         onChange={(date) => setBirthDate(date)}
