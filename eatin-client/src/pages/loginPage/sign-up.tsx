@@ -92,11 +92,10 @@ function SignUp() {
                         birthdate: birthDate,
                         country: country,
                     },
-                }).then((user) => {
-                    setUserId(userCredential.user.uid);
-                    setUpdateRecommendations(true);
-                    console.log(user.data?.createUser);
                 });
+                setUserId(userCredential.user.uid);
+                setUpdateRecommendations(true);
+                console.log(user.data?.createUser);
             } else {
                 notify("Something went wrong when creating the user. Please try again later");
             }
@@ -105,12 +104,13 @@ function SignUp() {
                 notify("The password should be at least 6 characters");
             } else if (e.code === AuthErrorCodes.EMAIL_EXISTS) {
                 notify("The chosen email is already in used");
+            } else if (e.code === AuthErrorCodes.INVALID_EMAIL) {
+                notify("The chosen email is invalid");
             } else {
                 console.log(e);
                 notify("Something went wrong when creating the user. Please try again later");
             }
         } finally {
-            resetFormFields();
             setLoading(false);
         }
     };
