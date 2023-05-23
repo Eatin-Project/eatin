@@ -13,6 +13,7 @@ import { useGetSimilarRecipes } from "../../graphql/queries/similar_recipes.quer
 import styled from "styled-components";
 import { useInsertNewUserRecipe } from "../../components/functions/useInsertNewUserRecipe";
 import { useGetUsersName } from "../../components/hooks/useGetUsersName";
+import { useUpdateUserRecommendations } from "../../graphql/queries/update_user_recommendations.query";
 import { RecipePageLeftSection } from "./RecipePageLeftSection";
 import { RecipePageRightSection } from "./RecipePageRightSection";
 
@@ -42,7 +43,12 @@ export const RecipePage: FC = () => {
     const { updateIsSaved } = useInsertNewUserRecipe(Number(id));
     const recipe = useMemo(() => recipeData?.recipe, [recipeData?.recipe]);
     const [createRating] = useCreateRatingMutation();
-
+    const [updateRecommendations, setUpdateRecommendations] = useState<Boolean>(false);
+    const {} = useUpdateUserRecommendations(
+        userID,
+        updateRecommendations,
+        setUpdateRecommendations,
+    );
     useEffect(() => {
         setRating(
             ratingData?.ratingByUserAndRecipe?.rating ? ratingData.ratingByUserAndRecipe.rating : 0,
@@ -62,7 +68,7 @@ export const RecipePage: FC = () => {
                     recipe_index: Number(id),
                     rating: newValue,
                 },
-            }).then((rating) => console.log(rating.data));
+            }).then(() => setUpdateRecommendations(true));
         }
     }
 

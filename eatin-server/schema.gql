@@ -58,6 +58,11 @@ type Ratings {
   rating_timestamp: DateTime!
 }
 
+type Userrecommendations {
+  user_id: String!
+  recommendations: String!
+}
+
 type Comments {
   id: String!
   user_id: String!
@@ -89,6 +94,7 @@ type Query {
   userRecipesByUserAndRecipe(userID: String!, recipeID: Float!): Userrecipes!
   userRecipes: [Userrecipes!]!
   savedRecipesOfUser(userID: String!): [Recipes!]!
+  userRecommendationsByUser(userID: String!): Userrecommendations!
   commentsByRecipeIndex(recipeID: Float!): [Comments!]!
   commentsByUserID(userID: String!): [Comments!]!
   commentsByID(id: String!): Comments!

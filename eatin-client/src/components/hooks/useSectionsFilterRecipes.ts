@@ -1,10 +1,6 @@
-import { useState, useEffect } from "react";
-import { CookingTime } from "../../pages/homePage/entities/cooking-times.enum";
-import { Diet } from "../../pages/homePage/entities/diets.enum";
-import { Difficulty } from "../../pages/homePage/entities/difficulties.enum";
-import { RecipesSection, FilterWrapper, FilterOptions } from "../types";
-import { Rating } from "../../pages/homePage/entities/ratings.enum";
-import { assertBigger, assertEquals, assertSmaller, filterRecipes } from "./FilterUtils";
+import { useEffect, useState } from "react";
+import { FilterOptions, FilterWrapper, RecipesSection } from "../types";
+import { filterRecipes } from "./FilterUtils";
 import { useSearch } from "../../context/search-context";
 
 const _ = require("lodash");

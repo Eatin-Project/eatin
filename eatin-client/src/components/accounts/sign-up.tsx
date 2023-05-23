@@ -1,5 +1,5 @@
 import "./auth-style.css";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     A,
@@ -22,6 +22,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { ReactComponent as ChefAnimation } from "../../assets/Chef.svg";
 import { ReactComponent as MediumLogo } from "../../assets/MediumLogo.svg";
+import { useUpdateUserRecommendations } from "../../graphql/queries/update_user_recommendations.query";
 
 const defaultFormFields = {
     firstName: "",
@@ -36,6 +37,8 @@ const defaultFormFields = {
 function SignUp() {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const [birthDate, setBirthDate] = useState<Date | null>(null);
+    const [userId, setUserId] = useState<string>("");
+    const [updateRecommendations, setUpdateRecommendations] = useState<Boolean>(false);
     const { firstName, lastName, email, password, phone, gender, country } = formFields;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -44,6 +47,18 @@ function SignUp() {
         return setFormFields(defaultFormFields);
     };
     const [createUser] = useCreateUserMutation();
+    const { isUpdated: areUserRecommendationsUpdated } = useUpdateUserRecommendations(
+        userId,
+        updateRecommendations,
+        setUpdateRecommendations,
+    );
+
+    useEffect(() => {
+        if (areUserRecommendationsUpdated) {
+            resetFormFields();
+            navigate("/home");
+        }
+    }, [areUserRecommendationsUpdated, navigate]);
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -74,17 +89,16 @@ function SignUp() {
                             country: country,
                         },
                     }).then((user) => {
+                        setUserId(userCredential.user.uid);
+                        setUpdateRecommendations(true);
                         console.log(user.data?.createUser);
                     });
-                    resetFormFields();
-                    navigate("/home");
                 }
             });
         } catch (error: any) {
             console.log("User Sign Up Failed", error.message);
+            setLoading(false);
         }
-
-        setLoading(false);
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -179,14 +193,16 @@ function SignUp() {
                                         label="Gender"
                                     >
                                         {Object.keys(Gender)?.map((gender) => (
-                                            <MenuItem key={gender} value={gender}>{gender}</MenuItem>
+                                            <MenuItem key={gender} value={gender}>
+                                                {gender}
+                                            </MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
                                 <LocalizationProvider className="w-50" dateAdapter={AdapterDayjs}>
                                     <DatePicker
                                         className="ms-3"
-                                        slotProps={{textField: {variant: "standard"}}}
+                                        slotProps={{ textField: { variant: "standard" } }}
                                         label="Date Of Birth"
                                         value={birthDate}
                                         onChange={(date) => setBirthDate(date)}
@@ -201,11 +217,16 @@ function SignUp() {
                                     onChange={(event: any, newValue: string | null) => {
                                         handleCountryChange(!!newValue ? newValue : "");
                                     }}
-                                    renderInput={(params) => (<FormInput {...params} variant="standard" required
-                                                                        label="Country"
+                                    renderInput={(params) => (
+                                        <FormInput
+                                            {...params}
+                                            variant="standard"
+                                            required
+                                            label="Country"
+                                        />
+                                    )}
                                 />
-                            )}
-                                /></div>
+                            </div>
                             <div className="d-grid mb-2">
                                 <ButtonWrapper
                                     type="submit"
@@ -215,6 +236,7 @@ function SignUp() {
                                     Submit
                                 </ButtonWrapper>
                             </div>
+                            <div hidden={!loading}>Signing you up...</div>
                             <div className="forgot-password text-right mt-5">
                                 Already have an account? <A href="/signIn">Sign In</A>
                             </div>

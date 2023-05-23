@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { RecipesSection } from "../../components/types";
 
+// TODO: maybe delete this?
 export function useGetSections(userId: string) {
     const [data, setData] = useState<RecipesSection[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -51,7 +52,7 @@ export function useGetSections(userId: string) {
                 setData(resJson.data.sections);
                 setLoading(false);
             } catch (e) {
-                console.log(`Error has occured in sections query - ${e}`);
+                console.log(`Error has occurred in sections query - ${e}`);
                 setError(e);
             }
         })();

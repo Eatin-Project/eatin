@@ -3,6 +3,7 @@ import { UsersModule } from './users/users.module';
 import { RecipesModule } from './recipes/recipes.module';
 import { RatingsModule } from './ratings/ratings.module';
 import { UserrecipesModule } from './userRecipes/userRecipes.module';
+import { UserRecommendationsModule } from './userRecommendations/userRecommendations.module';
 import { CommentsModule } from './comments/comments.module';
 
 @Module({
@@ -11,6 +12,7 @@ import { CommentsModule } from './comments/comments.module';
     RecipesModule,
     RatingsModule,
     UserrecipesModule,
+    UserRecommendationsModule,
     CommentsModule,
   ],
   providers: [],
