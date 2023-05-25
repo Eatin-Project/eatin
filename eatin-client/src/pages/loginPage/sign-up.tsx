@@ -62,6 +62,7 @@ function SignUp() {
         if (areUserRecommendationsUpdated) {
             resetFormFields();
             navigate("/home");
+            setLoading(false);
         }
     }, [areUserRecommendationsUpdated, navigate]);
     const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
@@ -110,7 +111,6 @@ function SignUp() {
                 console.log(e);
                 notify("Something went wrong when creating the user. Please try again later");
             }
-        } finally {
             setLoading(false);
         }
     };
