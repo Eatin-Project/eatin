@@ -1,13 +1,7 @@
-import {signInWithEmailAndPassword, signOut, User} from "firebase/auth";
-import {
-    createContext,
-    ReactNode,
-    useContext,
-    useEffect,
-    useState,
-} from "react";
-import {createUserWithEmailAndPassword} from "@firebase/auth";
-import {auth} from "../firebase/firebase-config";
+import { signInWithEmailAndPassword, signOut, User } from "firebase/auth";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createUserWithEmailAndPassword } from "@firebase/auth";
+import { auth } from "../firebase/firebase-config";
 
 interface Props {
     children?: ReactNode;
@@ -15,12 +9,9 @@ interface Props {
 
 export const AuthContext = createContext({
     currentUser: {} as User | null,
-    setCurrentUser: (_user: User) => {
-    },
-    signOutUser: () => {
-    },
-    signInUser: (email: string, password: string): any => {
-    },
+    setCurrentUser: (_user: User) => {},
+    signOutUser: () => {},
+    signInUser: (email: string, password: string): any => {},
     signUpUser: (
         firstName: string,
         lastName: string,
@@ -29,12 +20,11 @@ export const AuthContext = createContext({
         phone: string,
         gender: string,
         birthDate: Date | null,
-        country: string
-    ): any => {
-    },
+        country: string,
+    ): any => {},
 });
 
-export const AuthProvider = ({children}: Props) => {
+export const AuthProvider = ({ children }: Props) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -57,13 +47,11 @@ export const AuthProvider = ({children}: Props) => {
         phone: string,
         gender: string,
         birthDate: Date | null,
-        country: string
+        country: string,
     ) {
-        return createUserWithEmailAndPassword(auth, email, password).then(
-            (credential) => {
-                return credential;
-            }
-        );
+        return createUserWithEmailAndPassword(auth, email, password).then((credential) => {
+            return credential;
+        });
     }
 
     function signOutUser() {
@@ -78,11 +66,7 @@ export const AuthProvider = ({children}: Props) => {
         signInUser,
     };
 
-    return (
-        <AuthContext.Provider value={value}>
-            {!loading && children}
-        </AuthContext.Provider>
-    );
+    return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 };
 
 export function useAuth() {
