@@ -11,7 +11,8 @@ export function useUpdateUserRecommendations(userId: string, isActive: Boolean, 
             (async function () {
                 try {
                     setLoading(true);
-                    const res = await fetch(`http://localhost:8000/graphql`, {
+                    // const res = await fetch(`http://localhost:8000/graphql`, {
+                    const res = await fetch(`http://eatin.cs.colman.ac.il:8000/graphql`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",

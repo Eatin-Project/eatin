@@ -8,7 +8,8 @@ export function useGetRecipesConnectionIsSaved(userId: string, isSaved: boolean)
     const getRecipesConnectionIsSaved = useCallback(async () => {
         try {
             setLoading(true);
-            const res = await fetch(`http://localhost:8000/graphql`, {
+            // const res = await fetch(`http://localhost:8000/graphql`, {
+            const res = await fetch(`http://eatin.cs.colman.ac.il:8000/graphql`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
