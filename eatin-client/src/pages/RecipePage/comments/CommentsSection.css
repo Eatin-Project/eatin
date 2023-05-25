@@ -1,0 +1,102 @@
+.enter-comment-btn {
+    color: white;
+    font-size: 2em !important;
+    transform: rotate(90deg);
+}
+
+.specific-comment {
+    margin-bottom: 2em;
+}
+
+.comments-section-title {
+    margin-bottom: 0.5em;
+}
+
+.specific-comment-user {
+    font-weight: bold;
+    margin-right: 0.5em;
+}
+
+.edit-comment {
+    width: 100%;
+}
+
+.presonal-comment-content {
+    border: 1px solid black;
+    border-radius: 1em;
+}
+
+.specific-comment-content {
+    border: 1px transparent solid;
+    background-color: lightgray;
+    border-radius: 1em;
+    padding: 0.7em;
+    margin-left: 3em;
+}
+
+.comments {
+    max-height: 20vh !important;
+    margin-top: 0.5em;
+}
+
+.edit-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 2em;
+    margin-top: 1.5em;
+}
+
+.user-info-comment {
+    display: flex;
+}
+
+.current-user-picture {
+    width: 2.5em;
+    height: 2.5em;
+    margin-right: 0.5em;
+}
+
+.commenter-picture {
+    width: 2em;
+    height: 2em;
+    margin-right: 0.5em;
+}
+
+.scrollable-comments {
+    margin-top: 1.5em;
+}
+
+.comments-section-content fieldset {
+    border-radius: 20px !important;
+}
+
+.add-new-comment-text {
+    width: 100%;
+}
+
+.personal-comment {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid transparent;
+    border-radius: 1em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    background: lightgray;
+    font-size: 15px;
+    padding-left: 4em;
+}
+
+.personal-comment-content {
+    margin-top: 0.2em;
+    padding-left: 1em;
+}
+
+.no-comments-text {
+    margin-top: 2em;
+    margin-left: 2em;
+}
+
+.comment-info {
+    display: flex;
+}

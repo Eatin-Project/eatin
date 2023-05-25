@@ -8,7 +8,8 @@ export function useGetRecipesConnectionIsSaved(userId: string, isSaved: boolean)
     const getRecipesConnectionIsSaved = useCallback(async () => {
         try {
             setLoading(true);
-            const res = await fetch(`http://localhost:8000/graphql`, {
+            // const res = await fetch(`http://localhost:8000/graphql`, {
+            const res = await fetch(`http://eatin.cs.colman.ac.il:8000/graphql`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -48,7 +49,7 @@ export function useGetRecipesConnectionIsSaved(userId: string, isSaved: boolean)
             setData(newData);
             setLoading(false);
         } catch (e) {
-            console.log(`Error has occured in recipes_connection_is_saved query - ${e}`);
+            console.log(`Error has occurred in recipes_connection_is_saved query - ${e}`);
             setError(e);
         }
     }, [isSaved, userId]);

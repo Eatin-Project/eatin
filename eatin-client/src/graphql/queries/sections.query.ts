@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { RecipesSection } from "../../components/types";
 
+// TODO: maybe delete this?
 export function useGetSections(userId: string) {
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<RecipesSection[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
 
@@ -9,7 +11,8 @@ export function useGetSections(userId: string) {
         (async function () {
             try {
                 setLoading(true);
-                const res = await fetch(`http://localhost:8000/graphql`, {
+                // const res = await fetch(`http://localhost:8000/graphql`, {
+                const res = await fetch(`http://eatin.cs.colman.ac.il:8000/graphql`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -41,7 +44,6 @@ export function useGetSections(userId: string) {
                                     vote_count
                                     is_saved
                                     is_uploaded
-                                    given_comment
                                 }
                             }
                         }`,
@@ -51,7 +53,7 @@ export function useGetSections(userId: string) {
                 setData(resJson.data.sections);
                 setLoading(false);
             } catch (e) {
-                console.log(`Error has occured in sections query - ${e}`);
+                console.log(`Error has occurred in sections query - ${e}`);
                 setError(e);
             }
         })();

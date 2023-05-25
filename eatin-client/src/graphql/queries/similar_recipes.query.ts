@@ -9,7 +9,8 @@ export function useGetSimilarRecipes(recipeIndex: number, userId: string) {
         (async function () {
             try {
                 setLoading(true);
-                const res = await fetch(`http://localhost:8000/graphql`, {
+                // const res = await fetch(`http://localhost:8000/graphql`, {
+                const res = await fetch(`http://eatin.cs.colman.ac.il:8000/graphql`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -49,7 +50,7 @@ export function useGetSimilarRecipes(recipeIndex: number, userId: string) {
                 setData(resJson.data.similar_recipes);
                 setLoading(false);
             } catch (e) {
-                console.log(`Error has occured in similar_recipes query - ${e}`);
+                console.log(`Error has occurred in similar_recipes query - ${e}`);
                 setError(e);
             }
         })();

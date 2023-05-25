@@ -84,30 +84,6 @@ export const GET_USERRECIPES_BY_USER_AND_IS_UPLOADED = gql`
     }
 `;
 
-export const GET_USERRECIPES_BY_RECIPE_AND_COMMENT = gql`
-    query getUserrecipesByRecipeIndexAndComment($recipeID: Float!) {
-        userRecipesByRecipeAndIsCommentExists(recipeID: $recipeID) {
-            user_id
-            recipe_index
-            is_saved
-            is_uploaded
-            given_comment
-        }
-    }
-`;
-
-export const GET_USERRECIPES_BY_USER_AND_COMMENT = gql`
-    query getUserrecipesByUserAndComment($userID: String!) {
-        userRecipesByUserAndIsCommentExists(userID: $userID) {
-            user_id
-            recipe_index
-            is_saved
-            is_uploaded
-            given_comment
-        }
-    }
-`;
-
 export const GET_USERRECIPES_BY_RECIPE_AND_USER = gql`
     query getUserrecipesByRecipeAndUser($userID: String!, $recipeID: Float!) {
         userRecipesByUserAndRecipe(userID: $userID, recipeID: $recipeID) {
@@ -116,6 +92,35 @@ export const GET_USERRECIPES_BY_RECIPE_AND_USER = gql`
             is_saved
             is_uploaded
             given_comment
+        }
+    }
+`;
+
+export const GET_SAVED_RECIPES = gql`
+    query getSavedRecipes($userID: String!) {
+        savedRecipesOfUser(userID: $userID) {
+            index
+            recipe_title
+            url
+            record_health
+            vote_count
+            rating
+            description
+            cuisine
+            course
+            diet
+            prep_time
+            cook_time
+            ingredients
+            instructions
+            author
+            tags
+            category
+            image
+            difficulty
+            total_time
+            is_saved
+            is_uploaded
         }
     }
 `;
