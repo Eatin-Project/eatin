@@ -5,9 +5,12 @@ import { FC, useState } from "react";
 import styled from "styled-components";
 import AsyncDataLoaderWrapper from "../../../components/ui/AsyncDataLoaderWrapper";
 import NavigationIcon from "@mui/icons-material/Navigation";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import EditIcon from "@mui/icons-material/Edit";
 import { SearchFab } from "../../../components/ui/SearchBar";
 import { useGetRecipesComments } from "../../../components/hooks/useGetRecipesComments";
 import { useToastNotification } from "../../../components/functions/useToastNotification";
+import { useGetUsersName } from "../../../components/hooks/useGetUsersName";
 
 interface Props {
     recipeIndex: number;
@@ -15,8 +18,11 @@ interface Props {
 export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
     const [newCommentVal, setNewCommentVal] = useState<string>("");
     const { notify } = useToastNotification();
+    const userID = useGetUsersName();
 
     let addCommentButton: HTMLButtonElement;
+    let deleteCommentButton: HTMLButtonElement;
+    let editCommentButton: HTMLButtonElement;
 
     const {
         addNewComment,
@@ -124,22 +130,58 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
                                 >
                                     {currentComments.map((comment, i) => (
                                         <div key={i} className="specific-comment">
-                                            <div className="user-info-comment">
-                                                <Avatar
-                                                    className="commenter-picture"
-                                                    alt="Your picture"
-                                                    src="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2022-08/220805-domestic-cat-mjf-1540-382ba2.jpg"
-                                                />
-                                                <div className="comment-info">
-                                                    <span className="specific-comment-user">
-                                                        {comment.user_first_name}{" "}
-                                                        {comment.user_last_name}
-                                                    </span>
-                                                    <span>
-                                                        {getHowMuchTimeAgo(
-                                                            comment.comment_timestap,
-                                                        )}
-                                                    </span>
+                                            <div className="full-comment-info">
+                                                {comment.user_id === userID ? (
+                                                    <div className="editing-comment">
+                                                        <SearchFab
+                                                            variant="extended"
+                                                            size="small"
+                                                            color="primary"
+                                                            aria-label="search"
+                                                            className="edit-comment-btn"
+                                                            ref={(node) =>
+                                                                !!node
+                                                                    ? (editCommentButton = node)
+                                                                    : ""
+                                                            }
+                                                        >
+                                                            <EditIcon />
+                                                        </SearchFab>
+                                                        <SearchFab
+                                                            variant="extended"
+                                                            size="small"
+                                                            color="primary"
+                                                            className="delete-comment-btn"
+                                                            aria-label="search"
+                                                            ref={(node) =>
+                                                                !!node
+                                                                    ? (deleteCommentButton = node)
+                                                                    : ""
+                                                            }
+                                                        >
+                                                            <DeleteOutlineIcon />
+                                                        </SearchFab>
+                                                    </div>
+                                                ) : (
+                                                    <div></div>
+                                                )}
+                                                <div className="user-info-comment">
+                                                    <Avatar
+                                                        className="commenter-picture"
+                                                        alt="Your picture"
+                                                        src="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2022-08/220805-domestic-cat-mjf-1540-382ba2.jpg"
+                                                    />
+                                                    <div className="comment-info">
+                                                        <span className="specific-comment-user">
+                                                            {comment.user_first_name}{" "}
+                                                            {comment.user_last_name}
+                                                        </span>
+                                                        <span>
+                                                            {getHowMuchTimeAgo(
+                                                                comment.comment_timestap,
+                                                            )}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
 

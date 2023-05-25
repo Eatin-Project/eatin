@@ -39,6 +39,20 @@
     margin-top: 0.5em;
 }
 
+.full-comment-info {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+}
+
+.edit-comment-btn {
+    margin-right: 0.5em !important;
+}
+
+.delete-comment-btn {
+    margin-right: 1em !important;
+}
+
 .edit-section {
     display: flex;
     align-items: center;
