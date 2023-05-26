@@ -40,7 +40,6 @@ export type Mutation = {
 
 
 export type MutationCreateCommentArgs = {
-  comment_timestap: Scalars['DateTime'];
   given_comment: Scalars['String'];
   id: Scalars['String'];
   recipe_index: Scalars['Float'];
@@ -323,7 +322,6 @@ export type CreateCommentsMutationVariables = Exact<{
   user_id: Scalars['String'];
   recipe_index: Scalars['Float'];
   given_comment: Scalars['String'];
-  comment_timestap: Scalars['DateTime'];
 }>;
 
 
@@ -587,13 +585,12 @@ export type GetUserByIdQuery = { __typename?: 'Query', user: { __typename?: 'Use
 
 
 export const CreateCommentsDocument = gql`
-    mutation createComments($id: String!, $user_id: String!, $recipe_index: Float!, $given_comment: String!, $comment_timestap: DateTime!) {
+    mutation createComments($id: String!, $user_id: String!, $recipe_index: Float!, $given_comment: String!) {
   createComment(
     id: $id
     user_id: $user_id
     recipe_index: $recipe_index
     given_comment: $given_comment
-    comment_timestap: $comment_timestap
   ) {
     id
     user_id
@@ -622,7 +619,6 @@ export type CreateCommentsMutationFn = Apollo.MutationFunction<CreateCommentsMut
  *      user_id: // value for 'user_id'
  *      recipe_index: // value for 'recipe_index'
  *      given_comment: // value for 'given_comment'
- *      comment_timestap: // value for 'comment_timestap'
  *   },
  * });
  */
@@ -634,7 +630,7 @@ export type CreateCommentsMutationHookResult = ReturnType<typeof useCreateCommen
 export type CreateCommentsMutationResult = Apollo.MutationResult<CreateCommentsMutation>;
 export type CreateCommentsMutationOptions = Apollo.BaseMutationOptions<CreateCommentsMutation, CreateCommentsMutationVariables>;
 export const RemoveCommentsDocument = gql`
-    mutation RemoveComments($id: String!) {
+    mutation removeComments($id: String!) {
   removeComment(id: $id) {
     id
     user_id

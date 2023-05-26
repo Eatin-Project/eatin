@@ -6,7 +6,6 @@ import styled from "styled-components";
 import AsyncDataLoaderWrapper from "../../../components/ui/AsyncDataLoaderWrapper";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import EditIcon from "@mui/icons-material/Edit";
 import { SearchFab } from "../../../components/ui/SearchBar";
 import { useGetRecipesComments } from "../../../components/hooks/useGetRecipesComments";
 import { useToastNotification } from "../../../components/functions/useToastNotification";
@@ -22,10 +21,10 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
 
     let addCommentButton: HTMLButtonElement;
     let deleteCommentButton: HTMLButtonElement;
-    let editCommentButton: HTMLButtonElement;
 
     const {
         addNewComment,
+        deleteExistingComment,
         currentComments,
         isLoading: recipeCommentsLoading,
     } = useGetRecipesComments(recipeIndex);
@@ -38,7 +37,7 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
     };
 
     const insertNewCommentToSection = async () => {
-        addNewComment(newCommentVal);
+        await addNewComment(newCommentVal);
         setNewCommentVal("");
         notify("A new comment was added!");
     };
@@ -74,6 +73,11 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
         if (seconds < 10) return "just now";
 
         return Math.floor(seconds) + " seconds ago";
+    };
+
+    const deleteComment = async (commentID: string) => {
+        await deleteExistingComment(commentID);
+        notify("The comment was deleted!");
     };
 
     return (
@@ -137,20 +141,9 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
                                                             variant="extended"
                                                             size="small"
                                                             color="primary"
-                                                            aria-label="search"
-                                                            className="edit-comment-btn"
-                                                            ref={(node) =>
-                                                                !!node
-                                                                    ? (editCommentButton = node)
-                                                                    : ""
+                                                            onClick={() =>
+                                                                deleteComment(comment.id)
                                                             }
-                                                        >
-                                                            <EditIcon />
-                                                        </SearchFab>
-                                                        <SearchFab
-                                                            variant="extended"
-                                                            size="small"
-                                                            color="primary"
                                                             className="delete-comment-btn"
                                                             aria-label="search"
                                                             ref={(node) =>
