@@ -50,10 +50,9 @@ export class CommentsResolver {
     @Args('user_id') user_id: string,
     @Args('recipe_index') recipe_index: number,
     @Args('given_comment') given_comment: string,
-    @Args('comment_timestap') comment_timestap: Date,
   ): Promise<Comments> {
     return await this.commentsService.create({
-      comment_timestap,
+      comment_timestap: new Date(),
       given_comment,
       recipe_index,
       user_id,

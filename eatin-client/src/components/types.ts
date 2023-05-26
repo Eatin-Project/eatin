@@ -29,8 +29,8 @@ export interface Comments {
     recipe_index: number;
     given_comment: string;
     comment_timestap: Date;
-    user_first_name: string;
-    user_last_name: string;
+    user_first_name?: string;
+    user_last_name?: string;
 }
 
 export interface FilterOptions {
