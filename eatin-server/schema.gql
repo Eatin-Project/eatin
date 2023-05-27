@@ -109,5 +109,5 @@ type Mutation {
   removeUserRecipes(userID: String!, recipeID: Float!): Userrecipes!
   createUserRecipes(user_id: String!, recipe_index: Float!, is_saved: Boolean!, is_uploaded: Boolean!): Userrecipes!
   removeComment(id: String!): Comments!
-  createComment(id: String!, user_id: String!, recipe_index: Float!, given_comment: String!, comment_timestap: DateTime!): Comments!
+  createComment(id: String!, user_id: String!, recipe_index: Float!, given_comment: String!): Comments!
 }

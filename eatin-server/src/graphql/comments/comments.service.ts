@@ -13,7 +13,7 @@ export class CommentsService {
   ) {}
 
   async create(details: CommentsDTO): Promise<Comments> {
-    const previousComment = await this.findByID(details.id);
+    const previousComment = await this.findByIDWithoutTheUserInfo(details.id);
     if (!!previousComment) {
       Object.assign(previousComment, {
         given_comment: details.given_comment,
@@ -105,8 +105,13 @@ export class CommentsService {
       .getRawOne();
   }
 
+  findByIDWithoutTheUserInfo(commentID: string): Promise<Comments> {
+    return this.commentsRepository.findOneBy({ id: commentID });
+  }
+
   async removeComment(commentID: string): Promise<Comments> {
-    const item = await this.findByID(commentID);
+    const item = await this.findByIDWithoutTheUserInfo(commentID);
+
     if (item) {
       await this.commentsRepository.delete(item);
       return item;

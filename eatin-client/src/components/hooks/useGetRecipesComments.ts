@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
     useGetCommentsByRecipeIndexQuery,
     useCreateCommentsMutation,
+    useRemoveCommentsMutation,
 } from "../../generated/graphql";
 import { useGetUsersName } from "./useGetUsersName";
 import { v4 as uuidv4 } from "uuid";
@@ -9,7 +10,10 @@ import { Comments } from "../types";
 
 export function useGetRecipesComments(recipeIndex: number) {
     const userID = useGetUsersName();
+
     const [insertNewComment] = useCreateCommentsMutation();
+    const [deleteComment] = useRemoveCommentsMutation();
+
     const [isLoading, setIsLoading] = useState(false);
     const { data: comments, refetch } = useGetCommentsByRecipeIndexQuery({
         variables: { recipeID: recipeIndex },
@@ -32,7 +36,8 @@ export function useGetRecipesComments(recipeIndex: number) {
         // For some reason postgres returns the time 3 hours early then it saves...
         const seperatedDate = timestamp.replace("Z", "").split("T");
         const seperatedTime = seperatedDate[1].split(":");
-        seperatedTime[0] = (+seperatedTime[0] + 3).toString();
+        const addedThreeToTime = (+seperatedTime[0] + 3) % 24;
+        seperatedTime[0] = addedThreeToTime.toString();
         const updatedTime = seperatedTime.join(":");
         seperatedDate[1] = updatedTime;
         return new Date(seperatedDate.join(" "));
@@ -45,7 +50,6 @@ export function useGetRecipesComments(recipeIndex: number) {
                 user_id: userID,
                 recipe_index: Number(recipeIndex),
                 given_comment: newComment,
-                comment_timestap: new Date(),
                 id: uuidv4().replaceAll("-", ""),
             };
             await insertNewComment({
@@ -55,6 +59,18 @@ export function useGetRecipesComments(recipeIndex: number) {
             setIsLoading(false);
         },
         [insertNewComment, recipeIndex, refetch, userID],
+    );
+
+    const deleteExistingComment = useCallback(
+        async (commentID: string) => {
+            setIsLoading(true);
+            await deleteComment({
+                variables: { id: commentID },
+            });
+            await refetch({ recipeID: recipeIndex });
+            setIsLoading(false);
+        },
+        [deleteComment, recipeIndex, refetch],
     );
 
     useEffect(() => {
@@ -69,5 +85,6 @@ export function useGetRecipesComments(recipeIndex: number) {
         currentComments,
         isLoading,
         addNewComment,
+        deleteExistingComment,
     };
 }
