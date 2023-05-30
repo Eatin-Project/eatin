@@ -25,7 +25,6 @@ export const Profile: FC = () => {
     const { data, error, loading } = useGetUserByIdQuery({
         variables: { id: userID },
     });
-    debugger;
     const {
         data: cakes,
         loading: cakesLoading,

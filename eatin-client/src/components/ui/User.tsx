@@ -9,10 +9,6 @@ interface Props {
     onClick?: () => void;
 }
 
-function getUserProfilePicture(): string {
-    return "";
-}
-
 export const User: FC<PropsWithChildren<Props>> = ({ name, children, size = "small", onClick }) => {
     return (
         <div className={classNames("eatin-user", size, { clickable: !!onClick })} onClick={onClick}>
@@ -20,7 +16,6 @@ export const User: FC<PropsWithChildren<Props>> = ({ name, children, size = "sma
                 className="avatar"
                 sx={{ backgroundColor: "transparent", fontSize: "small" }}
             />
-            {/* src={getUserProfilePicture()} */}
             <span>{name}</span>
             {children}
         </div>

@@ -41,6 +41,7 @@ function SignUp() {
     const [birthDate, setBirthDate] = useState<Date | null>(null);
     const [userId, setUserId] = useState<string>("");
     const [updateRecommendations, setUpdateRecommendations] = useState<Boolean>(false);
+    // const [image, setImage] = useState(null);
     const { firstName, lastName, email, password, phone, gender, country } = formFields;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -144,6 +145,11 @@ function SignUp() {
     const handleCountryChange = (country: string) => {
         setFormFields({ ...formFields, country: country });
     };
+
+    // const handleImageChange = (event: any) => {
+    //     // What type is it??
+    //     setImage(event.target.file);
+    // };
 
     return (
         <Container>
@@ -263,6 +269,9 @@ function SignUp() {
                                     )}
                                 />
                             </div>
+                            {/* <div>
+                                <input type="file" accept="image/*" onChange={handleImageChange} />
+                            </div> */}
                             <div className="d-grid mb-2">
                                 <ButtonWrapper
                                     type="submit"

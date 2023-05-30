@@ -60,22 +60,26 @@ function uploadImage(
     return imageUrl;
 }
 
-function getUserProfilePictureUrl(userId: string): string {
-    return getImageUrl(createRef(usersProfilePicturesFolderName, userId));
+function getUserProfilePictureUrl(userId: string): Promise<string> {
+    return getImageUrl(createRef(usersProfilePicturesFolderName, userId.concat(".jpg")));
 }
 
-function getRecipeImageUrl(imageName: string): string {
-    return getImageUrl(createRef(recipesImagesFolderName, imageName));
-}
+// function getRecipeImageUrl(imageName: string): string {
+//     return "";
+//     // return getImageUrl(createRef(recipesImagesFolderName, imageName));
+// }
 
-function getRecipeImagesUrls(recipeId: string): string[] {
+async function getRecipeImagesUrls(recipeId: number): Promise<string[]> {
     let isThereMoreImages = true;
     let recipeImageIndex = 1;
     let recipeImagesUrls = [];
-    let recipesImagesRef: StorageReference = createRef(recipesImagesFolderName, recipeId);
+    let recipesImagesRef: StorageReference = createRef(
+        recipesImagesFolderName,
+        recipeId.toString(),
+    );
 
     while (isThereMoreImages) {
-        recipeImagesUrls[recipeImageIndex - 1] = getImageUrl(recipesImagesRef);
+        recipeImagesUrls[recipeImageIndex - 1] = await getImageUrl(recipesImagesRef);
         getMetadata(recipesImagesRef).then((metadata: FullMetadata) => {
             if (metadata.customMetadata?.isThereMoreImages == "false") {
                 isThereMoreImages = false;
@@ -86,10 +90,10 @@ function getRecipeImagesUrls(recipeId: string): string[] {
     return recipeImagesUrls;
 }
 
-function getImageUrl(storageRef: StorageReference): string {
+async function getImageUrl(storageRef: StorageReference): Promise<string> {
     let imageUrl: string = "";
 
-    getDownloadURL(storageRef)
+    await getDownloadURL(storageRef)
         .then((url) => {
             imageUrl = url;
         })
@@ -108,6 +112,6 @@ export {
     uploadeRecipeImages,
     uploadeUserProfilePicture,
     getUserProfilePictureUrl,
-    getRecipeImageUrl,
+    // getRecipeImageUrl,
     getRecipeImagesUrls,
 };
