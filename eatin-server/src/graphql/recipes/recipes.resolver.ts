@@ -48,7 +48,6 @@ export class RecipesResolver {
     @Mutation((returns) => Recipes)
     async createRecipe(
         @Args("recipe_title") recipe_title: string,
-        @Args("url") url: string,
         @Args("record_health") record_health: string,
         @Args("description") description: string,
         @Args("cuisine") cuisine: string,
@@ -67,7 +66,6 @@ export class RecipesResolver {
     ): Promise<Recipes> {
         return await this.recipesService.create({
             recipe_title,
-            url,
             record_health,
             description,
             cuisine,

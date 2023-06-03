@@ -12,7 +12,12 @@ export class RecipesService {
     ) {}
 
     create(details: RecipesDTO): Promise<Recipes> {
-        return this.recipesRepository.save(details);
+        return this.recipesRepository.save({
+            ...details,
+            vote_count: 0,
+            rating: 0,
+            url: "https://nope.com",
+        });
     }
 
     findAll(): Promise<Recipes[]> {

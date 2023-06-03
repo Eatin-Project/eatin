@@ -50,7 +50,6 @@ export type MutationCreateRecipeArgs = {
   record_health: Scalars['String'];
   tags: Scalars['String'];
   total_time: Scalars['Float'];
-  url: Scalars['String'];
 };
 
 
@@ -244,7 +243,6 @@ export type CreateRatingMutation = { __typename?: 'Mutation', createRating: { __
 
 export type CreateRecipeMutationVariables = Exact<{
   recipe_title: Scalars['String'];
-  url: Scalars['String'];
   record_health: Scalars['String'];
   description: Scalars['String'];
   cuisine: Scalars['String'];
@@ -465,10 +463,9 @@ export type CreateRatingMutationHookResult = ReturnType<typeof useCreateRatingMu
 export type CreateRatingMutationResult = Apollo.MutationResult<CreateRatingMutation>;
 export type CreateRatingMutationOptions = Apollo.BaseMutationOptions<CreateRatingMutation, CreateRatingMutationVariables>;
 export const CreateRecipeDocument = gql`
-    mutation createRecipe($recipe_title: String!, $url: String!, $record_health: String!, $description: String!, $cuisine: String!, $course: String!, $diet: String!, $prep_time: Float!, $cook_time: Float!, $ingredients: String!, $instructions: String!, $author: String!, $tags: String!, $category: String!, $image: String!, $difficulty: String!, $total_time: Float!) {
+    mutation createRecipe($recipe_title: String!, $record_health: String!, $description: String!, $cuisine: String!, $course: String!, $diet: String!, $prep_time: Float!, $cook_time: Float!, $ingredients: String!, $instructions: String!, $author: String!, $tags: String!, $category: String!, $image: String!, $difficulty: String!, $total_time: Float!) {
   createRecipe(
     recipe_title: $recipe_title
-    url: $url
     record_health: $record_health
     description: $description
     cuisine: $cuisine
@@ -522,7 +519,6 @@ export type CreateRecipeMutationFn = Apollo.MutationFunction<CreateRecipeMutatio
  * const [createRecipeMutation, { data, loading, error }] = useCreateRecipeMutation({
  *   variables: {
  *      recipe_title: // value for 'recipe_title'
- *      url: // value for 'url'
  *      record_health: // value for 'record_health'
  *      description: // value for 'description'
  *      cuisine: // value for 'cuisine'

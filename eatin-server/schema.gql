@@ -79,7 +79,7 @@ type Query {
 
 type Mutation {
   createUser(id: String!, firstname: String!, lastname: String!, email: String!, phone: String!, gender: String!, birthdate: DateTime!, country: String!): Users!
-  createRecipe(recipe_title: String!, url: String!, record_health: String!, description: String!, cuisine: String!, course: String!, diet: String!, prep_time: Float!, cook_time: Float!, ingredients: String!, instructions: String!, author: String!, tags: String!, category: String!, image: String!, difficulty: String!, total_time: Float!): Recipes!
+  createRecipe(recipe_title: String!, record_health: String!, description: String!, cuisine: String!, course: String!, diet: String!, prep_time: Float!, cook_time: Float!, ingredients: String!, instructions: String!, author: String!, tags: String!, category: String!, image: String!, difficulty: String!, total_time: Float!): Recipes!
   createRating(user_id: String!, recipe_index: Float!, rating: Float!): Ratings!
   removeUserRecipes(userID: String!, recipeID: Float!): Userrecipes!
   createUserRecipes(user_id: String!, recipe_index: Float!, is_saved: Boolean!): Userrecipes!

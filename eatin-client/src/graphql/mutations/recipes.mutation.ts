@@ -3,7 +3,6 @@ import { gql } from "@apollo/client";
 export const CREATE_RECIPE = gql`
     mutation createRecipe(
         $recipe_title: String!
-        $url: String!
         $record_health: String!
         $description: String!
         $cuisine: String!
@@ -22,7 +21,6 @@ export const CREATE_RECIPE = gql`
     ) {
         createRecipe(
             recipe_title: $recipe_title
-            url: $url
             record_health: $record_health
             description: $description
             cuisine: $cuisine
