@@ -121,46 +121,6 @@ export const Profile: FC = () => {
                     )}
                 </div>
             </div>
-
-            {/* {tabValue === 0 ? (
-                <div className="recipe-section">
-                    <div className="profile-filters">
-                        <FilterRecipes
-                            filterOptions={currentUploadedCatalogFilterOptions}
-                            isSearch={!!searchValue && !!catalogFilteredUploadedRecipes}
-                            isHidden={searchResultUploadedRecipesLoading}
-                            getFilterSearchValue={getFilterSearchValue}
-                        />
-                    </div>
-                    <div className="recipe-results">
-                        <AsyncDataLoaderWrapper
-                            loading={searchResultUploadedRecipesLoading}
-                            text="Loading my recipes..."
-                        >
-                            <RecipesCatalog recipes={catalogFilteredUploadedRecipes} />
-                        </AsyncDataLoaderWrapper>
-                    </div>
-                </div>
-            ) : (
-                <div className="recipe-section">
-                    <div className="profile-filters">
-                        <FilterRecipes
-                            filterOptions={currentSavedCatalogFilterOptions}
-                            isSearch={!!searchValue && !!catalogFilteredSavedRecipes}
-                            isHidden={searchResultSavedRecipesLoading}
-                            getFilterSearchValue={getFilterSearchValue}
-                        />
-                    </div>
-                    <div className="recipe-results">
-                        <AsyncDataLoaderWrapper
-                            loading={searchResultSavedRecipesLoading}
-                            text="Loading saved recipes..."
-                        >
-                            <RecipesCatalog recipes={catalogFilteredSavedRecipes} />
-                        </AsyncDataLoaderWrapper>
-                    </div>
-                </div>
-            )} */}
         </div>
     );
 };
