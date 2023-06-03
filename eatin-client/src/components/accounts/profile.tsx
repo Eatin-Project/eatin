@@ -73,20 +73,56 @@ export const Profile: FC = () => {
                         <span>Birthday is on {new Date(data?.user.birthdate).toDateString()}</span>
                     </div>
                 </div>
+            </div>
+            <div className="recipe-section">
+                <div className="profile-filters">
+                    {tabValue === 0 ? (
+                        <FilterRecipes
+                            filterOptions={currentUploadedCatalogFilterOptions}
+                            isSearch={!!searchValue && !!catalogFilteredUploadedRecipes}
+                            isHidden={searchResultUploadedRecipesLoading}
+                            getFilterSearchValue={getFilterSearchValue}
+                        />
+                    ) : (
+                        <FilterRecipes
+                            filterOptions={currentSavedCatalogFilterOptions}
+                            isSearch={!!searchValue && !!catalogFilteredSavedRecipes}
+                            isHidden={searchResultSavedRecipesLoading}
+                            getFilterSearchValue={getFilterSearchValue}
+                        />
+                    )}
+                </div>
                 <div className="recipe-tabs">
                     <Tabs
                         value={tabValue}
                         onChange={handleChange}
                         textColor="secondary"
                         indicatorColor="secondary"
-                        orientation="vertical"
                     >
                         <Tab label="My Recipes" icon={<UploadIcon fontSize="large" />} />
                         <Tab label="Saved Recipes" icon={<BookmarkIcon fontSize="large" />} />
                     </Tabs>
                 </div>
+                <div className="recipe-results">
+                    {tabValue === 0 ? (
+                        <AsyncDataLoaderWrapper
+                            loading={searchResultUploadedRecipesLoading}
+                            text="Loading my recipes..."
+                        >
+                            <RecipesCatalog recipes={catalogFilteredUploadedRecipes} />
+                        </AsyncDataLoaderWrapper>
+                    ) : (
+                        <AsyncDataLoaderWrapper
+                            loading={searchResultSavedRecipesLoading}
+                            text="Loading saved recipes..."
+                        >
+                            <RecipesCatalog recipes={catalogFilteredSavedRecipes} />
+                        </AsyncDataLoaderWrapper>
+                    )}
+                </div>
             </div>
-            {tabValue === 0 ? (
+
+            {/* {tabValue === 0 ? (
                 <div className="recipe-section">
                     <div className="profile-filters">
                         <FilterRecipes
@@ -124,7 +160,7 @@ export const Profile: FC = () => {
                         </AsyncDataLoaderWrapper>
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 };
