@@ -1,19 +1,22 @@
 import TextField from "@mui/material/TextField";
-import MuiAutocomplete from "@mui/material/Autocomplete";
+import MuiAutocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import { UseAutocompleteProps } from "@mui/material/useAutocomplete";
+
+const filter = createFilterOptions<AutocompleteItem>();
 
 export type AutocompleteItem = {
     id?: string;
     title: string;
     value: string;
+    inputValue?: string;
 };
 
 type AutocompleteValue<Multiple extends boolean | undefined> = Multiple extends true
     ? AutocompleteItem[]
     : AutocompleteItem | null;
 
-interface Props<Multiple extends boolean | undefined> {
+interface Props<Multiple extends boolean | undefined, FreeSolo extends boolean | undefined> {
     options: AutocompleteItem[];
     multiple: Multiple;
     item: AutocompleteValue<Multiple>;
@@ -23,18 +26,21 @@ interface Props<Multiple extends boolean | undefined> {
     error?: boolean;
     placeholder?: string;
     helperText?: React.ReactNode;
+    freeSolo?: FreeSolo;
+    onAddValue?: FreeSolo extends true ? (value: string) => void : never;
     onItemSelected: (item: AutocompleteValue<Multiple>) => void;
     onInputChange?: (value: string) => void;
 }
 
-type MuiAutocompleteProps<T extends boolean | undefined> = UseAutocompleteProps<
-    AutocompleteItem,
-    T,
-    undefined,
-    undefined
->;
+type MuiAutocompleteProps<
+    Multipile extends boolean | undefined,
+    FreeSolo extends boolean | undefined,
+> = UseAutocompleteProps<AutocompleteItem, Multipile, undefined, FreeSolo>;
 
-export function Autocomplete<T extends boolean | undefined>({
+export function Autocomplete<
+    Multipile extends boolean | undefined,
+    FreeSolo extends boolean | undefined,
+>({
     options,
     value,
     item,
@@ -42,30 +48,88 @@ export function Autocomplete<T extends boolean | undefined>({
     onInputChange,
     onItemSelected,
     loading,
+    onAddValue,
+    freeSolo,
     title,
     error,
     helperText,
     placeholder,
-}: Props<T>) {
-    const handleItemSelected: MuiAutocompleteProps<T>["onChange"] = (e, item) => {
-        onItemSelected(item);
+}: Props<Multipile, FreeSolo>) {
+    const handleItemSelected: MuiAutocompleteProps<Multipile, FreeSolo>["onChange"] = (
+        e,
+        value,
+    ) => {
+        if (typeof value === "string") {
+            // The user entered a new value that doesn't exist in the options array
+            const newOption: AutocompleteItem = {
+                title: value,
+                value,
+            };
+
+            onAddValue?.(value);
+
+            if (multiple) {
+                const newItems = [...(item as AutocompleteValue<true>), newOption];
+                return onItemSelectedMultiple(newItems);
+            }
+            return onItemSelected(newOption as any);
+        }
+        if (multiple && freeSolo)
+            return onItemSelectedMultiple(
+                (value as AutocompleteValue<true>).map(({ inputValue, ...item }) => item),
+            );
+
+        onItemSelected(value as AutocompleteValue<Multipile>);
     };
 
-    const handeValueChange: MuiAutocompleteProps<T>["onInputChange"] = (e, value) => {
-        onInputChange?.(value);
+    const onItemSelectedMultiple = (items: AutocompleteValue<true>) => {
+        onItemSelected(items as any);
+    };
+
+    const filterOptions: MuiAutocompleteProps<Multipile, FreeSolo>["filterOptions"] = (
+        options,
+        params,
+    ) => {
+        const filtered = filter(options, params);
+
+        if (
+            params.inputValue !== "" &&
+            freeSolo &&
+            !options.some((_) => _.title === params.inputValue)
+        ) {
+            filtered.push({
+                value: params.inputValue,
+                inputValue: `Add "${params.inputValue}"`,
+                title: params.inputValue,
+            });
+        }
+
+        return filtered;
+    };
+
+    const getOptionLabel: MuiAutocompleteProps<Multipile, FreeSolo>["getOptionLabel"] = (
+        option,
+    ) => {
+        if (typeof option === "string") return option;
+
+        if (option.inputValue) return option.inputValue;
+
+        return option.title;
     };
 
     return (
         <MuiAutocomplete
             multiple={multiple}
             isOptionEqualToValue={(option, value) => option.title === value.title}
-            getOptionLabel={(option) => option.title}
+            onInputChange={(e, value) => onInputChange?.(value)}
             options={options}
             loading={loading}
             inputValue={value}
             value={item}
+            freeSolo={freeSolo}
+            getOptionLabel={getOptionLabel}
             onChange={handleItemSelected}
-            onInputChange={handeValueChange}
+            filterOptions={filterOptions}
             renderInput={(params) => (
                 <TextField
                     {...params}

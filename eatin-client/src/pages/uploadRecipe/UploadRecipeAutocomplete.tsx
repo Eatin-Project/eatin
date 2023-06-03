@@ -45,6 +45,7 @@ export const UploadRecipeAutocomplete: FC<Props> = ({
             item={values}
             value={value}
             multiple
+            freeSolo
             loading={loading}
             title={upperCaseFirstLetter(field)}
             error={error}
