@@ -1,5 +1,5 @@
-import { FC, useState } from "react";
 import "./profile.css";
+import { FC, useState } from "react";
 import { useGetUserByIdQuery } from "../../generated/graphql";
 import { FilterRecipes } from "../../pages/homePage/FilterRecipes";
 import AsyncDataLoaderWrapper from "../ui/AsyncDataLoaderWrapper";
@@ -29,11 +29,14 @@ export const Profile: FC = () => {
     const { recipes: searchResultUploadedRecipes, loading: searchResultUploadedRecipesLoading } =
         useGetUploadedRecipesBySearch(searchValue);
 
-    const { catalogFilteredRecipes: catalogFilteredSavedRecipes } =
-        useCatalogFilterRecipes(searchResultSavedRecipes);
-    const { catalogFilteredRecipes: catalogFilteredUploadedRecipes } = useCatalogFilterRecipes(
-        searchResultUploadedRecipes,
-    );
+    const {
+        catalogFilteredRecipes: catalogFilteredSavedRecipes,
+        currentCatalogFilterOptions: currentSavedCatalogFilterOptions,
+    } = useCatalogFilterRecipes(searchResultSavedRecipes);
+    const {
+        catalogFilteredRecipes: catalogFilteredUploadedRecipes,
+        currentCatalogFilterOptions: currentUploadedCatalogFilterOptions,
+    } = useCatalogFilterRecipes(searchResultUploadedRecipes);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
@@ -83,35 +86,45 @@ export const Profile: FC = () => {
                     </Tabs>
                 </div>
             </div>
-            <div className="recipe-section">
-                <div className="profile-filters">
-                    {
+            {tabValue === 0 ? (
+                <div className="recipe-section">
+                    <div className="profile-filters">
                         <FilterRecipes
-                            filterOptions={[]}
-                            isSearch={false}
-                            isHidden={false}
+                            filterOptions={currentUploadedCatalogFilterOptions}
+                            isSearch={!!searchValue && !!catalogFilteredUploadedRecipes}
+                            isHidden={searchResultUploadedRecipesLoading}
                             getFilterSearchValue={getFilterSearchValue}
                         />
-                    }
-                </div>
-                <div className="recipe-results">
-                    {tabValue === 0 ? (
+                    </div>
+                    <div className="recipe-results">
                         <AsyncDataLoaderWrapper
                             loading={searchResultUploadedRecipesLoading}
                             text="Loading my recipes..."
                         >
                             <RecipesCatalog recipes={catalogFilteredUploadedRecipes} />
                         </AsyncDataLoaderWrapper>
-                    ) : (
+                    </div>
+                </div>
+            ) : (
+                <div className="recipe-section">
+                    <div className="profile-filters">
+                        <FilterRecipes
+                            filterOptions={currentSavedCatalogFilterOptions}
+                            isSearch={!!searchValue && !!catalogFilteredSavedRecipes}
+                            isHidden={searchResultSavedRecipesLoading}
+                            getFilterSearchValue={getFilterSearchValue}
+                        />
+                    </div>
+                    <div className="recipe-results">
                         <AsyncDataLoaderWrapper
                             loading={searchResultSavedRecipesLoading}
                             text="Loading saved recipes..."
                         >
                             <RecipesCatalog recipes={catalogFilteredSavedRecipes} />
                         </AsyncDataLoaderWrapper>
-                    )}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };
