@@ -5,6 +5,7 @@ import { redRatingStyle } from "../../components/ui/rating-styles";
 import { Rating } from "@mui/material";
 import { Recipe } from "../../components/types";
 import { CommentsSection } from "./comments/CommentsSection";
+import { parseStringArray } from "../../components/functions/stringFunctions";
 
 interface Props {
     shownRecipe: Recipe;
@@ -20,22 +21,6 @@ export const RecipePageRightSection: FC<Props> = ({
     rating,
     isSaved,
 }) => {
-    const _parseStringArray = (str: string | undefined): string[] => {
-        if (!str) return [];
-        try {
-            return JSON.parse(
-                "[" +
-                    str
-                        .substring(1, str.length - 1)
-                        .replaceAll('\\"', '"')
-                        .replaceAll(",/ ", "") +
-                    "]",
-            );
-        } catch (e) {
-            return ["problem parsing string to json", "fix is coming soon! :D"];
-        }
-    };
-
     return (
         <RightSection>
             <TitleContainer>
@@ -65,7 +50,7 @@ export const RecipePageRightSection: FC<Props> = ({
             <RecipeContentTitle>INGREDIENTS</RecipeContentTitle>
             <RecipeContentList>
                 <ul className="ingredients-list">
-                    {_parseStringArray(shownRecipe?.ingredients).map((ingredient, i) => (
+                    {parseStringArray(shownRecipe?.ingredients).map((ingredient, i) => (
                         <li key={`${ingredient}-${i}`}>{ingredient}</li>
                     ))}
                 </ul>
@@ -73,7 +58,7 @@ export const RecipePageRightSection: FC<Props> = ({
             <RecipeContentTitle>INSTRUCTIONS</RecipeContentTitle>
             <RecipeContentList>
                 <ul>
-                    {_parseStringArray(shownRecipe?.instructions).map((instruction, i) => (
+                    {parseStringArray(shownRecipe?.instructions).map((instruction, i) => (
                         <li key={`${instruction}-${i}`}>{instruction}</li>
                     ))}
                 </ul>
