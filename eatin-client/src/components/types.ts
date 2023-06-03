@@ -19,13 +19,25 @@ export interface Recipe {
     image: string;
     difficulty: string;
     total_time: number;
-    is_saved?: boolean;
+    is_saved: boolean;
+    is_uploaded: boolean;
+}
+
+export interface Comments {
+    id: string;
+    user_id: string;
+    recipe_index: number;
+    given_comment: string;
+    comment_timestap: Date;
+    user_first_name?: string;
+    user_last_name?: string;
 }
 
 export interface FilterOptions {
     name: string;
     options: string[];
-    setState: (arg: string) => void;
+    isMulti: boolean;
+    setState: (arg: string[]) => void;
 }
 
 export interface RecipesSection {
@@ -33,10 +45,10 @@ export interface RecipesSection {
     recipes: Recipe[];
 }
 
-export type FilterableKeys = keyof Omit<Recipe, "is_saved">;
+export type FilterableKeys = keyof Omit<Recipe, "is_saved" | "is_uploaded">;
 
 export interface FilterWrapper {
     field: FilterableKeys;
-    filter: string;
-    operator: (item: Recipe, field: FilterableKeys, filter: string) => void;
+    filter: string[];
+    operator: (item: Recipe, field: FilterableKeys, filter: string[]) => void;
 }

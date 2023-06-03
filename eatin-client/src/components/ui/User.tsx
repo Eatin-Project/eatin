@@ -1,5 +1,5 @@
 import "./User.css";
-import { Avatar } from "@mui/material";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { FC, PropsWithChildren } from "react";
 import classNames from "classnames";
 
@@ -12,7 +12,10 @@ interface Props {
 export const User: FC<PropsWithChildren<Props>> = ({ name, children, size = "small", onClick }) => {
     return (
         <div className={classNames("eatin-user", size, { clickable: !!onClick })} onClick={onClick}>
-            <Avatar className="avatar" sx={{ backgroundColor: "transparent" }} />
+            <PersonOutlineOutlinedIcon
+                className="avatar"
+                sx={{ backgroundColor: "transparent", fontSize: "small" }}
+            />
             <span>{name}</span>
             {children}
         </div>

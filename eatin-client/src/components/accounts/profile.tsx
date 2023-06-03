@@ -1,7 +1,10 @@
 import { FC, useState } from "react";
 import "./profile.css";
-import { useAuth } from "../../context/auth-context";
-import { useGetTopRatedRecipesByCategoryQuery, useGetUserByIdQuery } from "../../generated/graphql";
+import {
+    useGetTopRatedRecipesByCategoryQuery,
+    useGetUserByIdQuery,
+    useGetSavedRecipesQuery,
+} from "../../generated/graphql";
 import { Category } from "../../pages/homePage/entities/categories.enum";
 import { Cuisine } from "../../pages/homePage/entities/cuisines.enum";
 import { FilterRecipes } from "../../pages/homePage/FilterRecipes";
@@ -13,48 +16,56 @@ import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
 import { RecipesCatalog } from "../ui/RecipesCatalog";
-import { useGetSavedRecipes } from "../functions/useGetSavedRecipes";
+import { useGetUsersName } from "../hooks/useGetUsersName";
 
 export const Profile: FC = () => {
     const [categoryFilter, setCategoryFilter] = useState("");
     const [cuisineFilter, setCuisineFilter] = useState("");
-    const { currentUser } = useAuth();
+    const userID = useGetUsersName();
     const { data, error, loading } = useGetUserByIdQuery({
-        variables: { id: !!currentUser?.uid ? currentUser?.uid : "" },
+        variables: { id: userID },
     });
-
     const {
         data: cakes,
         loading: cakesLoading,
         error: cakesErrors,
-    } = useGetTopRatedRecipesByCategoryQuery({ variables: { category: Category.Cake } });
+    } = useGetTopRatedRecipesByCategoryQuery({
+        variables: { category: Category.Cake, userID: userID },
+    });
 
-    const {
-        recipes: savedRecipes,
-        isLoading: savedRecipesLoading,
-        updateIsSaved,
-    } = useGetSavedRecipes();
+    const { data: savedRecipes, loading: savedRecipesLoading } = useGetSavedRecipesQuery({
+        variables: { userID: userID },
+    });
 
     const currentFilterOptions: FilterOptions[] = [
-        {
-            name: "Category",
-            options: Object.values(Category),
-            setState: setCategoryFilter,
-        },
-        {
-            name: "Cuisine",
-            options: Object.values(Cuisine),
-            setState: setCuisineFilter,
-        },
+        // {
+        //     name: "Category",
+        //     options: Object.values(Category),
+        //     isMulti: true,
+        //     setState: setCategoryFilter,
+        // },
+        // {
+        //     name: "Cuisine",
+        //     options: Object.values(Cuisine),
+        //     isMulti: true,
+        //     setState: setCuisineFilter,
+        // },
     ];
 
     return (
-        <AsyncDataLoaderWrapper loading={loading || savedRecipesLoading} text="loading user...">
+        <AsyncDataLoaderWrapper loading={loading} text="loading user...">
             <div className="profile-container">
                 <div className="profile-header">
                     <User size="large" name={data?.user.firstname + " " + data?.user.lastname} />
                     <div className="profile-filters">
-                        {<FilterRecipes filterOptions={currentFilterOptions} />}
+                        {
+                            <FilterRecipes
+                                filterOptions={currentFilterOptions}
+                                isSearch={false}
+                                isHidden={false}
+                                getFilterSearchValue={() => {}}
+                            />
+                        }
                     </div>
                 </div>
                 <div>
@@ -74,7 +85,6 @@ export const Profile: FC = () => {
                                             ? cakes?.topRecipesByCategory
                                             : []
                                     }
-                                    specificSavedUpdateFunc={updateIsSaved}
                                 />
                             </AsyncDataLoaderWrapper>
                         </TabPanel>
@@ -84,8 +94,7 @@ export const Profile: FC = () => {
                                 text="loading saved recipes..."
                             >
                                 <RecipesCatalog
-                                    recipes={savedRecipes}
-                                    specificSavedUpdateFunc={updateIsSaved}
+                                    recipes={savedRecipes ? savedRecipes.savedRecipesOfUser : []}
                                 />
                             </AsyncDataLoaderWrapper>
                         </TabPanel>

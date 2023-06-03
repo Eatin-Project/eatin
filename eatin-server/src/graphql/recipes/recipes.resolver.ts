@@ -8,33 +8,49 @@ export class RecipesResolver {
     constructor(@Inject(RecipesService) private recipesService: RecipesService) {}
 
     @Query((returns) => Recipes)
-    async recipe(@Args("index") index: number): Promise<Recipes> {
-        return await this.recipesService.findOne(index);
+    async recipe(@Args("index") index: number, @Args("userID") userID: string): Promise<Recipes> {
+        return await this.recipesService.findOne(index, userID);
     }
 
     @Query((returns) => [Recipes])
-    async recipes(): Promise<Recipes[]> {
-        return await this.recipesService.findAll();
+    async recipes(@Args("userID") userID: string): Promise<Recipes[]> {
+        return await this.recipesService.findAll(userID);
     }
 
     @Query((returns) => [Recipes])
-    async recipesByValue(@Args("value") value: string): Promise<Recipes[]> {
-        return await this.recipesService.runQuery(`select *
-                                                    from recipes r
-                                                    where r.recipe_title like '%${value}%'
-                                                       or r.description like '%${value}%'
-                                                       or r.author like '%${value}%'
-                                                    order by r.vote_count desc;`);
+    async recipesByValue(
+        @Args("value") value: string,
+        @Args("userID") userID: string,
+    ): Promise<Recipes[]> {
+        return await this.recipesService
+            .runQuery(`select index, recipe_title, url, record_health, vote_count, rating, description, cuisine, course,
+    diet, prep_time, cook_time, ingredients, instructions, author, tags, category, image, difficulty, 
+    total_time, 
+case when userrecipes.is_saved is NULL then false else userrecipes.is_saved end as is_saved,
+case when userrecipes.is_uploaded is NULL then false else userrecipes.is_uploaded end as is_uploaded
+                                                    from recipes
+                                                    left outer join userrecipes on recipes.index = userrecipes.recipe_index and userrecipes.user_id = '${userID}'
+                                                    where recipes.recipe_title like '%${value}%'
+                                                       or recipes.description like '%${value}%'
+                                                       or recipes.author like '%${value}%'
+                                                    order by recipes.vote_count desc
+                                                    limit 100;`);
     }
 
     @Query((returns) => [Recipes])
-    async topRecipesByCategory(@Args("category") category: string): Promise<Recipes[]> {
-        return await this.recipesService.findTopRatedByCategory(category);
+    async topRecipesByCategory(
+        @Args("category") category: string,
+        @Args("userID") userID: string,
+    ): Promise<Recipes[]> {
+        return await this.recipesService.findTopRatedByCategory(category, userID);
     }
 
     @Query((returns) => [Recipes])
-    async topRecipesByCuisine(@Args("cuisine") cuisine: string): Promise<Recipes[]> {
-        return await this.recipesService.findTopRatedByCuisine(cuisine);
+    async topRecipesByCuisine(
+        @Args("cuisine") cuisine: string,
+        @Args("userID") userID: string,
+    ): Promise<Recipes[]> {
+        return await this.recipesService.findTopRatedByCuisine(cuisine, userID);
     }
 
     @Query((returns) => [String])

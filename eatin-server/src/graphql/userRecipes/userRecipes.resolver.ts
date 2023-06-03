@@ -2,7 +2,7 @@ import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { Userrecipes } from './userRecipes.model';
 import { UserrecipesService } from './userRecipes.service';
-import { log } from 'console';
+import { Recipes } from '../recipes/recipes.model';
 
 @Resolver((of) => Userrecipes)
 export class UserrecipeResolver {
@@ -43,6 +43,28 @@ export class UserrecipeResolver {
     );
   }
 
+  @Query((returns) => [Userrecipes])
+  async userRecipesByUserAndIsUploaded(
+    @Args('userID') userID: string,
+    @Args('isUploaded') isUploaded: boolean,
+  ): Promise<Userrecipes[]> {
+    return await this.userRecipesService.findByUserAndIsUploaded(
+      userID,
+      isUploaded,
+    );
+  }
+
+  @Query((returns) => [Userrecipes])
+  async userRecipesByRecipeAndIsUploaded(
+    @Args('recipeID') recipeID: number,
+    @Args('isUploaded') isUploaded: boolean,
+  ): Promise<Userrecipes[]> {
+    return await this.userRecipesService.findByRecipeAndIsUploaded(
+      recipeID,
+      isUploaded,
+    );
+  }
+
   @Query((returns) => Userrecipes)
   async userRecipesByUserAndRecipe(
     @Args('userID') userID: string,
@@ -52,15 +74,13 @@ export class UserrecipeResolver {
   }
 
   @Query((returns) => [Userrecipes])
-  async userRecipesByUserWithRecipe(
-    @Args('userID') userID: string,
-  ): Promise<Userrecipes[]> {
-    return await this.userRecipesService.findByUserWithRecipe(userID);
-  }
-
-  @Query((returns) => [Userrecipes])
   async userRecipes(): Promise<Userrecipes[]> {
     return await this.userRecipesService.findAll();
+  }
+
+  @Query((returns) => [Recipes])
+  async savedRecipesOfUser(@Args('userID') userID: string): Promise<Recipes[]> {
+    return await this.userRecipesService.getSavedRecipesOfUser(userID);
   }
 
   @Mutation((returns) => Userrecipes)
@@ -76,11 +96,14 @@ export class UserrecipeResolver {
     @Args('user_id') user_id: string,
     @Args('recipe_index') recipe_index: number,
     @Args('is_saved') is_saved: boolean,
+    @Args('is_uploaded') is_uploaded: boolean,
   ): Promise<Userrecipes> {
     return await this.userRecipesService.create({
       user_id,
       recipe_index,
       is_saved,
+      given_comment: '',
+      is_uploaded,
     });
   }
 }

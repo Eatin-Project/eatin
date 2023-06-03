@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_ALL_RECIPES = gql`
-    query getAllRecipes {
-        recipes {
+    query getAllRecipes($userID: String!) {
+        recipes(userID: $userID) {
             index
             recipe_title
             url
@@ -23,13 +23,15 @@ export const GET_ALL_RECIPES = gql`
             image
             difficulty
             total_time
+            is_saved
+            is_uploaded
         }
     }
 `;
 
 export const GET_RECIPE_BY_ID = gql`
-    query getRecipeById($index: Float!) {
-        recipe(index: $index) {
+    query getRecipeById($index: Float!, $userID: String!) {
+        recipe(index: $index, userID: $userID) {
             index
             recipe_title
             url
@@ -50,13 +52,15 @@ export const GET_RECIPE_BY_ID = gql`
             image
             difficulty
             total_time
+            is_saved
+            is_uploaded
         }
     }
 `;
 
 export const GET_RECIPES_BY_VALUE = gql`
-    query getRecipesBySearch($value: String!) {
-        recipesByValue(value: $value) {
+    query getRecipesBySearch($value: String!, $userID: String!) {
+        recipesByValue(value: $value, userID: $userID) {
             index
             recipe_title
             url
@@ -77,13 +81,15 @@ export const GET_RECIPES_BY_VALUE = gql`
             image
             difficulty
             total_time
+            is_saved
+            is_uploaded
         }
     }
 `;
 
 export const GET_RECIPE_BY_CATEGORY = gql`
-    query getTopRatedRecipesByCategory($category: String!) {
-        topRecipesByCategory(category: $category) {
+    query getTopRatedRecipesByCategory($category: String!, $userID: String!) {
+        topRecipesByCategory(category: $category, userID: $userID) {
             index
             recipe_title
             url
@@ -104,13 +110,15 @@ export const GET_RECIPE_BY_CATEGORY = gql`
             image
             difficulty
             total_time
+            is_saved
+            is_uploaded
         }
     }
 `;
 
 export const GET_RECIPE_BY_CUISINE = gql`
-    query getTopRatedRecipesByCuisine($cuisine: String!) {
-        topRecipesByCuisine(cuisine: $cuisine) {
+    query getTopRatedRecipesByCuisine($cuisine: String!, $userID: String!) {
+        topRecipesByCuisine(cuisine: $cuisine, userID: $userID) {
             index
             recipe_title
             url
@@ -131,6 +139,8 @@ export const GET_RECIPE_BY_CUISINE = gql`
             image
             difficulty
             total_time
+            is_saved
+            is_uploaded
         }
     }
 `;

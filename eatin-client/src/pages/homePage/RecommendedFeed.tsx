@@ -7,15 +7,10 @@ import { RecipesSection } from "../../components/types";
 
 interface Props {
     currentRecipes: RecipesSection[];
-    updateSavedStateInRecipesSection: (isSaved: boolean, recipeIndex: number) => void;
     isLoadingCurrentRecipes: boolean;
 }
 
-export const RecommendedFeed: FC<Props> = ({
-    currentRecipes,
-    updateSavedStateInRecipesSection,
-    isLoadingCurrentRecipes,
-}) => {
+export const RecommendedFeed: FC<Props> = ({ currentRecipes, isLoadingCurrentRecipes }) => {
     return (
         <div className="feed">
             {currentRecipes.map((recipe, itemIndex) => (
@@ -25,7 +20,6 @@ export const RecommendedFeed: FC<Props> = ({
                     title={recipe.name}
                     itemsInOneSlider={5}
                     isLoading={isLoadingCurrentRecipes}
-                    updateSavedRecipes={updateSavedStateInRecipesSection}
                     className="recommended-recipes-carousel"
                 />
             ))}

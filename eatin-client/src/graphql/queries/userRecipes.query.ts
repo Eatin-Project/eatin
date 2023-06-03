@@ -6,6 +6,8 @@ export const GET_ALL_USERRECIPES = gql`
             user_id
             recipe_index
             is_saved
+            is_uploaded
+            given_comment
         }
     }
 `;
@@ -16,6 +18,8 @@ export const GET_USERRECIPES_BY_USER_ID = gql`
             user_id
             recipe_index
             is_saved
+            is_uploaded
+            given_comment
         }
     }
 `;
@@ -26,6 +30,8 @@ export const GET_USERRECIPES_BY_RECIPE_INDEX = gql`
             user_id
             recipe_index
             is_saved
+            is_uploaded
+            given_comment
         }
     }
 `;
@@ -36,6 +42,8 @@ export const GET_USERRECIPES_BY_RECIPE_AND_IS_SAVED = gql`
             user_id
             recipe_index
             is_saved
+            is_uploaded
+            given_comment
         }
     }
 `;
@@ -46,6 +54,32 @@ export const GET_USERRECIPES_BY_USER_AND_IS_SAVED = gql`
             user_id
             recipe_index
             is_saved
+            is_uploaded
+            given_comment
+        }
+    }
+`;
+
+export const GET_USERRECIPES_BY_RECIPE_AND_IS_UPLOADED = gql`
+    query getUserrecipesByRecipeIndexAndIsUploaded($recipeID: Float!, $isUploaded: Boolean!) {
+        userRecipesByRecipeAndIsUploaded(recipeID: $recipeID, isUploaded: $isUploaded) {
+            user_id
+            recipe_index
+            is_saved
+            is_uploaded
+            given_comment
+        }
+    }
+`;
+
+export const GET_USERRECIPES_BY_USER_AND_IS_UPLOADED = gql`
+    query getUserrecipesByUserAndIsUploaded($userID: String!, $isUploaded: Boolean!) {
+        userRecipesByUserAndIsUploaded(userID: $userID, isUploaded: $isUploaded) {
+            user_id
+            recipe_index
+            is_saved
+            is_uploaded
+            given_comment
         }
     }
 `;
@@ -56,38 +90,37 @@ export const GET_USERRECIPES_BY_RECIPE_AND_USER = gql`
             user_id
             recipe_index
             is_saved
+            is_uploaded
+            given_comment
         }
     }
 `;
 
-export const GET_USERRECIPES_BY_USER_WITH_RECIPE = gql`
-    query getUserrecipesByUserWithRecipe($userID: String!) {
-        userRecipesByUserWithRecipe(userID: $userID) {
-            user_id
-            recipe_index
+export const GET_SAVED_RECIPES = gql`
+    query getSavedRecipes($userID: String!) {
+        savedRecipesOfUser(userID: $userID) {
+            index
+            recipe_title
+            url
+            record_health
+            vote_count
+            rating
+            description
+            cuisine
+            course
+            diet
+            prep_time
+            cook_time
+            ingredients
+            instructions
+            author
+            tags
+            category
+            image
+            difficulty
+            total_time
             is_saved
-            recipe {
-                index
-                recipe_title
-                url
-                record_health
-                vote_count
-                rating
-                description
-                cuisine
-                course
-                diet
-                prep_time
-                cook_time
-                ingredients
-                instructions
-                author
-                tags
-                category
-                image
-                difficulty
-                total_time
-            }
+            is_uploaded
         }
     }
 `;

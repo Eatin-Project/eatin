@@ -7,7 +7,6 @@ import { FC } from "react";
 import classNames from "classnames";
 
 import { useInsertNewUserRecipe } from "../functions/useInsertNewUserRecipe";
-import { useDeleteUserRecipe } from "../functions/useDeleteUserRecipe";
 import { useToastNotification } from "../functions/useToastNotification";
 
 interface Props {
@@ -27,16 +26,15 @@ export const BookmarkButton: FC<Props> = ({
     recipeID,
     recipeName,
 }) => {
-    const { insertNewUserRecipe } = useInsertNewUserRecipe();
-    const { deleteNewUserRecipe } = useDeleteUserRecipe();
+    const { updateIsSaved } = useInsertNewUserRecipe(recipeID);
     const { notify } = useToastNotification();
 
     const changeRecipeSavedState = (wasClicked: boolean) => {
         if (wasClicked) {
-            insertNewUserRecipe(recipeID, true);
+            updateIsSaved(true);
             notify(`${recipeName}, was saved!`);
         } else {
-            deleteNewUserRecipe(recipeID);
+            updateIsSaved(false);
             notify(`${recipeName}, was removed...`);
         }
         onChange(!!wasClicked);

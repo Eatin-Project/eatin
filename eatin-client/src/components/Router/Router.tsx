@@ -5,9 +5,8 @@ import { Navigate } from "react-router-dom";
 import { HomePage } from "../../pages/homePage/HomePage";
 import { RecipePage } from "../../pages/RecipePage/RecipePage";
 import { UploadRecipePage } from "../../pages/uploadRecipe/UploadRecipePage";
-
-import SignIn from "../accounts/sign-in";
-import SignUp from "../accounts/sign-up";
+import SignIn from "../../pages/loginPage/sign-in";
+import SignUp from "../../pages/loginPage/sign-up";
 import RequireAuth from "../require-auth";
 import { Profile } from "../accounts/profile";
 import WithNav from "./WithNav";

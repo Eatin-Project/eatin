@@ -1,6 +1,8 @@
 import "./Navbar.css";
+// import styled from "styled-components";
+// import { useEffect } from "react";
 
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import { AppLogo } from "./AppLogo";
 import { useCallback, useState } from "react";
@@ -13,16 +15,31 @@ import AddIcon from "@mui/icons-material/Add";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, IconButton } from "@mui/material";
-import { SearchBar } from "../ui/SearchBar";
+import { useGetUsersName } from "../hooks/useGetUsersName";
+import { useSearch } from "../../context/search-context";
+// import { getUserProfilePictureUrl } from "../../firebase/firebase-service";
 
 export const Navbar = () => {
     const navigate = useNavigate();
-    const { currentUser, signOutUser } = useAuth();
-    const location = useLocation();
+    const userID = useGetUsersName();
+    const { signOutUser } = useAuth();
     const { data } = useGetUserByIdQuery({
-        variables: { id: !!currentUser?.uid ? currentUser?.uid : "" },
+        variables: { id: userID },
     });
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    // const [imageUrl, setUserProfilePictureUrl] = useState("");
+    // useEffect(() => {
+    //     const getImageUrl = async () => {
+    //         try {
+    //             var v = await getUserProfilePictureUrl("bmDO5F0Xd3OasWynppWe7o8w9vD3");
+    //             setUserProfilePictureUrl(v);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     };
+
+    //     getImageUrl();
+    // }, []);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -37,20 +54,25 @@ export const Navbar = () => {
         handleClose();
     };
 
+    function getUserProfilePicture(userId: string): Promise<string> {
+        return getUserProfilePictureUrl(userId);
+    }
+
     return (
         <>
             <div className="navbar">
                 <AppLogo onClick={goToHomePage} />
                 <div className="navbar-end">
-                    {location.pathname === "/home" && <SearchBar />}
                     <Button
                         variant="outlined"
                         sx={{ color: "#EBEBEB", borderRadius: 35 }}
                         onClick={() => navigate("/profile")}
                     >
                         <User
+                            userId={data?.user.id}
                             name={!!data ? data?.user.firstname + " " + data?.user.lastname : ""}
                         />
+                        {/* <CarouselItemImage src={imageUrl}></CarouselItemImage> */}
                     </Button>
                     <div>
                         <IconButton
@@ -89,3 +111,10 @@ export const Navbar = () => {
         </>
     );
 };
+
+// const CarouselItemImage = styled.img`
+//     object-fit: cover;
+//     border-radius: 8px;
+//     height: 100%;
+//     width: 100%;
+// `;

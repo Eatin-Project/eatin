@@ -5,7 +5,6 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { Rating } from "@mui/material";
 import { whiteRatingStyle } from "./rating-styles";
 import { useInsertNewUserRecipe } from "../functions/useInsertNewUserRecipe";
-import { useDeleteUserRecipe } from "../functions/useDeleteUserRecipe";
 import { useToastNotification } from "../functions/useToastNotification";
 
 export interface ICarouselItem<T = unknown> {
@@ -15,74 +14,66 @@ export interface ICarouselItem<T = unknown> {
     title?: string;
     rating: number;
     isSaved: boolean | undefined;
-    updateSavedRecipes: (isSaved: boolean, recipeIndex: number) => void;
+    updatedRecipesSavedState: (recipeIndex: number) => void;
 }
 
 export type CarouselItemProps = ICarouselItem & {
-    width: number;
-    itemIndex: number;
-    randomColors?: boolean;
     onClick?: (id: number) => void;
 };
 
 export const CarouselItem: FC<CarouselItemProps> = ({
-                                                        width,
-                                                        id,
-                                                        itemIndex,
-                                                        image,
-                                                        randomColors,
-                                                        onClick,
-                                                        rating,
-                                                        isSaved,
-                                                        updateSavedRecipes,
-                                                        itemValue,
-                                                        title,
-                                                    }) => {
+    id,
+    image,
+    onClick,
+    rating,
+    isSaved,
+    updatedRecipesSavedState,
+    title,
+}) => {
     const handleClick = useCallback(() => onClick?.(id), [id, onClick]);
     const [isRecipeSaved, setIsRecipeSaved] = useState(isSaved);
-    const { insertNewUserRecipe } = useInsertNewUserRecipe();
-    const { deleteNewUserRecipe } = useDeleteUserRecipe();
+    const { updateIsSaved } = useInsertNewUserRecipe(id);
     const { notify } = useToastNotification();
 
     const handleBookmarkClicked = (event: any) => {
         event.stopPropagation();
         if (isRecipeSaved) {
-            deleteNewUserRecipe(id);
+            updateIsSaved(false);
             notify(`${title}, was removed`);
         } else {
-            insertNewUserRecipe(id, true);
+            updateIsSaved(true);
             notify(`${title}, was saved`);
         }
-
+        updatedRecipesSavedState(id);
         setIsRecipeSaved(!isRecipeSaved);
     };
 
     return (
-      <CarouselItemWrapper onClick={handleClick}>
-          <CarouselItemImageWrapper>
-              <RecipeBookmarkIcon
-                sx={{ color: isRecipeSaved ? "#E14026" : "#B0B0B0" }}
-                onClick={(event) => handleBookmarkClicked(event)}
-              />
-              <RecipeRatingWrapper>
-                  <RecipeRating
-                    sx={whiteRatingStyle}
-                    size="small"
-                    value={rating}
-                    precision={0.5}
-                    readOnly
-                  />
-              </RecipeRatingWrapper>
-              <CarouselItemImage src={image} />
-          </CarouselItemImageWrapper>
-          <CarouselItemTitle>{title}</CarouselItemTitle>
-      </CarouselItemWrapper>
+        <CarouselItemWrapper onClick={handleClick}>
+            <CarouselItemImageWrapper>
+                <RecipeBookmarkIcon
+                    sx={{ color: isRecipeSaved ? "#E14026" : "#B0B0B0" }}
+                    onClick={(event) => handleBookmarkClicked(event)}
+                />
+                <RecipeRatingWrapper>
+                    <RecipeRating
+                        sx={whiteRatingStyle}
+                        size="small"
+                        value={rating}
+                        precision={0.5}
+                        readOnly
+                    />
+                </RecipeRatingWrapper>
+                <CarouselItemImage src={image} />
+            </CarouselItemImageWrapper>
+            <CarouselItemTitle>{title}</CarouselItemTitle>
+        </CarouselItemWrapper>
     );
 };
 
 const RecipeRatingWrapper = styled.div`
     position: absolute;
-    margin: 6.2em 0 0 9.2em;
+    margin: 6.2em 0 0 0.5em;
     border-radius: 19.5px;
     background-color: #e14026;
     display: flex;
@@ -94,7 +85,7 @@ const RecipeRating = styled(Rating)`
 
 const RecipeBookmarkIcon = styled(BookmarkIcon)`
     position: absolute;
-    margin: -0.3em 0 0 9.1em;
+    margin: -0.3em 0 0 0.8em;
 
     &:hover {
         color: #e14026;

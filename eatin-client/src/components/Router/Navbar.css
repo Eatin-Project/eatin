@@ -5,7 +5,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: #e14026;
-    color: #EBEBEB !important;
+    color: #ebebeb !important;
     z-index: 1;
     position: relative;
     box-shadow: 0px 1px 10px 0px #00000038;
@@ -13,12 +13,12 @@
 }
 
 .MuiButton-outlined {
-    border-color: #EBEBEB !important;
+    border-color: #ebebeb !important;
     border-radius: 30%;
 }
 
 .navbar a {
-    color: #EBEBEB;
+    color: #ebebeb;
 }
 
 .navbar .sign-out-btn {
@@ -60,4 +60,8 @@
     color: white !important;
     background-color: #fd7269 !important;
     margin-right: 0.5em !important;
+}
+
+.navbar-end .css-12br49p-MuiButtonBase-root-MuiButton-root {
+    text-transform: none !important;
 }

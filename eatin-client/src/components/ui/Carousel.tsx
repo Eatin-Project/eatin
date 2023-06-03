@@ -14,7 +14,6 @@ export interface CarouselProps<T = unknown> {
     itemsInOneSlider?: number;
     autoSlide?: boolean;
     isLoading?: boolean;
-    randomColors?: boolean;
     hideArrows?: boolean;
     onClickItem?: (id: number) => void;
 }
@@ -28,7 +27,6 @@ export function Carousel<T = unknown>({
     title,
     isLoading,
     className,
-    randomColors,
     hideArrows,
     onClickItem,
 }: CarouselProps<T>) {
@@ -135,12 +133,8 @@ export function Carousel<T = unknown>({
                             {items.map((item, itemIndex) => (
                                 <CarouselItem
                                     key={item.id}
-                                    itemIndex={itemIndex}
                                     {...item}
-                                    width={(100 - itemsInOneSlider) / itemsInOneSlider}
-                                    onClick={onClickItem}
-                                    randomColors={randomColors}
-                                />
+                                    onClick={onClickItem}/>
                             ))}
                         </div>
                     ))
