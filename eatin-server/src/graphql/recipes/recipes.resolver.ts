@@ -41,6 +41,48 @@ case when userrecipes.is_uploaded is NULL then false else userrecipes.is_uploade
   }
 
   @Query((returns) => [Recipes])
+  async savedRecipesByValue(
+    @Args('value') value: string,
+    @Args('userID') userID: string,
+  ): Promise<Recipes[]> {
+    return await this.recipesService
+      .runQuery(`select index, recipe_title, url, record_health, vote_count, rating, description, cuisine, course,
+    diet, prep_time, cook_time, ingredients, instructions, author, tags, category, image, difficulty, 
+    total_time, 
+case when userrecipes.is_saved is NULL then false else userrecipes.is_saved end as is_saved,
+case when userrecipes.is_uploaded is NULL then false else userrecipes.is_uploaded end as is_uploaded
+                                                    from recipes
+                                                    left outer join userrecipes on recipes.index = userrecipes.recipe_index and userrecipes.user_id = '${userID}'
+                                                    where userrecipes.is_saved = 'true' and 
+                                                    (recipes.recipe_title like '%${value}%'
+                                                       or recipes.description like '%${value}%'
+                                                       or recipes.author like '%${value}%')
+                                                    order by recipes.vote_count desc
+                                                    limit 100;`);
+  }
+
+  @Query((returns) => [Recipes])
+  async uploadedRecipesByValue(
+    @Args('value') value: string,
+    @Args('userID') userID: string,
+  ): Promise<Recipes[]> {
+    return await this.recipesService
+      .runQuery(`select index, recipe_title, url, record_health, vote_count, rating, description, cuisine, course,
+    diet, prep_time, cook_time, ingredients, instructions, author, tags, category, image, difficulty, 
+    total_time, 
+case when userrecipes.is_saved is NULL then false else userrecipes.is_saved end as is_saved,
+case when userrecipes.is_uploaded is NULL then false else userrecipes.is_uploaded end as is_uploaded
+                                                    from recipes
+                                                    left outer join userrecipes on recipes.index = userrecipes.recipe_index and userrecipes.user_id = '${userID}'
+                                                    where userrecipes.is_uploaded = 'true' and 
+                                                    (recipes.recipe_title like '%${value}%'
+                                                       or recipes.description like '%${value}%'
+                                                       or recipes.author like '%${value}%')
+                                                    order by recipes.vote_count desc
+                                                    limit 100;`);
+  }
+
+  @Query((returns) => [Recipes])
   async topRecipesByCategory(
     @Args('category') category: string,
     @Args('userID') userID: string,

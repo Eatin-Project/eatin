@@ -1,107 +1,117 @@
 import { FC, useState } from "react";
 import "./profile.css";
-import {
-    useGetTopRatedRecipesByCategoryQuery,
-    useGetUserByIdQuery,
-    useGetSavedRecipesQuery,
-} from "../../generated/graphql";
-import { Category } from "../../pages/homePage/entities/categories.enum";
-import { Cuisine } from "../../pages/homePage/entities/cuisines.enum";
+import { useGetUserByIdQuery } from "../../generated/graphql";
 import { FilterRecipes } from "../../pages/homePage/FilterRecipes";
-import { FilterOptions } from "../types";
 import AsyncDataLoaderWrapper from "../ui/AsyncDataLoaderWrapper";
-import { User } from "../ui/User";
-import Tabs from "@mui/joy/Tabs";
-import TabList from "@mui/joy/TabList";
-import Tab from "@mui/joy/Tab";
-import TabPanel from "@mui/joy/TabPanel";
 import { RecipesCatalog } from "../ui/RecipesCatalog";
 import { useGetUsersName } from "../hooks/useGetUsersName";
+import { Avatar, Tab, Tabs } from "@mui/material";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import UploadIcon from "@mui/icons-material/Upload";
+import FemaleIcon from "@mui/icons-material/Female";
+import TransgenderIcon from "@mui/icons-material/Transgender";
+import MaleIcon from "@mui/icons-material/Male";
+import { useGetSavedRecipesBySearch } from "../functions/useGetSavedRecipesBySearch";
+import { useGetUploadedRecipesBySearch } from "../functions/useGetUploadedRecipesBySearch";
+import { useCatalogFilterRecipes } from "../hooks/useCatalogFilterRecipes";
 
 export const Profile: FC = () => {
-    const [categoryFilter, setCategoryFilter] = useState("");
-    const [cuisineFilter, setCuisineFilter] = useState("");
+    const [searchValue, setSearchValue] = useState<string>("");
+    const [tabValue, setTabValue] = useState(0);
+
     const userID = useGetUsersName();
-    const { data, error, loading } = useGetUserByIdQuery({
+    const { data } = useGetUserByIdQuery({
         variables: { id: userID },
     });
 
-    const {
-        data: cakes,
-        loading: cakesLoading,
-        error: cakesErrors,
-    } = useGetTopRatedRecipesByCategoryQuery({
-        variables: { category: Category.Cake, userID: userID },
-    });
+    const { recipes: searchResultSavedRecipes, loading: searchResultSavedRecipesLoading } =
+        useGetSavedRecipesBySearch(searchValue);
+    const { recipes: searchResultUploadedRecipes, loading: searchResultUploadedRecipesLoading } =
+        useGetUploadedRecipesBySearch(searchValue);
 
-    const { data: savedRecipes, loading: savedRecipesLoading } = useGetSavedRecipesQuery({
-        variables: { userID: userID },
-    });
+    const { catalogFilteredRecipes: catalogFilteredSavedRecipes } =
+        useCatalogFilterRecipes(searchResultSavedRecipes);
+    const { catalogFilteredRecipes: catalogFilteredUploadedRecipes } = useCatalogFilterRecipes(
+        searchResultUploadedRecipes,
+    );
 
-    const currentFilterOptions: FilterOptions[] = [
-        // {
-        //     name: "Category",
-        //     options: Object.values(Category),
-        //     isMulti: true,
-        //     setState: setCategoryFilter,
-        // },
-        // {
-        //     name: "Cuisine",
-        //     options: Object.values(Cuisine),
-        //     isMulti: true,
-        //     setState: setCuisineFilter,
-        // },
-    ];
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setTabValue(newValue);
+    };
+
+    const getFilterSearchValue = (searchValue: string) => {
+        setSearchValue(searchValue);
+    };
 
     return (
-        <AsyncDataLoaderWrapper loading={loading} text="loading user...">
-            <div className="profile-container">
-                <div className="profile-header">
-                    <User size="large" name={data?.user.firstname + " " + data?.user.lastname} />
-                    <div className="profile-filters">
-                        {
-                            <FilterRecipes
-                                filterOptions={currentFilterOptions}
-                                isSearch={false}
-                                isHidden={false}
-                                getFilterSearchValue={() => {}}
-                            />
-                        }
+        <div className="profile-section">
+            <div className="user-section">
+                <div className="user-section-info">
+                    <Avatar
+                        className="current-user-picture"
+                        alt="Your picture"
+                        src="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2022-08/220805-domestic-cat-mjf-1540-382ba2.jpg"
+                        sx={{ width: 90, height: 90 }}
+                    />
+                    <h2>
+                        {data?.user.firstname + " " + data?.user.lastname}
+                        {data?.user.gender === "Female" ? (
+                            <FemaleIcon fontSize="large" color="secondary" />
+                        ) : data?.user.gender === "Male" ? (
+                            <MaleIcon fontSize="large" color="primary" />
+                        ) : (
+                            <TransgenderIcon fontSize="large" color="success" />
+                        )}
+                    </h2>
+
+                    <h6>{data?.user.email}</h6>
+                    <div className="user-info">
+                        <span>From {data?.user.country}</span>
+                        <span>Birthday is on {new Date(data?.user.birthdate).toDateString()}</span>
                     </div>
                 </div>
-                <div>
-                    <Tabs aria-label="Basic tabs" defaultValue={0} sx={{ borderRadius: "lg" }}>
-                        <TabList>
-                            <Tab>My Recipes</Tab>
-                            <Tab>Saved Recipes</Tab>
-                        </TabList>
-                        <TabPanel value={0} sx={{ p: 2 }}>
-                            <AsyncDataLoaderWrapper
-                                loading={cakesLoading}
-                                text="loading my recipes..."
-                            >
-                                <RecipesCatalog
-                                    recipes={
-                                        cakes?.topRecipesByCategory
-                                            ? cakes?.topRecipesByCategory
-                                            : []
-                                    }
-                                />
-                            </AsyncDataLoaderWrapper>
-                        </TabPanel>
-                        <TabPanel value={1} sx={{ p: 2 }}>
-                            <AsyncDataLoaderWrapper
-                                loading={savedRecipesLoading}
-                                text="loading saved recipes..."
-                            >
-                                <RecipesCatalog
-                                    recipes={savedRecipes ? savedRecipes.savedRecipesOfUser : []}
-                                />
-                            </AsyncDataLoaderWrapper>
-                        </TabPanel>
+                <div className="recipe-tabs">
+                    <Tabs
+                        value={tabValue}
+                        onChange={handleChange}
+                        textColor="secondary"
+                        indicatorColor="secondary"
+                        orientation="vertical"
+                    >
+                        <Tab label="My Recipes" icon={<UploadIcon fontSize="large" />} />
+                        <Tab label="Saved Recipes" icon={<BookmarkIcon fontSize="large" />} />
                     </Tabs>
                 </div>
             </div>
-        </AsyncDataLoaderWrapper>
+            <div className="recipe-section">
+                <div className="profile-filters">
+                    {
+                        <FilterRecipes
+                            filterOptions={[]}
+                            isSearch={false}
+                            isHidden={false}
+                            getFilterSearchValue={getFilterSearchValue}
+                        />
+                    }
+                </div>
+                <div className="recipe-results">
+                    {tabValue === 0 ? (
+                        <AsyncDataLoaderWrapper
+                            loading={searchResultUploadedRecipesLoading}
+                            text="Loading my recipes..."
+                        >
+                            <RecipesCatalog recipes={catalogFilteredUploadedRecipes} />
+                        </AsyncDataLoaderWrapper>
+                    ) : (
+                        <AsyncDataLoaderWrapper
+                            loading={searchResultSavedRecipesLoading}
+                            text="Loading saved recipes..."
+                        >
+                            <RecipesCatalog recipes={catalogFilteredSavedRecipes} />
+                        </AsyncDataLoaderWrapper>
+                    )}
+                </div>
+            </div>
+        </div>
     );
 };

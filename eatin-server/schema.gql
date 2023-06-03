@@ -79,6 +79,8 @@ type Query {
   recipe(index: Float!, userID: String!): Recipes!
   recipes(userID: String!): [Recipes!]!
   recipesByValue(value: String!, userID: String!): [Recipes!]!
+  savedRecipesByValue(value: String!, userID: String!): [Recipes!]!
+  uploadedRecipesByValue(value: String!, userID: String!): [Recipes!]!
   topRecipesByCategory(category: String!, userID: String!): [Recipes!]!
   topRecipesByCuisine(cuisine: String!, userID: String!): [Recipes!]!
   ratingsByRecipe(index: Float!): [Ratings!]!

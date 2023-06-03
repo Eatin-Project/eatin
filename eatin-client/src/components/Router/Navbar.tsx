@@ -13,7 +13,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, IconButton } from "@mui/material";
 import { useGetUsersName } from "../hooks/useGetUsersName";
-import {useSearch} from "../../context/search-context";
+import { useSearch } from "../../context/search-context";
 
 export const Navbar = () => {
     const navigate = useNavigate();
@@ -71,7 +71,7 @@ export const Navbar = () => {
                                 "aria-labelledby": "basic-button",
                             }}
                         >
-                            <MenuItem onClick={handleClose}>Settings</MenuItem>
+                            {/* <MenuItem onClick={handleClose}>Settings</MenuItem> */}
                             <MenuItem onClick={onLogOutClicked}>Logout</MenuItem>
                         </Menu>
                     </div>

@@ -1,20 +1,59 @@
-.profile-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin: 1em;
+.profile-section {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-gap: 20px;
+    /* margin-top: 5em; */
+    height: inherit;
 }
 
-.profile-container {
+.user-section {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 4em;
+    gap: 10px;
+}
+
+.recipe-section {
+    margin-top: 4em;
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+}
+
+.current-user-picture {
+    width: 24 !important;
+    height: 24 !important;
+}
+
+.user-section-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+    margin-bottom: 6em;
 }
 
 .profile-filters {
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }
 
-.recipes-btn.selected {
-    background-color: #fff;
+.recipe-results {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: inherit;
+    margin-top: 2em;
+    margin-right: 4em;
 }
