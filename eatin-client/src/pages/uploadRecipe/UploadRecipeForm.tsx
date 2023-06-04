@@ -89,6 +89,13 @@ const checkIfNumber = (schema: yup.StringSchema) => {
     });
 };
 
+const checkIfStringArray = (schema: yup.ArraySchema<any[], yup.AnyObject>) => {
+    return schema.of(yup.string()).test("is-string-array", "should not be empty", (value) => {
+        if (!value) return true;
+        return Array.isArray(value) && value.every((item) => typeof item === "string");
+    });
+};
+
 const ValidationSchema = yup.object({
     title: yup.string().required(),
     cuisine: yup.string().required(),
@@ -96,15 +103,7 @@ const ValidationSchema = yup.object({
     diet: yup.string().required(),
     category: yup.string().required(),
     description: yup.string().required(),
-    stages: yup
-        .array()
-        .min(3, "less then 3 instructions")
-        .required()
-        .of(yup.string())
-        .test("is-string-array", "should not be empty", (value) => {
-            if (!value) return true;
-            return Array.isArray(value) && value.every((item) => typeof item === "string");
-        }),
+    stages: checkIfStringArray(yup.array().min(3, "less then 3 instructions").required()),
     ingredients: yup.array().min(3, "less then 3 ingredients").required(),
     tags: yup.array().min(1, "add at least one tag").required(),
     image: yup.mixed().required(),
