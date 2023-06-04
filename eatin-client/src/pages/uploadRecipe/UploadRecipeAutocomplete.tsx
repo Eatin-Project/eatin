@@ -2,7 +2,7 @@ import { FC, useMemo, useState } from "react";
 import { parseStringArray, upperCaseFirstLetter } from "../../components/functions/stringFunctions";
 import { Autocomplete, AutocompleteItem } from "../../components/ui/Autocomplete";
 import { useGetRecipeFieldOptionsQuery } from "../../generated/graphql";
-import { AutocompleteRecipeMetadata } from "./UploadRecipePage";
+import { AutocompleteRecipeMetadata } from "./UploadRecipeForm";
 
 type Field = keyof AutocompleteRecipeMetadata;
 

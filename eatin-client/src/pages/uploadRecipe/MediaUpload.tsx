@@ -11,7 +11,7 @@ export type Image = {
 };
 
 interface Props {
-    onChange: (image: string) => void;
+    onChange: (image: File) => void;
 }
 
 export const MediaUpload: FC<Props> = ({ onChange }) => {
@@ -19,19 +19,14 @@ export const MediaUpload: FC<Props> = ({ onChange }) => {
 
     const uploadMedia = (file: File) => {
         const url = URL.createObjectURL(file);
+
         setImage({
             url,
             name: file.name,
             type: file.type,
         });
 
-        // convert to base64
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-            console.log("called: ", reader);
-            // onChange(reader.result as string);
-        };
+        onChange(file);
     };
 
     return (

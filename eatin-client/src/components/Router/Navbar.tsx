@@ -11,7 +11,7 @@ import { useAuth } from "../../context/auth-context";
 import { User } from "../ui/User";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import AddIcon from "@mui/icons-material/Add";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, IconButton } from "@mui/material";
@@ -80,7 +80,7 @@ export const Navbar = () => {
                             size="small"
                             onClick={() => navigate("/upload")}
                         >
-                            <AddIcon fontSize="small" />
+                            <NoteAddIcon />
                         </IconButton>
                         <IconButton
                             id="basic-button"

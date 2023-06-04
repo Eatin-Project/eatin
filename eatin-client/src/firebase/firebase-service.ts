@@ -13,55 +13,51 @@ import {
 
 // Get a reference to the storage service, which is used to create references in your storage bucket
 const storage: FirebaseStorage = getStorage();
-const recipesImagesFolderName: string = "recipesImages";
-const usersProfilePicturesFolderName: string = "usersProfilePicturesImages";
+const recipesImagesFolderName = "recipesImages";
+const usersProfilePicturesFolderName = "usersProfilePicturesImages";
 // recipesImages/uuid-1.jpg
 // usersProfilePicturesImages/uuid.jpg
 
-function uploadeUserProfilePicture(userId: string, image: Uint8Array): string {
-    return uploadImage(createRef(usersProfilePicturesFolderName, userId), image);
+function uploadeUserProfilePicture(userId: string, image: Blob | Uint8Array | ArrayBuffer) {
+    // return uploadImage(createRef(usersProfilePicturesFolderName, userId), image);
 }
 
-function uploadeRecipeImages(recipeId: string, images: Uint8Array[]): string[] {
+async function uploadeRecipeImages(
+    recipeId: number,
+    images: (Blob | Uint8Array | ArrayBuffer)[],
+): Promise<string[]> {
     let isThereMoreImages = "true";
     let imagesUrls: string[] = [];
 
     for (let index = 0; index < images.length; index++) {
-        let imageName: string = recipeId + "-" + index + 1;
+        let imageName = recipesImagesFolderName + "/" + recipeId + "-" + index + 1;
 
-        if (index == images.length - 1) {
+        if (index === images.length - 1) {
             isThereMoreImages = "false";
         }
 
-        imagesUrls[index] = uploadImage(
-            createRef(recipesImagesFolderName, imageName),
-            images[index],
-            {
-                customMetadata: { isThereMoreImages: isThereMoreImages },
-            },
-        );
+        imagesUrls[index] = await _uploadImage(createRef(imageName), images[index], {
+            customMetadata: { isThereMoreImages: isThereMoreImages },
+        });
     }
+    console.log("🚀 ~ file: firebase-service.ts:31 ~ imagesUrls:", imagesUrls);
 
-    return imagesUrls;
+    return getRecipeImagesUrls(imagesUrls[0]);
 }
 
-function uploadImage(
+async function _uploadImage(
     storageRef: StorageReference,
-    image: Uint8Array,
+    image: Blob | Uint8Array | ArrayBuffer,
     metadata?: SettableMetadata,
-): string {
-    let imageUrl: string = "";
+): Promise<string> {
+    const uploadResult: UploadResult = await uploadBytes(storageRef, image, metadata);
+    console.log("Uploaded an image - " + uploadResult.metadata.name, uploadResult.ref.fullPath);
 
-    uploadBytes(storageRef, image, metadata).then((uploadResult: UploadResult) => {
-        console.log("Uploaded an image - " + uploadResult.metadata.name);
-        imageUrl = uploadResult.ref.fullPath;
-    });
-
-    return imageUrl;
+    return uploadResult.ref.fullPath;
 }
 
 function getUserProfilePictureUrl(userId: string): Promise<string> {
-    return getImageUrl(createRef(usersProfilePicturesFolderName, userId.concat(".jpg")));
+    return getImageUrl(createRef(usersProfilePicturesFolderName + "/" + userId.concat(".jpg")));
 }
 
 // function getRecipeImageUrl(imageName: string): string {
@@ -69,49 +65,51 @@ function getUserProfilePictureUrl(userId: string): Promise<string> {
 //     // return getImageUrl(createRef(recipesImagesFolderName, imageName));
 // }
 
-async function getRecipeImagesUrls(recipeId: number): Promise<string[]> {
+async function getRecipeImagesUrls(imageName: string): Promise<string[]> {
     let isThereMoreImages = true;
     let recipeImageIndex = 1;
     let recipeImagesUrls = [];
-    let recipesImagesRef: StorageReference = createRef(
-        recipesImagesFolderName,
-        recipeId.toString(),
-    );
+    let recipesImagesRef: StorageReference = createRef(imageName);
 
     while (isThereMoreImages) {
         recipeImagesUrls[recipeImageIndex - 1] = await getImageUrl(recipesImagesRef);
-        getMetadata(recipesImagesRef).then((metadata: FullMetadata) => {
-            if (metadata.customMetadata?.isThereMoreImages == "false") {
-                isThereMoreImages = false;
-            }
-        });
+        const metadata: FullMetadata = await getMetadata(recipesImagesRef);
+
+        if (metadata.customMetadata?.isThereMoreImages == "false") {
+            isThereMoreImages = false;
+        }
     }
+    console.log(
+        "🚀 ~ file: firebase-service.ts:76 ~ getRecipeImagesUrls ~ recipeImagesUrls:",
+        recipeImagesUrls,
+    );
 
     return recipeImagesUrls;
 }
 
 async function getImageUrl(storageRef: StorageReference): Promise<string> {
-    let imageUrl: string = "";
-
-    await getDownloadURL(storageRef)
-        .then((url) => {
-            imageUrl = url;
-        })
-        .catch((error) => {
-            console.log("Error getting image url from Firebase " + error);
-        });
-
-    return imageUrl;
+    try {
+        return await getDownloadURL(storageRef);
+    } catch (e) {
+        console.log("Error getting image url from Firebase " + e);
+        return "";
+    }
 }
 
-function createRef(folderName: string, imageName: string): StorageReference {
-    return ref(storage, folderName + "/" + imageName);
+function createRef(imageName: string): StorageReference {
+    return ref(storage, imageName);
 }
 
-export {
-    uploadeRecipeImages,
-    uploadeUserProfilePicture,
-    getUserProfilePictureUrl,
-    // getRecipeImageUrl,
-    getRecipeImagesUrls,
+export const uploadImage = async (
+    recipeId: number | string,
+    image: Blob | Uint8Array | ArrayBuffer,
+    imageIndex = 0,
+) => {
+    const imageName = recipesImagesFolderName + "/" + recipeId + "-" + imageIndex + 1;
+    const storageRef = createRef(imageName);
+
+    const uploadResult: UploadResult = await uploadBytes(storageRef, image);
+    const uploadedImageRef = createRef(uploadResult.ref.fullPath);
+
+    return await getDownloadURL(uploadedImageRef);
 };

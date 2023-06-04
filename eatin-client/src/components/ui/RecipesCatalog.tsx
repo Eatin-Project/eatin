@@ -4,7 +4,6 @@ import { FC } from "react";
 import { Recipe } from "../types";
 import { CarouselItem } from "./CarouselItem";
 import { useNavigate } from "react-router-dom";
-import { getRecipeImagesUrls } from "../../firebase/firebase-service";
 
 type Props = {
     recipes: Recipe[];
@@ -35,11 +34,3 @@ export const RecipesCatalog: FC<Props> = ({ recipes }) => {
         </div>
     );
 };
-
-// function getRecipeImageUrl(recipe: Recipe) {
-//     if (recipe.is_uploaded) {
-//         return getRecipeImagesUrls(recipe.index)[1];
-//     } else {
-//         return recipe.image;
-//     }
-// }

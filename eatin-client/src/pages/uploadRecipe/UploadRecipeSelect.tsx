@@ -1,17 +1,17 @@
 import { FC } from "react";
-import { SelectInput } from "../../components/ui/SelectInput";
+import { SelectInput, SelectInputProps } from "../../components/ui/SelectInput";
 import { useGetRecipeFieldOptionsQuery } from "../../generated/graphql";
-import type { RecipeMetadata, SelectRecipeMetadata } from "./UploadRecipePage";
+import type { RecipeMetadata, SelectRecipeMetadata } from "./UploadRecipeForm";
 
 type Field = SelectRecipeMetadata;
 
-interface Props {
+interface Props extends Pick<SelectInputProps, "error" | "helperText"> {
     field: keyof Field;
     values: RecipeMetadata;
     onChange: (field: keyof Field, value: string) => void;
 }
 
-export const UploadRecipeSelect: FC<Props> = ({ field, values, onChange }) => {
+export const UploadRecipeSelect: FC<Props> = ({ field, values, onChange, ...props }) => {
     const { data } = useGetRecipeFieldOptionsQuery({
         variables: { field, value: "" },
     });
@@ -23,6 +23,7 @@ export const UploadRecipeSelect: FC<Props> = ({ field, values, onChange }) => {
             value={values[field]}
             onChange={handleChange}
             options={data?.recipeFieldOptions}
+            {...props}
         />
     );
 };

@@ -7,9 +7,11 @@ import { FC, useState } from "react";
 interface Props {
     stages: string[];
     onChange: (stages: string[]) => void;
+    error?: boolean;
+    helperText?: string;
 }
 
-export const RecipeStages: FC<Props> = ({ stages, onChange }) => {
+export const RecipeStages: FC<Props> = ({ stages, onChange, error, helperText }) => {
     const [keys, setKeys] = useState([Math.random()]);
 
     const onTextFieldChange = (
@@ -27,6 +29,16 @@ export const RecipeStages: FC<Props> = ({ stages, onChange }) => {
         setKeys((keys) => keys.filter((_, i) => i !== index));
     };
 
+    const getErrorProps = (index: number) => {
+        if (index + 1 === stages.length)
+            return {
+                error,
+                helperText,
+            };
+
+        return {};
+    };
+
     return (
         <div className="recipe-stages">
             {stages.map((value, index) => (
@@ -39,6 +51,7 @@ export const RecipeStages: FC<Props> = ({ stages, onChange }) => {
                         fullWidth
                         size="small"
                         onChange={(e) => onTextFieldChange(e, index)}
+                        {...getErrorProps(index)}
                     />
                     {stages.length > 1 && (
                         <IconButton
