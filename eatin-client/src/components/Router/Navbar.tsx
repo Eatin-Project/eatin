@@ -54,8 +54,8 @@ export const Navbar = () => {
         handleClose();
     };
 
-    function getUserProfilePicture(userId: string): Promise<string> {
-        return getUserProfilePictureUrl(userId);
+    function getUserProfilePicture(userId: string) {
+        // return getUserProfilePictureUrl(userId);
     }
 
     return (
@@ -69,7 +69,6 @@ export const Navbar = () => {
                         onClick={() => navigate("/profile")}
                     >
                         <User
-                            userId={data?.user.id}
                             name={!!data ? data?.user.firstname + " " + data?.user.lastname : ""}
                         />
                         {/* <CarouselItemImage src={imageUrl}></CarouselItemImage> */}

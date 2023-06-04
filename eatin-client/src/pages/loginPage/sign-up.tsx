@@ -41,7 +41,7 @@ function SignUp() {
     const [birthDate, setBirthDate] = useState<Date | null>(null);
     const [userId, setUserId] = useState<string>("");
     const [updateRecommendations, setUpdateRecommendations] = useState<Boolean>(false);
-    // const [image, setImage] = useState(null);
+    const [image, setImage] = useState(null);
     const { firstName, lastName, email, password, phone, gender, country } = formFields;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -72,6 +72,7 @@ function SignUp() {
         event.preventDefault();
         setLoading(true);
         try {
+            // todo: use uploadImage function and add url to user
             const userCredential: { user: { uid: any } } = await signUpUser(
                 firstName,
                 lastName,
@@ -146,10 +147,12 @@ function SignUp() {
         setFormFields({ ...formFields, country: country });
     };
 
-    // const handleImageChange = (event: any) => {
-    //     // What type is it??
-    //     setImage(event.target.file);
-    // };
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (!event.target.files?.length) return;
+
+        const files = Array.prototype.slice.call(event.target.files);
+        setImage(files[0]);
+    };
 
     return (
         <Container>
@@ -269,9 +272,9 @@ function SignUp() {
                                     )}
                                 />
                             </div>
-                            {/* <div>
+                            <div>
                                 <input type="file" accept="image/*" onChange={handleImageChange} />
-                            </div> */}
+                            </div>
                             <div className="d-grid mb-2">
                                 <ButtonWrapper
                                     type="submit"

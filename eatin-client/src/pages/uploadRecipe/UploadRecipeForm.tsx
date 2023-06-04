@@ -22,6 +22,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { useUpdateIsUploadedRecipe } from "../../components/functions/useInsertNewUserRecipe";
 import { ButtonWrapper } from "../loginPage/auth-style";
+import { useToastNotification } from "../../components/functions/useToastNotification";
 
 export interface SelectRecipeMetadata {
     cuisine: string;
@@ -116,6 +117,7 @@ const ValidationSchema = yup.object({
 export const UploadRecipeForm: FC = () => {
     const navigate = useNavigate();
     const { currentUser } = useAuth();
+    const { notify } = useToastNotification();
 
     const [createRecipe, { data, loading, error }] = useCreateRecipeMutation();
     const { updateIsUploaded } = useUpdateIsUploadedRecipe();
@@ -148,7 +150,6 @@ export const UploadRecipeForm: FC = () => {
                     total_time: Number(values.prep_time) + Number(values.cook_time),
                     record_health: values.record_health,
                 };
-                console.log("🚀 ~ file: UploadRecipePage.tsx:105 ~ onSubmit: ~ recipe:", recipe);
 
                 const res = await createRecipe({ variables: recipe });
                 if (!res.data?.createRecipe?.index) throw "no recipe id";
@@ -157,6 +158,7 @@ export const UploadRecipeForm: FC = () => {
                 navigate(`recipe/${res.data.createRecipe.index}`);
             } catch (e) {
                 console.log(e);
+                notify("something went wrong...");
             }
         },
     });
