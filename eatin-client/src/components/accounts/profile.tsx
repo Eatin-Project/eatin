@@ -66,16 +66,17 @@ export const Profile: FC = () => {
                             <TransgenderIcon fontSize="large" color="success" />
                         )}
                     </h2>
-
-                    <h6>{data?.user.email}</h6>
                     <div className="user-info">
-                        <span>From {data?.user.country}</span>
-                        <span>Birthday is on {new Date(data?.user.birthdate).toDateString()}</span>
+                        <div className="fw-bolder">Live in {data?.user.country}</div>
+                        <div className="fw-bolder">Born on {new Date(data?.user.birthdate).toDateString()}</div>
+                        <h6 className="mt-3 fw-bold">Contact info:</h6>
+                        <div><span className="fw-bolder">Email: </span>{data?.user.email}</div>
+                        <div><span className="fw-bolder">Phone number: </span>{data?.user.phone}</div>
                     </div>
                 </div>
             </div>
             <div className="recipe-section">
-                <div className="profile-filters">
+                <div className="center-row">
                     {tabValue === 0 ? (
                         <FilterRecipes
                             filterOptions={currentUploadedCatalogFilterOptions}
@@ -92,12 +93,10 @@ export const Profile: FC = () => {
                         />
                     )}
                 </div>
-                <div className="recipe-tabs">
+                <div className="center-row mt-4">
                     <Tabs
                         value={tabValue}
                         onChange={handleChange}
-                        textColor="secondary"
-                        indicatorColor="secondary"
                     >
                         <Tab label="My Recipes" icon={<UploadIcon fontSize="large" />} />
                         <Tab label="Saved Recipes" icon={<BookmarkIcon fontSize="large" />} />
