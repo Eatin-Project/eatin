@@ -17,7 +17,6 @@ import MenuItem from "@mui/material/MenuItem";
 import { Button, IconButton } from "@mui/material";
 import { useGetUsersName } from "../hooks/useGetUsersName";
 import { useSearch } from "../../context/search-context";
-// import { getUserProfilePictureUrl } from "../../firebase/firebase-service";
 
 export const Navbar = () => {
     const navigate = useNavigate();
@@ -100,7 +99,7 @@ export const Navbar = () => {
                                 "aria-labelledby": "basic-button",
                             }}
                         >
-                            <MenuItem onClick={handleClose}>Settings</MenuItem>
+                            {/* <MenuItem onClick={handleClose}>Settings</MenuItem> */}
                             <MenuItem onClick={onLogOutClicked}>Logout</MenuItem>
                         </Menu>
                     </div>
@@ -110,10 +109,3 @@ export const Navbar = () => {
         </>
     );
 };
-
-// const CarouselItemImage = styled.img`
-//     object-fit: cover;
-//     border-radius: 8px;
-//     height: 100%;
-//     width: 100%;
-// `;

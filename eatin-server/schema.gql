@@ -74,33 +74,35 @@ type Comments {
 }
 
 type Query {
-    user(id: String!): Users!
-    users: [Users!]!
-    recipe(index: Float!, userID: String!): Recipes!
-    recipes(userID: String!): [Recipes!]!
-    recipesByValue(value: String!, userID: String!): [Recipes!]!
-    topRecipesByCategory(category: String!, userID: String!): [Recipes!]!
-    topRecipesByCuisine(cuisine: String!, userID: String!): [Recipes!]!
-    recipeFieldOptions(field: String!, value: String!): [String!]!
-    ratingsByRecipe(index: Float!): [Ratings!]!
-    ratingsByUser(id: String!): [Ratings!]!
-    ratingByUserAndRecipe(id: String!, index: Float!): Ratings
-    ratings: [Ratings!]!
-    userRecipesByRecipe(recipeID: Float!): [Userrecipes!]!
-    userRecipesByUser(userID: String!): [Userrecipes!]!
-    userRecipesByUserAndIsSaved(userID: String!, isSaved: Boolean!): [Userrecipes!]!
-    userRecipesByRecipeAndIsSaved(recipeID: Float!, isSaved: Boolean!): [Userrecipes!]!
-    userRecipesByUserAndIsUploaded(userID: String!, isUploaded: Boolean!): [Userrecipes!]!
-    userRecipesByRecipeAndIsUploaded(recipeID: Float!, isUploaded: Boolean!): [Userrecipes!]!
-    userRecipesByUserAndRecipe(userID: String!, recipeID: Float!): Userrecipes!
-    userRecipes: [Userrecipes!]!
-    savedRecipesOfUser(userID: String!): [Recipes!]!
-    userRecommendationsByUser(userID: String!): Userrecommendations!
-    commentsByRecipeIndex(recipeID: Float!): [Comments!]!
-    commentsByUserID(userID: String!): [Comments!]!
-    commentsByID(id: String!): Comments!
-    commentsByRecipeAndUser(recipeID: Float!, userID: String!): [Comments!]!
-    comments: [Comments!]!
+  user(id: String!): Users!
+  users: [Users!]!
+  recipe(index: Float!, userID: String!): Recipes!
+  recipes(userID: String!): [Recipes!]!
+  recipesByValue(value: String!, userID: String!): [Recipes!]!
+  savedRecipesByValue(value: String!, userID: String!): [Recipes!]!
+  uploadedRecipesByValue(value: String!, userID: String!): [Recipes!]!
+  topRecipesByCategory(category: String!, userID: String!): [Recipes!]!
+  topRecipesByCuisine(cuisine: String!, userID: String!): [Recipes!]!
+  recipeFieldOptions(field: String!, value: String!): [String!]!
+  ratingsByRecipe(index: Float!): [Ratings!]!
+  ratingsByUser(id: String!): [Ratings!]!
+  ratingByUserAndRecipe(id: String!, index: Float!): Ratings
+  ratings: [Ratings!]!
+  userRecipesByRecipe(recipeID: Float!): [Userrecipes!]!
+  userRecipesByUser(userID: String!): [Userrecipes!]!
+  userRecipesByUserAndIsSaved(userID: String!, isSaved: Boolean!): [Userrecipes!]!
+  userRecipesByRecipeAndIsSaved(recipeID: Float!, isSaved: Boolean!): [Userrecipes!]!
+  userRecipesByUserAndIsUploaded(userID: String!, isUploaded: Boolean!): [Userrecipes!]!
+  userRecipesByRecipeAndIsUploaded(recipeID: Float!, isUploaded: Boolean!): [Userrecipes!]!
+  userRecipesByUserAndRecipe(userID: String!, recipeID: Float!): Userrecipes!
+  userRecipes: [Userrecipes!]!
+  savedRecipesOfUser(userID: String!): [Recipes!]!
+  userRecommendationsByUser(userID: String!): Userrecommendations!
+  commentsByRecipeIndex(recipeID: Float!): [Comments!]!
+  commentsByUserID(userID: String!): [Comments!]!
+  commentsByID(id: String!): Comments!
+  commentsByRecipeAndUser(recipeID: Float!, userID: String!): [Comments!]!
+  comments: [Comments!]!
 }
 
 type Mutation {
