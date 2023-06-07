@@ -256,7 +256,10 @@ export const UploadRecipeForm: FC = () => {
                         {...getErrorProps("stages")}
                     />
                 </div>
-                <MediaUpload onChange={(value) => handleChange("image", value)} />
+                <MediaUpload
+                    onChange={(value) => handleChange("image", value)}
+                    {...getErrorProps("image")}
+                />
                 <ButtonWrapper
                     type="submit"
                     disabled={loading}

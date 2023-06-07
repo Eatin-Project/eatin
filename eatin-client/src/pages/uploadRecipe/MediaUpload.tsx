@@ -11,10 +11,12 @@ export type Image = {
 };
 
 interface Props {
+    error?: boolean;
+    helperText?: string;
     onChange: (image: File) => void;
 }
 
-export const MediaUpload: FC<Props> = ({ onChange }) => {
+export const MediaUpload: FC<Props> = ({ onChange, error, helperText }) => {
     const [image, setImage] = useState<Image>();
 
     const uploadMedia = (file: File) => {
@@ -32,6 +34,7 @@ export const MediaUpload: FC<Props> = ({ onChange }) => {
     return (
         <div className="media-upload">
             <FileUpload onUploadFile={uploadMedia} />
+            {error ? <span className="error-text">{helperText}</span> : null}
             {image && (
                 <div key={image.url} className="image-item">
                     <img src={image.url} alt={image.name} />
