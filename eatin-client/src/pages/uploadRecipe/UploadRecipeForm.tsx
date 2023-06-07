@@ -180,6 +180,7 @@ export const UploadRecipeForm: FC = () => {
                         label="title"
                         name="title"
                         size="small"
+                        variant="standard"
                         onChange={formik.handleChange}
                         value={formik.values.title}
                         {...getErrorProps("title")}
@@ -190,6 +191,7 @@ export const UploadRecipeForm: FC = () => {
                         size="small"
                         multiline
                         fullWidth
+                        variant="standard"
                         onChange={formik.handleChange}
                         value={formik.values.description}
                         {...getErrorProps("description")}
@@ -199,6 +201,7 @@ export const UploadRecipeForm: FC = () => {
                             label="prep time"
                             name="prep_time"
                             size="small"
+                            variant="standard"
                             inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             onChange={formik.handleChange}
                             value={formik.values.prep_time}
@@ -208,6 +211,7 @@ export const UploadRecipeForm: FC = () => {
                             label="cook time"
                             name="cook_time"
                             size="small"
+                            variant="standard"
                             inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                             onChange={formik.handleChange}
                             value={formik.values.cook_time}

@@ -33,7 +33,15 @@ export const SelectInput: FC<SelectInputProps> = ({
     return (
         <FormControl sx={{ minWidth: minSize ?? 100 }} error={error}>
             <InputLabel size="small">{upperCaseFirstLetter(label)}</InputLabel>
-            <Select value={value} onChange={handleChange} size="small" autoWidth label={label}>
+
+            <Select
+                value={value}
+                onChange={handleChange}
+                size="small"
+                variant="standard"
+                autoWidth
+                label={label}
+            >
                 {options?.map((option) => (
                     <MenuItem key={option} value={option}>
                         {option}

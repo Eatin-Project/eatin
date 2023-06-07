@@ -52,6 +52,10 @@ form > div {
     background-color: #e14026 !important;
 }
 
+.red-button svg {
+    fill: white;
+}
+
 .red-button.disabled {
     background-color: #e1bdbd !important;
 }

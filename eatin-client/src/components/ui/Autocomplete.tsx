@@ -136,6 +136,7 @@ export function Autocomplete<
                     label={title}
                     error={error}
                     size="small"
+                    variant="standard"
                     placeholder={placeholder}
                     helperText={helperText}
                     InputProps={{

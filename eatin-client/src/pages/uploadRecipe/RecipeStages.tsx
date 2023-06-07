@@ -1,7 +1,8 @@
 import "./RecipeStages.css";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Button, IconButton, TextField } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { IconButton, TextField } from "@mui/material";
 import { FC, useState } from "react";
 
 interface Props {
@@ -45,6 +46,7 @@ export const RecipeStages: FC<Props> = ({ stages, onChange, error, helperText })
                 <div key={keys[index]} className="recipe-stage">
                     <span className="index">{index + 1})</span>
                     <TextField
+                        variant="standard"
                         value={value}
                         label="stage"
                         multiline
@@ -64,9 +66,9 @@ export const RecipeStages: FC<Props> = ({ stages, onChange, error, helperText })
                     )}
                 </div>
             ))}
-            <Button className="red-button" variant="contained" onClick={addStage}>
-                Add stage
-            </Button>
+            <IconButton className="delete-btn red-button" size="small" onClick={addStage}>
+                <AddIcon />
+            </IconButton>
         </div>
     );
 };
