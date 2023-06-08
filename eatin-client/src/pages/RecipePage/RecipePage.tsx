@@ -80,6 +80,7 @@ export const RecipePage: FC = () => {
             updateIsSaved(true);
             notify(`${recipe.recipe_title}, was saved`);
         }
+        setUpdateRecommendations(true);
         setIsSaved(!isSaved);
     };
 
