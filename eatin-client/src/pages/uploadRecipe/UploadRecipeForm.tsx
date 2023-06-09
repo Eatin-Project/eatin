@@ -187,7 +187,7 @@ export const UploadRecipeForm: FC = () => {
                 <div className="recipe-inputs">
                     <h4 className="recipe-title">Recipe</h4>
                     <TextField
-                        label="title"
+                        label="Title"
                         name="title"
                         size="small"
                         variant="standard"
@@ -196,7 +196,7 @@ export const UploadRecipeForm: FC = () => {
                         {...getErrorProps("title")}
                     />
                     <TextField
-                        label="description"
+                        label="Description"
                         name="description"
                         size="small"
                         multiline
@@ -208,7 +208,7 @@ export const UploadRecipeForm: FC = () => {
                     />
                     <div className="select-inputs">
                         <TextField
-                            label="prep time"
+                            label="Preparation Time (Minutes)"
                             name="prep_time"
                             size="small"
                             variant="standard"
@@ -218,7 +218,7 @@ export const UploadRecipeForm: FC = () => {
                             {...getErrorProps("prep_time")}
                         />
                         <TextField
-                            label="cook time"
+                            label="Cooking Time (Minutes)"
                             name="cook_time"
                             size="small"
                             variant="standard"

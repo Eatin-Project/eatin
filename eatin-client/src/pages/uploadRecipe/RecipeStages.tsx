@@ -48,7 +48,7 @@ export const RecipeStages: FC<Props> = ({ stages, onChange, error, helperText })
                     <TextField
                         variant="standard"
                         value={value}
-                        label="stage"
+                        label={!!value ? "" : "Stage Description"}
                         multiline
                         fullWidth
                         size="small"
