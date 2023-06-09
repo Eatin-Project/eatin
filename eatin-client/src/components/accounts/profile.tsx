@@ -14,6 +14,11 @@ import MaleIcon from "@mui/icons-material/Male";
 import { useGetSavedRecipesBySearch } from "../functions/useGetSavedRecipesBySearch";
 import { useGetUploadedRecipesBySearch } from "../functions/useGetUploadedRecipesBySearch";
 import { useCatalogFilterRecipes } from "../hooks/useCatalogFilterRecipes";
+import PlaceIcon from "@mui/icons-material/Place";
+import EmailIcon from "@mui/icons-material/Email";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import CakeIcon from "@mui/icons-material/Cake";
+import { Separator } from "../../pages/RecipePage/RecipePageRightSection";
 
 export const Profile: FC = () => {
     const [searchValue, setSearchValue] = useState<string>("");
@@ -54,9 +59,9 @@ export const Profile: FC = () => {
                         className="current-user-picture"
                         alt="Your picture"
                         src="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2022-08/220805-domestic-cat-mjf-1540-382ba2.jpg"
-                        sx={{ width: 90, height: 90 }}
+                        sx={{ width: 150, height: 150 }}
                     />
-                    <h2>
+                    <div className="user-name-title">
                         {data?.user.firstname + " " + data?.user.lastname}
                         {data?.user.gender === "Female" ? (
                             <FemaleIcon fontSize="large" color="secondary" />
@@ -65,17 +70,26 @@ export const Profile: FC = () => {
                         ) : (
                             <TransgenderIcon fontSize="large" color="success" />
                         )}
-                    </h2>
-
-                    <h6>{data?.user.email}</h6>
+                    </div>
+                    <Separator />
                     <div className="user-info">
-                        <span>From {data?.user.country}</span>
-                        <span>Birthday is on {new Date(data?.user.birthdate).toDateString()}</span>
+                        <div className="fw-bolder">
+                            <PlaceIcon /> {data?.user.country}
+                        </div>
+                        <div className="fw-bolder">
+                            <CakeIcon /> {new Date(data?.user.birthdate).toDateString()}
+                        </div>
+                        <div className="fw-bolder">
+                            <EmailIcon /> {data?.user.email}
+                        </div>
+                        <div className="fw-bolder">
+                            <LocalPhoneIcon /> {data?.user.phone}
+                        </div>
                     </div>
                 </div>
             </div>
             <div className="recipe-section">
-                <div className="profile-filters">
+                <div className="center-row">
                     {tabValue === 0 ? (
                         <FilterRecipes
                             filterOptions={currentUploadedCatalogFilterOptions}
@@ -92,31 +106,27 @@ export const Profile: FC = () => {
                         />
                     )}
                 </div>
-                <div className="recipe-tabs">
-                    <Tabs
-                        value={tabValue}
-                        onChange={handleChange}
-                        textColor="secondary"
-                        indicatorColor="secondary"
-                    >
-                        <Tab label="My Recipes" icon={<UploadIcon fontSize="large" />} />
+                <div className="center-row mt-4">
+                    <Tabs value={tabValue} onChange={handleChange}>
                         <Tab label="Saved Recipes" icon={<BookmarkIcon fontSize="large" />} />
+                        <Tab label="My Recipes" icon={<UploadIcon fontSize="large" />} />
                     </Tabs>
                 </div>
+
                 <div className="recipe-results">
                     {tabValue === 0 ? (
-                        <AsyncDataLoaderWrapper
-                            loading={searchResultUploadedRecipesLoading}
-                            text="Loading my recipes..."
-                        >
-                            <RecipesCatalog recipes={catalogFilteredUploadedRecipes} />
-                        </AsyncDataLoaderWrapper>
-                    ) : (
                         <AsyncDataLoaderWrapper
                             loading={searchResultSavedRecipesLoading}
                             text="Loading saved recipes..."
                         >
                             <RecipesCatalog recipes={catalogFilteredSavedRecipes} />
+                        </AsyncDataLoaderWrapper>
+                    ) : (
+                        <AsyncDataLoaderWrapper
+                            loading={searchResultUploadedRecipesLoading}
+                            text="Loading my recipes..."
+                        >
+                            <RecipesCatalog recipes={catalogFilteredUploadedRecipes} />
                         </AsyncDataLoaderWrapper>
                     )}
                 </div>

@@ -14,6 +14,7 @@ interface Props {
     rating: number | null;
     isSaved: boolean;
 }
+
 export const RecipePageRightSection: FC<Props> = ({
     shownRecipe,
     bookmarkClicked,
@@ -100,10 +101,11 @@ const RecipeContentTitle = styled.div`
     margin-bottom: 0.5em;
 `;
 
-const Separator = styled.div`
+export const Separator = styled.div`
     border: 0.5px solid #d9d9d9b0;
     margin: 1em 0 1em 0;
     backdrop-filter: blur(2px);
+    width: 100%;
 `;
 
 const RecipeRating = styled.div`
