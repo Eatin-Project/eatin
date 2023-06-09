@@ -202,3 +202,9 @@ export const GET_RECIPE_BY_CUISINE = gql`
         }
     }
 `;
+
+export const GET_RECIPE_FIELD_OPTIONS = gql`
+    query getRecipeFieldOptions($field: String!, $value: String!) {
+        recipeFieldOptions(field: $field, value: $value)
+    }
+`;

@@ -1,4 +1,6 @@
 import "./Navbar.css";
+// import styled from "styled-components";
+// import { useEffect } from "react";
 
 import { Outlet, useNavigate } from "react-router-dom";
 
@@ -9,6 +11,7 @@ import { useAuth } from "../../context/auth-context";
 import { User } from "../ui/User";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, IconButton } from "@mui/material";
@@ -23,6 +26,19 @@ export const Navbar = () => {
         variables: { id: userID },
     });
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    // const [imageUrl, setUserProfilePictureUrl] = useState("");
+    // useEffect(() => {
+    //     const getImageUrl = async () => {
+    //         try {
+    //             var v = await getUserProfilePictureUrl("bmDO5F0Xd3OasWynppWe7o8w9vD3");
+    //             setUserProfilePictureUrl(v);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     };
+
+    //     getImageUrl();
+    // }, []);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -37,6 +53,10 @@ export const Navbar = () => {
         handleClose();
     };
 
+    function getUserProfilePicture(userId: string) {
+        // return getUserProfilePictureUrl(userId);
+    }
+
     return (
         <>
             <div className="navbar">
@@ -50,8 +70,16 @@ export const Navbar = () => {
                         <User
                             name={!!data ? data?.user.firstname + " " + data?.user.lastname : ""}
                         />
+                        {/* <CarouselItemImage src={imageUrl}></CarouselItemImage> */}
                     </Button>
                     <div>
+                        <IconButton
+                            className="add-recipe"
+                            size="small"
+                            onClick={() => navigate("/upload")}
+                        >
+                            <NoteAddIcon />
+                        </IconButton>
                         <IconButton
                             id="basic-button"
                             aria-controls={open ? "basic-menu" : undefined}

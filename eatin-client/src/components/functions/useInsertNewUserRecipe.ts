@@ -62,3 +62,28 @@ export function useInsertNewUserRecipe(recipeIndex: number) {
 
     return { data, updateIsSaved, updateIsUploaded };
 }
+
+export function useUpdateIsUploadedRecipe() {
+    const userID = useGetUsersName();
+
+    const [createSavedUserRecipe] = useCreateUserRecipesMutation();
+
+    const updateIsUploaded = useCallback(
+        async (isUploaded: boolean, recipeIndex: number) => {
+            const newValueToAdd = {
+                user_id: userID,
+                recipe_index: Number(recipeIndex),
+                is_saved: false,
+                given_comment: "",
+                is_uploaded: isUploaded,
+            };
+
+            return createSavedUserRecipe({
+                variables: newValueToAdd,
+            });
+        },
+        [createSavedUserRecipe, userID],
+    );
+
+    return { updateIsUploaded };
+}

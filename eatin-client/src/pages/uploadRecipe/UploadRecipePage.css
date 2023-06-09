@@ -1,0 +1,22 @@
+.upload-recipe-page {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.upload-recipe-page .upload-recipe-page-form {
+    max-width: 90%;
+    width: 90%;
+}
+
+.upload-recipe-page .book-img {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+}
+
+.upload-recipe-page .book-img svg {
+    width: 100%;
+    height: 100%;
+    margin: 1rem;
+}

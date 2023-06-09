@@ -1,0 +1,1 @@
+create table shirleyRecipes as (select * from recipes);

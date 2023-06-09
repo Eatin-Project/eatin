@@ -1,5 +1,16 @@
+import "./UploadRecipePage.css";
+
 import { FC } from "react";
+import { ReactComponent as BookImg } from "../../assets/Book.svg";
+import { UploadRecipeForm } from "./UploadRecipeForm";
 
 export const UploadRecipePage: FC = () => {
-  return <h1>I AM AN UPLOAD PAGE :D</h1>;
+    return (
+        <div className="upload-recipe-page">
+            <UploadRecipeForm />
+            <div className="book-img">
+                <BookImg />
+            </div>
+        </div>
+    );
 };

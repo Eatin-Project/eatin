@@ -71,7 +71,6 @@ export type MutationCreateRecipeArgs = {
   record_health: Scalars['String'];
   tags: Scalars['String'];
   total_time: Scalars['Float'];
-  url: Scalars['String'];
 };
 
 
@@ -117,6 +116,7 @@ export type Query = {
   ratingsByRecipe: Array<Ratings>;
   ratingsByUser: Array<Ratings>;
   recipe: Recipes;
+  recipeFieldOptions: Array<Scalars['String']>;
   recipes: Array<Recipes>;
   recipesByValue: Array<Recipes>;
   savedRecipesByValue: Array<Recipes>;
@@ -183,6 +183,12 @@ export type QueryRecipeArgs = {
 
 export type QueryRecipesArgs = {
   userID: Scalars['String'];
+};
+
+
+export type QueryRecipeFieldOptionsArgs = {
+  field: Scalars['String'];
+  value: Scalars['String'];
 };
 
 
@@ -359,7 +365,6 @@ export type CreateRatingMutation = { __typename?: 'Mutation', createRating: { __
 
 export type CreateRecipeMutationVariables = Exact<{
   recipe_title: Scalars['String'];
-  url: Scalars['String'];
   record_health: Scalars['String'];
   description: Scalars['String'];
   cuisine: Scalars['String'];
@@ -378,7 +383,7 @@ export type CreateRecipeMutationVariables = Exact<{
 }>;
 
 
-export type CreateRecipeMutation = { __typename?: 'Mutation', createRecipe: { __typename?: 'Recipes', recipe_title: string, url: string, record_health: string, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number } };
+export type CreateRecipeMutation = { __typename?: 'Mutation', createRecipe: { __typename?: 'Recipes', recipe_title: string, url: string, record_health: string, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number, index: number } };
 
 export type CreateUserRecipesMutationVariables = Exact<{
   user_id: Scalars['String'];
@@ -527,6 +532,14 @@ export type GetTopRatedRecipesByCuisineQueryVariables = Exact<{
 
 
 export type GetTopRatedRecipesByCuisineQuery = { __typename?: 'Query', topRecipesByCuisine: Array<{ __typename?: 'Recipes', index: number, recipe_title: string, url: string, record_health: string, vote_count: number, rating: number, description: string, cuisine: string, course: string, diet: string, prep_time: number, cook_time: number, ingredients: string, instructions: string, author: string, tags: string, category: string, image: string, difficulty: string, total_time: number, is_saved: boolean, is_uploaded: boolean }> };
+
+export type GetRecipeFieldOptionsQueryVariables = Exact<{
+  field: Scalars['String'];
+  value: Scalars['String'];
+}>;
+
+
+export type GetRecipeFieldOptionsQuery = { __typename?: 'Query', recipeFieldOptions: Array<string> };
 
 export type GetAllUserrecipesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -734,10 +747,9 @@ export type CreateRatingMutationHookResult = ReturnType<typeof useCreateRatingMu
 export type CreateRatingMutationResult = Apollo.MutationResult<CreateRatingMutation>;
 export type CreateRatingMutationOptions = Apollo.BaseMutationOptions<CreateRatingMutation, CreateRatingMutationVariables>;
 export const CreateRecipeDocument = gql`
-    mutation createRecipe($recipe_title: String!, $url: String!, $record_health: String!, $description: String!, $cuisine: String!, $course: String!, $diet: String!, $prep_time: Float!, $cook_time: Float!, $ingredients: String!, $instructions: String!, $author: String!, $tags: String!, $category: String!, $image: String!, $difficulty: String!, $total_time: Float!) {
+    mutation createRecipe($recipe_title: String!, $record_health: String!, $description: String!, $cuisine: String!, $course: String!, $diet: String!, $prep_time: Float!, $cook_time: Float!, $ingredients: String!, $instructions: String!, $author: String!, $tags: String!, $category: String!, $image: String!, $difficulty: String!, $total_time: Float!) {
   createRecipe(
     recipe_title: $recipe_title
-    url: $url
     record_health: $record_health
     description: $description
     cuisine: $cuisine
@@ -771,6 +783,7 @@ export const CreateRecipeDocument = gql`
     image
     difficulty
     total_time
+    index
   }
 }
     `;
@@ -790,7 +803,6 @@ export type CreateRecipeMutationFn = Apollo.MutationFunction<CreateRecipeMutatio
  * const [createRecipeMutation, { data, loading, error }] = useCreateRecipeMutation({
  *   variables: {
  *      recipe_title: // value for 'recipe_title'
- *      url: // value for 'url'
  *      record_health: // value for 'record_health'
  *      description: // value for 'description'
  *      cuisine: // value for 'cuisine'
@@ -1706,6 +1718,40 @@ export function useGetTopRatedRecipesByCuisineLazyQuery(baseOptions?: Apollo.Laz
 export type GetTopRatedRecipesByCuisineQueryHookResult = ReturnType<typeof useGetTopRatedRecipesByCuisineQuery>;
 export type GetTopRatedRecipesByCuisineLazyQueryHookResult = ReturnType<typeof useGetTopRatedRecipesByCuisineLazyQuery>;
 export type GetTopRatedRecipesByCuisineQueryResult = Apollo.QueryResult<GetTopRatedRecipesByCuisineQuery, GetTopRatedRecipesByCuisineQueryVariables>;
+export const GetRecipeFieldOptionsDocument = gql`
+    query getRecipeFieldOptions($field: String!, $value: String!) {
+  recipeFieldOptions(field: $field, value: $value)
+}
+    `;
+
+/**
+ * __useGetRecipeFieldOptionsQuery__
+ *
+ * To run a query within a React component, call `useGetRecipeFieldOptionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRecipeFieldOptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRecipeFieldOptionsQuery({
+ *   variables: {
+ *      field: // value for 'field'
+ *      value: // value for 'value'
+ *   },
+ * });
+ */
+export function useGetRecipeFieldOptionsQuery(baseOptions: Apollo.QueryHookOptions<GetRecipeFieldOptionsQuery, GetRecipeFieldOptionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRecipeFieldOptionsQuery, GetRecipeFieldOptionsQueryVariables>(GetRecipeFieldOptionsDocument, options);
+      }
+export function useGetRecipeFieldOptionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRecipeFieldOptionsQuery, GetRecipeFieldOptionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRecipeFieldOptionsQuery, GetRecipeFieldOptionsQueryVariables>(GetRecipeFieldOptionsDocument, options);
+        }
+export type GetRecipeFieldOptionsQueryHookResult = ReturnType<typeof useGetRecipeFieldOptionsQuery>;
+export type GetRecipeFieldOptionsLazyQueryHookResult = ReturnType<typeof useGetRecipeFieldOptionsLazyQuery>;
+export type GetRecipeFieldOptionsQueryResult = Apollo.QueryResult<GetRecipeFieldOptionsQuery, GetRecipeFieldOptionsQueryVariables>;
 export const GetAllUserrecipesDocument = gql`
     query getAllUserrecipes {
   userRecipes {
