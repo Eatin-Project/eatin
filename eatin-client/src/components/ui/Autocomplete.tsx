@@ -84,6 +84,11 @@ export function Autocomplete<
                 }),
             );
 
+        if (freeSolo) {
+            const { inputValue, ...item } = value as AutocompleteItem;
+            return onItemSelected(item as AutocompleteValue<Multipile>);
+        }
+
         onItemSelected(value as AutocompleteValue<Multipile>);
     };
 
@@ -102,7 +107,7 @@ export function Autocomplete<
             freeSolo &&
             !options.some((_) => _.title === params.inputValue)
         ) {
-            filtered.push({
+            filtered.unshift({
                 value: params.inputValue,
                 inputValue: `Add "${params.inputValue}"`,
                 title: params.inputValue,

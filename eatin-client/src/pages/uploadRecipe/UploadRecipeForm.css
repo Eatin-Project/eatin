@@ -13,7 +13,6 @@
 }
 
 form > div {
-    margin: 0 0.5em;
     width: 100%;
 }
 
@@ -23,6 +22,25 @@ form > div {
 
 .upload-recipe-page-form .recipe-inputs h4 {
     margin: 1rem 0 1.5rem;
+    font-weight: bold;
+}
+
+.upload-recipe-page-form .recipe-inputs .recipe-title {
+    text-align: center !important;
+    z-index: 1;
+    position: relative;
+    font-size: 1.8em;
+}
+
+.upload-recipe-page-form .recipe-inputs .recipe-title::before {
+    content: " ";
+    background-color: #e0e0e0;
+    height: 1.9em;
+    width: 4.8em;
+    position: absolute;
+    transform: translate(-0.8em, 0.2rem);
+    z-index: -1;
+    clip-path: polygon(22% 18%, 79% 18%, 100% 30%, 100% 53%, 79% 46%, 21% 46%, 0 53%, 0% 30%);
 }
 
 .upload-recipe-page-form .instructions-title {
@@ -58,4 +76,10 @@ form > div {
 
 .red-button.disabled {
     background-color: #e1bdbd !important;
+}
+
+.select-inputs .css-16xnw6h-MuiFormControl-root .MuiFormLabel-root,
+.select-inputs .css-1lf2uee-MuiFormControl-root .MuiFormLabel-root {
+    left: -12px !important;
+    top: 9px !important;
 }

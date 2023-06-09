@@ -8,33 +8,37 @@ import { MediaUpload } from "./MediaUpload";
 import { RecipeStages } from "./RecipeStages";
 
 import { AutocompleteItem } from "../../components/ui/Autocomplete";
-import { useCreateRecipeMutation } from "../../generated/graphql";
+import { useCreateRecipeMutation, useGetUserByIdQuery } from "../../generated/graphql";
 import { UploadRecipeSelect } from "./UploadRecipeSelect";
-import { UploadRecipeAutocomplete } from "./UploadRecipeAutocomplete";
+import {
+    UploadRecipeAutocomplete,
+    UploadRecipeMultiAutocomplete,
+} from "./UploadRecipeAutocomplete";
 import { Recipe } from "../../components/types";
 import { SelectInput } from "../../components/ui/SelectInput";
 import { arrayToString } from "../../components/functions/stringFunctions";
 import { useNavigate } from "react-router";
 import { CircularProgress } from "@mui/material";
-import { useAuth } from "../../context/auth-context";
 import { uploadImage } from "../../firebase/firebase-service";
 import { v4 as uuidv4 } from "uuid";
 
 import { useUpdateIsUploadedRecipe } from "../../components/functions/useInsertNewUserRecipe";
 import { ButtonWrapper } from "../loginPage/auth-style";
 import { useToastNotification } from "../../components/functions/useToastNotification";
+import { useGetUsersName } from "../../components/hooks/useGetUsersName";
+import { Cuisine } from "../homePage/entities/cuisines.enum";
 
 export interface SelectRecipeMetadata {
     cuisine: string;
     course: string;
     diet: string;
-    category: string;
     difficulty: string;
 }
 
 export interface AutocompleteRecipeMetadata {
     ingredients: AutocompleteItem[];
     tags: AutocompleteItem[];
+    category: AutocompleteItem | null;
 }
 
 interface NumericRecipeMetadata {
@@ -55,13 +59,7 @@ export interface RecipeMetadata
 
 type NotNeededRecipeFields = "url" | "vote_count" | "rating" | "index" | "is_saved" | "is_uploaded";
 
-const selectInputsKeys: Array<keyof SelectRecipeMetadata> = [
-    "category",
-    "course",
-    "cuisine",
-    "diet",
-    "difficulty",
-];
+const selectInputsKeys: Array<keyof SelectRecipeMetadata> = ["course", "diet", "difficulty"];
 
 const RecordHealthOptions = ["good", "bad", "normal"];
 
@@ -70,7 +68,7 @@ const initialValues: RecipeMetadata = {
     cuisine: "",
     course: "",
     diet: "",
-    category: "",
+    category: null,
     description: "",
     stages: [""],
     ingredients: [],
@@ -101,7 +99,7 @@ const ValidationSchema = yup.object({
     cuisine: yup.string().required(),
     course: yup.string().required(),
     diet: yup.string().required(),
-    category: yup.string().required(),
+    category: yup.mixed().required(),
     description: yup.string().required(),
     stages: checkIfStringArray(yup.array().min(3, "less then 3 instructions").required()),
     ingredients: yup.array().min(3, "less then 3 ingredients").required(),
@@ -115,7 +113,10 @@ const ValidationSchema = yup.object({
 
 export const UploadRecipeForm: FC = () => {
     const navigate = useNavigate();
-    const { currentUser } = useAuth();
+    const userID = useGetUsersName();
+    const { data: userData } = useGetUserByIdQuery({
+        variables: { id: userID },
+    });
     const { notify } = useToastNotification();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -134,10 +135,14 @@ export const UploadRecipeForm: FC = () => {
                 setIsLoading(true);
                 const image = await uploadImage(uuidv4().replaceAll("-", ""), values.image);
 
+                const author = userData
+                    ? userData.user.firstname + " " + userData.user.lastname
+                    : "anonymous";
+
                 const recipe: Omit<Recipe, NotNeededRecipeFields> = {
                     recipe_title: values.title,
-                    author: currentUser?.displayName ?? "anonymous",
-                    category: values.category,
+                    author,
+                    category: values.category?.title ?? "",
                     diet: values.diet,
                     course: values.course,
                     cuisine: values.cuisine,
@@ -180,9 +185,9 @@ export const UploadRecipeForm: FC = () => {
         <div className="upload-recipe-page-form">
             <form onSubmit={formik.handleSubmit}>
                 <div className="recipe-inputs">
-                    <h4>Create a New Recipe</h4>
+                    <h4 className="recipe-title">Recipe</h4>
                     <TextField
-                        label="title"
+                        label="Title"
                         name="title"
                         size="small"
                         variant="standard"
@@ -191,7 +196,7 @@ export const UploadRecipeForm: FC = () => {
                         {...getErrorProps("title")}
                     />
                     <TextField
-                        label="description"
+                        label="Description"
                         name="description"
                         size="small"
                         multiline
@@ -203,7 +208,7 @@ export const UploadRecipeForm: FC = () => {
                     />
                     <div className="select-inputs">
                         <TextField
-                            label="prep time"
+                            label="Preparation Time (Minutes)"
                             name="prep_time"
                             size="small"
                             variant="standard"
@@ -213,7 +218,7 @@ export const UploadRecipeForm: FC = () => {
                             {...getErrorProps("prep_time")}
                         />
                         <TextField
-                            label="cook time"
+                            label="Cooking Time (Minutes)"
                             name="cook_time"
                             size="small"
                             variant="standard"
@@ -223,17 +228,23 @@ export const UploadRecipeForm: FC = () => {
                             {...getErrorProps("cook_time")}
                         />
                     </div>
-                    <UploadRecipeAutocomplete
+                    <UploadRecipeMultiAutocomplete
                         field="ingredients"
                         values={formik.values.ingredients}
                         onChange={handleChange}
                         {...getErrorProps("ingredients")}
                     />
-                    <UploadRecipeAutocomplete
+                    <UploadRecipeMultiAutocomplete
                         field="tags"
                         values={formik.values.tags}
                         onChange={handleChange}
                         {...getErrorProps("tags")}
+                    />
+                    <UploadRecipeAutocomplete
+                        field="category"
+                        value={formik.values.category}
+                        onChange={handleChange}
+                        {...getErrorProps("category")}
                     />
                     <div className="select-inputs">
                         {selectInputsKeys.map((field) => (
@@ -245,6 +256,14 @@ export const UploadRecipeForm: FC = () => {
                                 {...getErrorProps(field)}
                             />
                         ))}
+                        <SelectInput
+                            label="cuisine"
+                            value={formik.values.cuisine}
+                            minSize={150}
+                            onChange={(value) => handleChange("cuisine", value)}
+                            options={Object.values(Cuisine)}
+                            {...getErrorProps("cuisine")}
+                        />
                         <SelectInput
                             label="record health"
                             value={formik.values.record_health}
