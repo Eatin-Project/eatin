@@ -84,6 +84,11 @@ export function Autocomplete<
                 }),
             );
 
+        if (freeSolo) {
+            const { inputValue, ...item } = value as AutocompleteItem;
+            return onItemSelected(item as AutocompleteValue<Multipile>);
+        }
+
         onItemSelected(value as AutocompleteValue<Multipile>);
     };
 

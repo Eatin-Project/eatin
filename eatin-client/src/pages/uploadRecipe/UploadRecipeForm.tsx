@@ -10,7 +10,10 @@ import { RecipeStages } from "./RecipeStages";
 import { AutocompleteItem } from "../../components/ui/Autocomplete";
 import { useCreateRecipeMutation } from "../../generated/graphql";
 import { UploadRecipeSelect } from "./UploadRecipeSelect";
-import { UploadRecipeAutocomplete } from "./UploadRecipeAutocomplete";
+import {
+    UploadRecipeAutocomplete,
+    UploadRecipeMultiAutocomplete,
+} from "./UploadRecipeAutocomplete";
 import { Recipe } from "../../components/types";
 import { SelectInput } from "../../components/ui/SelectInput";
 import { arrayToString } from "../../components/functions/stringFunctions";
@@ -28,13 +31,13 @@ export interface SelectRecipeMetadata {
     cuisine: string;
     course: string;
     diet: string;
-    category: string;
     difficulty: string;
 }
 
 export interface AutocompleteRecipeMetadata {
     ingredients: AutocompleteItem[];
     tags: AutocompleteItem[];
+    category: AutocompleteItem | null;
 }
 
 interface NumericRecipeMetadata {
@@ -56,7 +59,6 @@ export interface RecipeMetadata
 type NotNeededRecipeFields = "url" | "vote_count" | "rating" | "index" | "is_saved" | "is_uploaded";
 
 const selectInputsKeys: Array<keyof SelectRecipeMetadata> = [
-    "category",
     "course",
     "cuisine",
     "diet",
@@ -70,7 +72,7 @@ const initialValues: RecipeMetadata = {
     cuisine: "",
     course: "",
     diet: "",
-    category: "",
+    category: null,
     description: "",
     stages: [""],
     ingredients: [],
@@ -101,7 +103,7 @@ const ValidationSchema = yup.object({
     cuisine: yup.string().required(),
     course: yup.string().required(),
     diet: yup.string().required(),
-    category: yup.string().required(),
+    category: yup.mixed().required(),
     description: yup.string().required(),
     stages: checkIfStringArray(yup.array().min(3, "less then 3 instructions").required()),
     ingredients: yup.array().min(3, "less then 3 ingredients").required(),
@@ -137,7 +139,7 @@ export const UploadRecipeForm: FC = () => {
                 const recipe: Omit<Recipe, NotNeededRecipeFields> = {
                     recipe_title: values.title,
                     author: currentUser?.displayName ?? "anonymous",
-                    category: values.category,
+                    category: values.category?.title ?? "",
                     diet: values.diet,
                     course: values.course,
                     cuisine: values.cuisine,
@@ -180,7 +182,7 @@ export const UploadRecipeForm: FC = () => {
         <div className="upload-recipe-page-form">
             <form onSubmit={formik.handleSubmit}>
                 <div className="recipe-inputs">
-                    <h4>Create a New Recipe</h4>
+                    <h4 className="recipe-title">Recipe</h4>
                     <TextField
                         label="title"
                         name="title"
@@ -223,17 +225,23 @@ export const UploadRecipeForm: FC = () => {
                             {...getErrorProps("cook_time")}
                         />
                     </div>
-                    <UploadRecipeAutocomplete
+                    <UploadRecipeMultiAutocomplete
                         field="ingredients"
                         values={formik.values.ingredients}
                         onChange={handleChange}
                         {...getErrorProps("ingredients")}
                     />
-                    <UploadRecipeAutocomplete
+                    <UploadRecipeMultiAutocomplete
                         field="tags"
                         values={formik.values.tags}
                         onChange={handleChange}
                         {...getErrorProps("tags")}
+                    />
+                    <UploadRecipeAutocomplete
+                        field="category"
+                        value={formik.values.category}
+                        onChange={handleChange}
+                        {...getErrorProps("category")}
                     />
                     <div className="select-inputs">
                         {selectInputsKeys.map((field) => (
