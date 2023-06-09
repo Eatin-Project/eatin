@@ -107,7 +107,7 @@ export function Autocomplete<
             freeSolo &&
             !options.some((_) => _.title === params.inputValue)
         ) {
-            filtered.push({
+            filtered.unshift({
                 value: params.inputValue,
                 inputValue: `Add "${params.inputValue}"`,
                 title: params.inputValue,

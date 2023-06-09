@@ -26,6 +26,7 @@ import { useUpdateIsUploadedRecipe } from "../../components/functions/useInsertN
 import { ButtonWrapper } from "../loginPage/auth-style";
 import { useToastNotification } from "../../components/functions/useToastNotification";
 import { useGetUsersName } from "../../components/hooks/useGetUsersName";
+import { Cuisine } from "../homePage/entities/cuisines.enum";
 
 export interface SelectRecipeMetadata {
     cuisine: string;
@@ -58,12 +59,7 @@ export interface RecipeMetadata
 
 type NotNeededRecipeFields = "url" | "vote_count" | "rating" | "index" | "is_saved" | "is_uploaded";
 
-const selectInputsKeys: Array<keyof SelectRecipeMetadata> = [
-    "course",
-    "cuisine",
-    "diet",
-    "difficulty",
-];
+const selectInputsKeys: Array<keyof SelectRecipeMetadata> = ["course", "diet", "difficulty"];
 
 const RecordHealthOptions = ["good", "bad", "normal"];
 
@@ -260,6 +256,14 @@ export const UploadRecipeForm: FC = () => {
                                 {...getErrorProps(field)}
                             />
                         ))}
+                        <SelectInput
+                            label="cuisine"
+                            value={formik.values.cuisine}
+                            minSize={150}
+                            onChange={(value) => handleChange("cuisine", value)}
+                            options={Object.values(Cuisine)}
+                            {...getErrorProps("cuisine")}
+                        />
                         <SelectInput
                             label="record health"
                             value={formik.values.record_health}
