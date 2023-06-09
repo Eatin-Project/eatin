@@ -8,7 +8,7 @@ import { MediaUpload } from "./MediaUpload";
 import { RecipeStages } from "./RecipeStages";
 
 import { AutocompleteItem } from "../../components/ui/Autocomplete";
-import { useCreateRecipeMutation } from "../../generated/graphql";
+import { useCreateRecipeMutation, useGetUserByIdQuery } from "../../generated/graphql";
 import { UploadRecipeSelect } from "./UploadRecipeSelect";
 import {
     UploadRecipeAutocomplete,
@@ -19,13 +19,13 @@ import { SelectInput } from "../../components/ui/SelectInput";
 import { arrayToString } from "../../components/functions/stringFunctions";
 import { useNavigate } from "react-router";
 import { CircularProgress } from "@mui/material";
-import { useAuth } from "../../context/auth-context";
 import { uploadImage } from "../../firebase/firebase-service";
 import { v4 as uuidv4 } from "uuid";
 
 import { useUpdateIsUploadedRecipe } from "../../components/functions/useInsertNewUserRecipe";
 import { ButtonWrapper } from "../loginPage/auth-style";
 import { useToastNotification } from "../../components/functions/useToastNotification";
+import { useGetUsersName } from "../../components/hooks/useGetUsersName";
 
 export interface SelectRecipeMetadata {
     cuisine: string;
@@ -117,7 +117,10 @@ const ValidationSchema = yup.object({
 
 export const UploadRecipeForm: FC = () => {
     const navigate = useNavigate();
-    const { currentUser } = useAuth();
+    const userID = useGetUsersName();
+    const { data: userData } = useGetUserByIdQuery({
+        variables: { id: userID },
+    });
     const { notify } = useToastNotification();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -136,9 +139,13 @@ export const UploadRecipeForm: FC = () => {
                 setIsLoading(true);
                 const image = await uploadImage(uuidv4().replaceAll("-", ""), values.image);
 
+                const author = userData
+                    ? userData.user.firstname + " " + userData.user.lastname
+                    : "anonymous";
+
                 const recipe: Omit<Recipe, NotNeededRecipeFields> = {
                     recipe_title: values.title,
-                    author: currentUser?.displayName ?? "anonymous",
+                    author,
                     category: values.category?.title ?? "",
                     diet: values.diet,
                     course: values.course,
