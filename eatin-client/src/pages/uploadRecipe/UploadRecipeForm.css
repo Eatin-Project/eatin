@@ -77,3 +77,9 @@ form > div {
 .red-button.disabled {
     background-color: #e1bdbd !important;
 }
+
+.select-inputs .css-16xnw6h-MuiFormControl-root .MuiFormLabel-root,
+.select-inputs .css-1lf2uee-MuiFormControl-root .MuiFormLabel-root {
+    left: -12px !important;
+    top: 9px !important;
+}
