@@ -76,7 +76,12 @@ export function Autocomplete<
         }
         if (multiple && freeSolo)
             return onItemSelectedMultiple(
-                (value as AutocompleteValue<true>).map(({ inputValue, ...item }) => item),
+                (value as Array<AutocompleteItem | string>).map((item) => {
+                    if (typeof item === "string") return { title: item, value: item };
+
+                    const { inputValue, ...newItem } = item;
+                    return newItem;
+                }),
             );
 
         onItemSelected(value as AutocompleteValue<Multipile>);
