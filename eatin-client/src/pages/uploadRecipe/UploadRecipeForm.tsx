@@ -1,6 +1,6 @@
 import "./UploadRecipeForm.css";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import TextField from "@mui/material/TextField";
@@ -118,7 +118,9 @@ export const UploadRecipeForm: FC = () => {
     const { currentUser } = useAuth();
     const { notify } = useToastNotification();
 
-    const [createRecipe, { data, loading, error }] = useCreateRecipeMutation();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [createRecipe] = useCreateRecipeMutation();
     const { updateIsUploaded } = useUpdateIsUploadedRecipe();
 
     const formik = useFormik<RecipeMetadata>({
@@ -129,6 +131,7 @@ export const UploadRecipeForm: FC = () => {
             if (!formik.isValid || !values.image) return;
 
             try {
+                setIsLoading(true);
                 const image = await uploadImage(uuidv4().replaceAll("-", ""), values.image);
 
                 const recipe: Omit<Recipe, NotNeededRecipeFields> = {
@@ -150,11 +153,13 @@ export const UploadRecipeForm: FC = () => {
                     record_health: values.record_health,
                 };
 
+                console.log(recipe);
                 const res = await createRecipe({ variables: recipe });
                 if (!res.data?.createRecipe?.index) throw "no recipe id";
 
                 await updateIsUploaded(true, res.data.createRecipe.index);
-                navigate(`recipe/${res.data.createRecipe.index}`);
+                setIsLoading(false);
+                navigate(`/recipe/${res.data.createRecipe.index}`);
             } catch (e) {
                 console.log(e);
                 notify("something went wrong...");
@@ -262,10 +267,10 @@ export const UploadRecipeForm: FC = () => {
                 />
                 <ButtonWrapper
                     type="submit"
-                    disabled={loading}
+                    disabled={isLoading}
                     className="form-button btn btn-primary"
                 >
-                    {loading ? (
+                    {isLoading ? (
                         <>
                             <CircularProgress size={15} /> Uploading
                         </>
