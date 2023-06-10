@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { PYTHON_SERVER_URI } from "../../index";
 
-export function useUpdateUserRecommendations(userId: string, isActive: Boolean, setIsActive: any) {
+export function useCalculateModels(isActive: Boolean, setIsActive: any) {
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
@@ -19,16 +19,16 @@ export function useUpdateUserRecommendations(userId: string, isActive: Boolean, 
                         },
                         body: JSON.stringify({
                             query: `mutation {
-                          update_user_recommendations(user_id: "${userId}")
+                          calculate_models
                         }`,
                         }),
                     });
                     const resJson = await res.json();
-                    setData(resJson.data.similar_recipes);
+                    setData(resJson.data);
                     setIsUpdated(true);
                     setLoading(false);
                 } catch (e) {
-                    console.log(`Error has occurred in update_user_recommendations query - ${e}`);
+                    console.log(`Error has occurred in calculate_models query - ${e}`);
                     setError(e);
                 } finally {
                     if (isActive && !!setIsActive) {
@@ -37,7 +37,7 @@ export function useUpdateUserRecommendations(userId: string, isActive: Boolean, 
                 }
             })();
         }
-    }, [userId, isActive]);
+    }, [isActive]);
 
     return { data, loading, error, isUpdated };
 }

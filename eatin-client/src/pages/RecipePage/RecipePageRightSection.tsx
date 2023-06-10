@@ -6,6 +6,10 @@ import { Rating } from "@mui/material";
 import { Recipe } from "../../components/types";
 import { CommentsSection } from "./comments/CommentsSection";
 import { parseStringArray } from "../../components/functions/stringFunctions";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 interface Props {
     shownRecipe: Recipe;
@@ -48,6 +52,53 @@ export const RecipePageRightSection: FC<Props> = ({
             </RecipeRating>
             <RecipeDescription>{shownRecipe?.description}</RecipeDescription>
             <Separator />
+            <RecipeMetadata>
+                <MetadataIcon>
+                    <AccessTimeIcon />
+                </MetadataIcon>
+                <MetadataItem>
+                    <MetadataItemTitle>Prep In</MetadataItemTitle>
+                    <div>{shownRecipe?.prep_time} M</div>
+                </MetadataItem>
+                <MetadataItem>
+                    <MetadataItemTitle>Cook In</MetadataItemTitle>
+                    <div>{shownRecipe?.cook_time} M</div>
+                </MetadataItem>
+                <MetadataItem>
+                    <MetadataItemTitle>Total In</MetadataItemTitle>
+                    <div>{shownRecipe?.total_time} M</div>
+                </MetadataItem>
+                <MetadataIcon>
+                    <RestaurantIcon />
+                </MetadataIcon>
+                <MetadataItem>
+                    <MetadataItemTitle>Cuisine</MetadataItemTitle>
+                    <div>{shownRecipe?.cuisine}</div>
+                </MetadataItem>
+                <MetadataItem>
+                    <MetadataItemTitle>Diet</MetadataItemTitle>
+                    <div>{shownRecipe?.diet}</div>
+                </MetadataItem>
+                <MetadataItem>
+                    <MetadataItemTitle>Course</MetadataItemTitle>
+                    <div>{shownRecipe?.course}</div>
+                </MetadataItem>
+                <MetadataIcon>
+                    <FitnessCenterIcon />
+                </MetadataIcon>
+                <MetadataItem>
+                    <MetadataItemTitle>Difficulty</MetadataItemTitle>
+                    <div>{shownRecipe?.difficulty}</div>
+                </MetadataItem>
+                <MetadataIcon>
+                    <FavoriteIcon />
+                </MetadataIcon>
+                <MetadataItem>
+                    <MetadataItemTitle>Health</MetadataItemTitle>
+                    <div>{shownRecipe?.record_health}</div>
+                </MetadataItem>
+            </RecipeMetadata>
+            <Separator />
             <RecipeContentTitle>INGREDIENTS</RecipeContentTitle>
             <RecipeContentList>
                 <ul className="ingredients-list">
@@ -69,6 +120,30 @@ export const RecipePageRightSection: FC<Props> = ({
         </RightSection>
     );
 };
+
+const MetadataIcon = styled.div`
+    margin: 0 2em 0 2em;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+`;
+
+const MetadataItemTitle = styled.div`
+    font-size: 0.85em;
+`;
+
+const MetadataItem = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 0 2em 0 0;
+    justify-content: center;
+    text-align: center;
+`;
+
+const RecipeMetadata = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
 
 const RightSection = styled.div`
     width: 80%;

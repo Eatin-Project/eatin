@@ -1,5 +1,34 @@
 import { gql } from "@apollo/client";
 
+export const NEW_ON_EATIN_RECIPES = gql`
+    query newOnEatinRecipes($userID: String!) {
+        newOnEatinRecipes(userID: $userID) {
+            index
+            recipe_title
+            url
+            record_health
+            vote_count
+            rating
+            description
+            cuisine
+            course
+            diet
+            prep_time
+            cook_time
+            ingredients
+            instructions
+            author
+            tags
+            category
+            image
+            difficulty
+            total_time
+            is_saved
+            is_uploaded
+        }
+    }
+`;
+
 export const GET_ALL_RECIPES = gql`
     query getAllRecipes($userID: String!) {
         recipes(userID: $userID) {

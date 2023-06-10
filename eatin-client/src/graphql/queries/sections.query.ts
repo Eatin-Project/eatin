@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { RecipesSection } from "../../components/types";
+import { PYTHON_SERVER_URI } from "../../index";
 
 // TODO: maybe delete this?
 export function useGetSections(userId: string) {
@@ -11,8 +12,7 @@ export function useGetSections(userId: string) {
         (async function () {
             try {
                 setLoading(true);
-                // const res = await fetch(`http://localhost:8000/graphql`, {
-                const res = await fetch(`http://eatin.cs.colman.ac.il:8000/graphql`, {
+                const res = await fetch(PYTHON_SERVER_URI, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

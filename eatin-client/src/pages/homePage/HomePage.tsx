@@ -9,12 +9,15 @@ import AsyncDataLoaderWrapper from "../../components/ui/AsyncDataLoaderWrapper";
 import { useGetUsersName } from "../../components/hooks/useGetUsersName";
 import { FilterRecipes } from "./FilterRecipes";
 import { useGetRecipesBySearch } from "../../components/functions/useGetRecipesBySearch";
-import { useGetUserRecommendationsQuery } from "../../generated/graphql";
+import { useGetUserRecommendationsQuery, useNewOnEatinRecipesQuery } from "../../generated/graphql";
 import { RecipesSection } from "../../components/types";
 
 export const HomePage: FC = () => {
     const [searchValue, setSearchValue] = useState<string>("");
     const userID = useGetUsersName();
+    const { data: newRecipes, loading: newRecipesLoading } = useNewOnEatinRecipesQuery({
+        variables: { userID: userID },
+    });
     const [recommendedRecipes, setRecommendedRecipes] = useState<RecipesSection[]>([]);
     const { data: userRecommendationsResult, loading: userRecommendationsResultLoading } =
         useGetUserRecommendationsQuery({
@@ -28,11 +31,23 @@ export const HomePage: FC = () => {
         useCatalogFilterRecipes(searchResultRecipes);
 
     useEffect(() => {
-        userRecommendationsResult &&
-            setRecommendedRecipes(
-                JSON.parse(userRecommendationsResult.userRecommendationsByUser.recommendations),
+        if (userRecommendationsResult && newRecipes) {
+            const newOnEatinSection: RecipesSection = {
+                name: "New On Eatin",
+                recipes: newRecipes?.newOnEatinRecipes,
+            };
+            const feed = JSON.parse(
+                userRecommendationsResult.userRecommendationsByUser.recommendations,
             );
-    }, [userRecommendationsResult, userRecommendationsResultLoading]);
+            feed.splice(2, 0, newOnEatinSection);
+            setRecommendedRecipes(feed);
+        }
+    }, [
+        userRecommendationsResult,
+        userRecommendationsResultLoading,
+        newRecipes,
+        newRecipesLoading,
+    ]);
 
     const getFilterSearchValue = (searchValue: string) => {
         setSearchValue(searchValue);
