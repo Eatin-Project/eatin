@@ -27,6 +27,7 @@ import { ButtonWrapper } from "../loginPage/auth-style";
 import { useToastNotification } from "../../components/functions/useToastNotification";
 import { useGetUsersName } from "../../components/hooks/useGetUsersName";
 import { Cuisine } from "../homePage/entities/cuisines.enum";
+import { useCalculateModels } from "../../graphql/queries/calculate_models.query";
 
 export interface SelectRecipeMetadata {
     cuisine: string;
@@ -113,6 +114,8 @@ const ValidationSchema = yup.object({
 
 export const UploadRecipeForm: FC = () => {
     const navigate = useNavigate();
+    const [calculateModels, setCalculateModels] = useState<Boolean>(false);
+    const {} = useCalculateModels(calculateModels, setCalculateModels);
     const userID = useGetUsersName();
     const { data: userData } = useGetUserByIdQuery({
         variables: { id: userID },
@@ -160,6 +163,7 @@ export const UploadRecipeForm: FC = () => {
 
                 console.log(recipe);
                 const res = await createRecipe({ variables: recipe });
+                setCalculateModels(true);
                 if (!res.data?.createRecipe?.index) throw "no recipe id";
 
                 await updateIsUploaded(true, res.data.createRecipe.index);

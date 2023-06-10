@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { PYTHON_SERVER_URI } from "../../index";
 
 export function useGetRecipesConnectionIsSaved(userId: string, isSaved: boolean) {
     const [data, setData] = useState<any[]>([]);
@@ -8,8 +9,7 @@ export function useGetRecipesConnectionIsSaved(userId: string, isSaved: boolean)
     const getRecipesConnectionIsSaved = useCallback(async () => {
         try {
             setLoading(true);
-            // const res = await fetch(`http://localhost:8000/graphql`, {
-            const res = await fetch(`http://eatin.cs.colman.ac.il:8000/graphql`, {
+            const res = await fetch(PYTHON_SERVER_URI, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

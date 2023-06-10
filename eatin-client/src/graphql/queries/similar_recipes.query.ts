@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { PYTHON_SERVER_URI } from "../../index";
 
 export function useGetSimilarRecipes(recipeIndex: number, userId: string) {
     const [data, setData] = useState<any[]>([]);
@@ -9,8 +10,7 @@ export function useGetSimilarRecipes(recipeIndex: number, userId: string) {
         (async function () {
             try {
                 setLoading(true);
-                // const res = await fetch(`http://localhost:8000/graphql`, {
-                const res = await fetch(`http://eatin.cs.colman.ac.il:8000/graphql`, {
+                const res = await fetch(PYTHON_SERVER_URI, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
