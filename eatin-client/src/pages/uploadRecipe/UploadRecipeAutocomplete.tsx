@@ -57,31 +57,23 @@ export const UploadRecipeMultiAutocomplete: FC<MultiProps> = ({
     );
 };
 
-
-interface Props extends Omit<MultiProps, 'values' | 'onChange'> {
+interface Props extends Omit<MultiProps, "values" | "onChange"> {
     value: AutocompleteItem | null;
     onChange: (field: Field, values: AutocompleteItem | null) => void;
+    options: string[];
 }
 
 export const UploadRecipeAutocomplete: FC<Props> = ({
     onChange,
     field,
     value,
+    options,
     error,
     helperText,
 }) => {
     const [userValue, setUserValue] = useState("");
-    const { data, loading } = useGetRecipeFieldOptionsQuery({
-        variables: { field, value: userValue },
-    });
 
-    const options = useMemo(() => {
-        const results = data?.recipeFieldOptions ?? [];
-
-        const noDupes = results ? [...new Set(results)] : [];
-
-        return noDupes.map((_) => ({ title: _, value: _ }));
-    }, [data?.recipeFieldOptions]);
+    const mappedOptions = useMemo(() => options.map((o) => ({ title: o, value: o })), [options]);
 
     const handleChange = (item: AutocompleteItem | null) => {
         onChange(field, item);
@@ -91,15 +83,15 @@ export const UploadRecipeAutocomplete: FC<Props> = ({
         <Autocomplete
             item={value}
             value={userValue}
-            freeSolo
+            freeSolo={false}
             multiple={false}
-            loading={loading}
+            loading={false}
             title={upperCaseFirstLetter(field)}
             error={error}
             helperText={helperText}
             onItemSelected={handleChange}
             onInputChange={setUserValue}
-            options={options}
+            options={mappedOptions}
         />
     );
 };

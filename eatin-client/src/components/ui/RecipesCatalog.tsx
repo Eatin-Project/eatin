@@ -23,6 +23,7 @@ export const RecipesCatalog: FC<Props> = ({ recipes }) => {
                 <CarouselItem
                     id={recipe.index}
                     isSaved={recipe.is_saved}
+                    isUploaded={recipe.is_uploaded}
                     key={recipe.index}
                     updatedRecipesSavedState={updatedRecipesSavedState}
                     onClick={(id: number) => navigate("/recipe/" + id)}

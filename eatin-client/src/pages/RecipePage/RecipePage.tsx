@@ -53,7 +53,7 @@ export const RecipePage: FC = () => {
         setRating(
             ratingData?.ratingByUserAndRecipe?.rating ? ratingData.ratingByUserAndRecipe.rating : 0,
         );
-        setIsSaved(!!isRecipeSaved);
+        setIsSaved(!!isRecipeSaved?.userRecipesByUserAndRecipe.is_saved);
     }, [isRecipeSaved, ratingData]);
 
     if (recipeLoading || ratingLoading || recipeSavedLoading)
@@ -100,6 +100,7 @@ export const RecipePage: FC = () => {
             <RecipePageRightSection
                 bookmarkClicked={handleBookmarkClicked}
                 isSaved={isSaved}
+                isUploaded={!!isRecipeSaved?.userRecipesByUserAndRecipe.is_uploaded}
                 rating={rating}
                 shownRecipe={recipe}
                 updateRating={updateRating}

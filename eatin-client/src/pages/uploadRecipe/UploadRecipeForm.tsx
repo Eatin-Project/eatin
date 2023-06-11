@@ -28,6 +28,7 @@ import { useToastNotification } from "../../components/functions/useToastNotific
 import { useGetUsersName } from "../../components/hooks/useGetUsersName";
 import { Cuisine } from "../homePage/entities/cuisines.enum";
 import { useCalculateModels } from "../../graphql/queries/calculate_models.query";
+import { Category } from "../homePage/entities/categories.enum";
 
 export interface SelectRecipeMetadata {
     cuisine: string;
@@ -248,6 +249,7 @@ export const UploadRecipeForm: FC = () => {
                         field="category"
                         value={formik.values.category}
                         onChange={handleChange}
+                        options={Object.values(Category)}
                         {...getErrorProps("category")}
                     />
                     <div className="select-inputs">

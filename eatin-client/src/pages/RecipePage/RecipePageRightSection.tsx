@@ -17,6 +17,7 @@ interface Props {
     updateRating: (newValue: number | null) => void;
     rating: number | null;
     isSaved: boolean;
+    isUploaded: boolean;
 }
 
 export const RecipePageRightSection: FC<Props> = ({
@@ -25,17 +26,20 @@ export const RecipePageRightSection: FC<Props> = ({
     updateRating,
     rating,
     isSaved,
+    isUploaded,
 }) => {
     return (
         <RightSection>
             <TitleContainer>
-                <RecipeBookmarkIcon
-                    sx={{ color: isSaved ? "#E14026" : "#B0B0B0" }}
-                    onClick={(event) => {
-                        event.stopPropagation();
-                        bookmarkClicked();
-                    }}
-                />
+                {!isUploaded ? (
+                    <RecipeBookmarkIcon
+                        sx={{ color: isSaved ? "#E14026" : "#B0B0B0" }}
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            bookmarkClicked();
+                        }}
+                    />
+                ) : null}
                 <RecipeTitle>{shownRecipe?.recipe_title}</RecipeTitle>
             </TitleContainer>
             <RecipeRating>
