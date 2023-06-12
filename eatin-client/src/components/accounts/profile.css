@@ -33,6 +33,35 @@
     height: 24 !important;
 }
 
+.gender-icon {
+    color: #f1f1f1 !important;
+}
+
+.user-info-icon {
+    color: #e14026;
+}
+
+.gender-icon-wrapper .female {
+    background: #6a2789;
+    border-radius: 50%;
+}
+
+.gender-icon-wrapper .male {
+    background: #e9565f;
+    border-radius: 50%;
+}
+
+.gender-icon-wrapper .trans {
+    background: #b8b9ba;
+    border-radius: 50%;
+}
+
+.gender-icon-wrapper {
+    margin: 7.5em 0 0 4em;;
+    position: absolute;
+    background: transparent;
+}
+
 .user-section-info {
     display: flex;
     flex-direction: column;
