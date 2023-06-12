@@ -52,9 +52,9 @@ export class RecipesResolver {
                                                         left outer join userrecipes
                                                                         on recipes.index = userrecipes.recipe_index and
                                                                            userrecipes.user_id = '${userID}'
-                                               where recipes.recipe_title like '%${value}%'
-                                                  or recipes.description like '%${value}%'
-                                                  or recipes.author like '%${value}%'
+                                               where lower(recipes.recipe_title) like lower('%${value}%')
+                                                  or lower(recipes.description) like lower('%${value}%')
+                                                  or lower(recipes.author) like lower('%${value}%')
                                                order by recipes.vote_count desc limit 100;`);
     }
 
@@ -94,9 +94,9 @@ export class RecipesResolver {
                                                                         on recipes.index = userrecipes.recipe_index and
                                                                            userrecipes.user_id = '${userID}'
                                                where userrecipes.is_saved = 'true'
-                                                 and (recipes.recipe_title like '%${value}%'
-                                                   or recipes.description like '%${value}%'
-                                                   or recipes.author like '%${value}%')
+                                                 and (lower(recipes.recipe_title) like lower('%${value}%')
+                                                   or lower(recipes.description) like lower('%${value}%')
+                                                   or lower(recipes.author) like lower('%${value}%'))
                                                order by recipes.vote_count desc limit 100;`);
     }
 
@@ -172,9 +172,9 @@ export class RecipesResolver {
                                                                         on recipes.index = userrecipes.recipe_index and
                                                                            userrecipes.user_id = '${userID}'
                                                where userrecipes.is_uploaded = 'true'
-                                                 and (recipes.recipe_title like '%${value}%'
-                                                   or recipes.description like '%${value}%'
-                                                   or recipes.author like '%${value}%')
+                                                 and (lower(recipes.recipe_title) like lower('%${value}%')
+                                                   or lower(recipes.description) like lower('%${value}%')
+                                                   or lower(recipes.author) like lower('%${value}%'))
                                                order by recipes.vote_count desc limit 100;`);
     }
 

@@ -17,13 +17,14 @@ export const CategoryCarousel: FC<Props> = ({ items, ...props }) => {
     };
 
     const carouselItems: ICarouselItem<any>[] = items.map(
-        ({ image, index, recipe_title, is_saved, rating }, i) => ({
+        ({ image, index, recipe_title, is_saved, rating, is_uploaded }, i) => ({
             image,
             id: index,
             title: recipe_title,
             itemValue: items[i],
             rating: rating,
             isSaved: is_saved,
+            isUploaded: is_uploaded,
             updatedRecipesSavedState: updatedRecipesSavedState,
         }),
     );
