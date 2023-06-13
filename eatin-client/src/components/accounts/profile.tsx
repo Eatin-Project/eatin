@@ -61,29 +61,44 @@ export const Profile: FC = () => {
                         src="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2022-08/220805-domestic-cat-mjf-1540-382ba2.jpg"
                         sx={{ width: 150, height: 150 }}
                     />
+                    <div className="gender-icon-wrapper">
+                        {data?.user.gender === "Female" ? (
+                            <FemaleIcon
+                                className="gender-icon female"
+                                fontSize="large"
+                                color="secondary"
+                            />
+                        ) : data?.user.gender === "Male" ? (
+                            <MaleIcon
+                                className="gender-icon male"
+                                fontSize="large"
+                                color="primary"
+                            />
+                        ) : (
+                            <TransgenderIcon
+                                className="gender-icon trans"
+                                fontSize="large"
+                                color="success"
+                            />
+                        )}
+                    </div>
                     <div className="user-name-title">
                         {data?.user.firstname + " " + data?.user.lastname}
-                        {data?.user.gender === "Female" ? (
-                            <FemaleIcon fontSize="large" color="secondary" />
-                        ) : data?.user.gender === "Male" ? (
-                            <MaleIcon fontSize="large" color="primary" />
-                        ) : (
-                            <TransgenderIcon fontSize="large" color="success" />
-                        )}
                     </div>
                     <Separator />
                     <div className="user-info">
                         <div className="fw-bolder">
-                            <PlaceIcon /> {data?.user.country}
+                            <PlaceIcon className="user-info-icon" /> {data?.user.country}
                         </div>
                         <div className="fw-bolder">
-                            <CakeIcon /> {new Date(data?.user.birthdate).toDateString()}
+                            <CakeIcon className="user-info-icon" />{" "}
+                            {new Date(data?.user.birthdate).toDateString()}
                         </div>
                         <div className="fw-bolder">
-                            <EmailIcon /> {data?.user.email}
+                            <EmailIcon className="user-info-icon" /> {data?.user.email}
                         </div>
                         <div className="fw-bolder">
-                            <LocalPhoneIcon /> {data?.user.phone}
+                            <LocalPhoneIcon className="user-info-icon" /> {data?.user.phone}
                         </div>
                     </div>
                 </div>
