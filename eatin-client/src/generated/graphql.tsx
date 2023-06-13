@@ -24,6 +24,7 @@ export type Comments = {
   recipe_index: Scalars['Float'];
   user_first_name: Scalars['String'];
   user_id: Scalars['String'];
+  user_image: Scalars['String'];
   user_last_name: Scalars['String'];
 };
 
@@ -81,6 +82,7 @@ export type MutationCreateUserArgs = {
   firstname: Scalars['String'];
   gender: Scalars['String'];
   id: Scalars['String'];
+  image: Scalars['String'];
   lastname: Scalars['String'];
   phone: Scalars['String'];
 };
@@ -339,6 +341,7 @@ export type Users = {
   firstname: Scalars['String'];
   gender: Scalars['String'];
   id: Scalars['String'];
+  image: Scalars['String'];
   lastname: Scalars['String'];
   phone: Scalars['String'];
 };
@@ -418,36 +421,37 @@ export type CreateUserMutationVariables = Exact<{
   gender: Scalars['String'];
   birthdate: Scalars['DateTime'];
   country: Scalars['String'];
+  image: Scalars['String'];
 }>;
 
 
-export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'Users', id: string, firstname: string, lastname: string, email: string, phone: string, gender: string, birthdate: any, country: string } };
+export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'Users', id: string, firstname: string, lastname: string, email: string, phone: string, gender: string, birthdate: any, country: string, image: string } };
 
 export type GetAllCommentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllCommentsQuery = { __typename?: 'Query', comments: Array<{ __typename?: 'Comments', id: string, user_id: string, recipe_index: number, given_comment: string, comment_timestap: any, user_first_name: string, user_last_name: string }> };
+export type GetAllCommentsQuery = { __typename?: 'Query', comments: Array<{ __typename?: 'Comments', id: string, user_id: string, recipe_index: number, given_comment: string, comment_timestap: any, user_first_name: string, user_last_name: string, user_image: string }> };
 
 export type GetCommentsByUserIdQueryVariables = Exact<{
   userID: Scalars['String'];
 }>;
 
 
-export type GetCommentsByUserIdQuery = { __typename?: 'Query', commentsByUserID: Array<{ __typename?: 'Comments', id: string, user_id: string, recipe_index: number, given_comment: string, comment_timestap: any, user_first_name: string, user_last_name: string }> };
+export type GetCommentsByUserIdQuery = { __typename?: 'Query', commentsByUserID: Array<{ __typename?: 'Comments', id: string, user_id: string, recipe_index: number, given_comment: string, comment_timestap: any, user_first_name: string, user_last_name: string, user_image: string }> };
 
 export type GetCommentsByIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GetCommentsByIdQuery = { __typename?: 'Query', commentsByID: { __typename?: 'Comments', id: string, user_id: string, recipe_index: number, given_comment: string, comment_timestap: any, user_first_name: string, user_last_name: string } };
+export type GetCommentsByIdQuery = { __typename?: 'Query', commentsByID: { __typename?: 'Comments', id: string, user_id: string, recipe_index: number, given_comment: string, comment_timestap: any, user_first_name: string, user_last_name: string, user_image: string } };
 
 export type GetCommentsByRecipeIndexQueryVariables = Exact<{
   recipeID: Scalars['Float'];
 }>;
 
 
-export type GetCommentsByRecipeIndexQuery = { __typename?: 'Query', commentsByRecipeIndex: Array<{ __typename?: 'Comments', id: string, user_id: string, recipe_index: number, given_comment: string, comment_timestap: any, user_first_name: string, user_last_name: string }> };
+export type GetCommentsByRecipeIndexQuery = { __typename?: 'Query', commentsByRecipeIndex: Array<{ __typename?: 'Comments', id: string, user_id: string, recipe_index: number, given_comment: string, comment_timestap: any, user_first_name: string, user_last_name: string, user_image: string }> };
 
 export type GetcommentsByRecipeAndUserQueryVariables = Exact<{
   userID: Scalars['String'];
@@ -455,7 +459,7 @@ export type GetcommentsByRecipeAndUserQueryVariables = Exact<{
 }>;
 
 
-export type GetcommentsByRecipeAndUserQuery = { __typename?: 'Query', commentsByRecipeAndUser: Array<{ __typename?: 'Comments', id: string, user_id: string, recipe_index: number, given_comment: string, comment_timestap: any, user_first_name: string, user_last_name: string }> };
+export type GetcommentsByRecipeAndUserQuery = { __typename?: 'Query', commentsByRecipeAndUser: Array<{ __typename?: 'Comments', id: string, user_id: string, recipe_index: number, given_comment: string, comment_timestap: any, user_first_name: string, user_last_name: string, user_image: string }> };
 
 export type GetAllRatingsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -630,14 +634,14 @@ export type GetUserRecommendationsQuery = { __typename?: 'Query', userRecommenda
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllUsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'Users', id: string, firstname: string, lastname: string, email: string, phone: string, gender: string, birthdate: any, country: string }> };
+export type GetAllUsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'Users', id: string, firstname: string, lastname: string, email: string, phone: string, gender: string, birthdate: any, country: string, image: string }> };
 
 export type GetUserByIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'Query', user: { __typename?: 'Users', id: string, firstname: string, lastname: string, email: string, phone: string, gender: string, birthdate: any, country: string } };
+export type GetUserByIdQuery = { __typename?: 'Query', user: { __typename?: 'Users', id: string, firstname: string, lastname: string, email: string, phone: string, gender: string, birthdate: any, country: string, image: string } };
 
 
 export const CreateCommentsDocument = gql`
@@ -925,7 +929,7 @@ export type RemoveUserRecipesMutationHookResult = ReturnType<typeof useRemoveUse
 export type RemoveUserRecipesMutationResult = Apollo.MutationResult<RemoveUserRecipesMutation>;
 export type RemoveUserRecipesMutationOptions = Apollo.BaseMutationOptions<RemoveUserRecipesMutation, RemoveUserRecipesMutationVariables>;
 export const CreateUserDocument = gql`
-    mutation createUser($id: String!, $firstname: String!, $lastname: String!, $email: String!, $phone: String!, $gender: String!, $birthdate: DateTime!, $country: String!) {
+    mutation createUser($id: String!, $firstname: String!, $lastname: String!, $email: String!, $phone: String!, $gender: String!, $birthdate: DateTime!, $country: String!, $image: String!) {
   createUser(
     id: $id
     firstname: $firstname
@@ -935,6 +939,7 @@ export const CreateUserDocument = gql`
     gender: $gender
     birthdate: $birthdate
     country: $country
+    image: $image
   ) {
     id
     firstname
@@ -944,6 +949,7 @@ export const CreateUserDocument = gql`
     gender
     birthdate
     country
+    image
   }
 }
     `;
@@ -970,6 +976,7 @@ export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, C
  *      gender: // value for 'gender'
  *      birthdate: // value for 'birthdate'
  *      country: // value for 'country'
+ *      image: // value for 'image'
  *   },
  * });
  */
@@ -990,6 +997,7 @@ export const GetAllCommentsDocument = gql`
     comment_timestap
     user_first_name
     user_last_name
+    user_image
   }
 }
     `;
@@ -1030,6 +1038,7 @@ export const GetCommentsByUserIdDocument = gql`
     comment_timestap
     user_first_name
     user_last_name
+    user_image
   }
 }
     `;
@@ -1071,6 +1080,7 @@ export const GetCommentsByIdDocument = gql`
     comment_timestap
     user_first_name
     user_last_name
+    user_image
   }
 }
     `;
@@ -1112,6 +1122,7 @@ export const GetCommentsByRecipeIndexDocument = gql`
     comment_timestap
     user_first_name
     user_last_name
+    user_image
   }
 }
     `;
@@ -1153,6 +1164,7 @@ export const GetcommentsByRecipeAndUserDocument = gql`
     comment_timestap
     user_first_name
     user_last_name
+    user_image
   }
 }
     `;
@@ -2240,6 +2252,7 @@ export const GetAllUsersDocument = gql`
     gender
     birthdate
     country
+    image
   }
 }
     `;
@@ -2281,6 +2294,7 @@ export const GetUserByIdDocument = gql`
     gender
     birthdate
     country
+    image
   }
 }
     `;

@@ -7,4 +7,5 @@ export interface UserDTO {
     gender: string;
     birthdate: Date;
     country: string;
+    image: string;
 }

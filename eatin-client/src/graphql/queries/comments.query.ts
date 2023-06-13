@@ -10,6 +10,7 @@ export const GET_ALL_COMMENTS = gql`
             comment_timestap
             user_first_name
             user_last_name
+            user_image
         }
     }
 `;
@@ -24,6 +25,7 @@ export const GET_COMMENTS_BY_USER_ID = gql`
             comment_timestap
             user_first_name
             user_last_name
+            user_image
         }
     }
 `;
@@ -38,6 +40,7 @@ export const GET_COMMENTS_BY_ID = gql`
             comment_timestap
             user_first_name
             user_last_name
+            user_image
         }
     }
 `;
@@ -52,6 +55,7 @@ export const GET_COMMENTS_BY_RECIPE_INDEX = gql`
             comment_timestap
             user_first_name
             user_last_name
+            user_image
         }
     }
 `;
@@ -66,6 +70,7 @@ export const GET_COMMENTS_BY_RECIPE_AND_USER = gql`
             comment_timestap
             user_first_name
             user_last_name
+            user_image
         }
     }
 `;

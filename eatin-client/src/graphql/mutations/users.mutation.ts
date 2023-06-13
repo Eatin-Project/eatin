@@ -1,15 +1,28 @@
-import {gql} from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const CREATE_USER = gql`
-    mutation createUser($id: String!,
-        $firstname: String!,
-        $lastname: String!,
-        $email: String!,
-        $phone: String!,
-        $gender: String!,
-        $birthdate: DateTime!,
-        $country: String!) {
-        createUser(id: $id, firstname: $firstname, lastname: $lastname, email: $email, phone: $phone, gender: $gender, birthdate: $birthdate, country: $country) {
+    mutation createUser(
+        $id: String!
+        $firstname: String!
+        $lastname: String!
+        $email: String!
+        $phone: String!
+        $gender: String!
+        $birthdate: DateTime!
+        $country: String!
+        $image: String!
+    ) {
+        createUser(
+            id: $id
+            firstname: $firstname
+            lastname: $lastname
+            email: $email
+            phone: $phone
+            gender: $gender
+            birthdate: $birthdate
+            country: $country
+            image: $image
+        ) {
             id
             firstname
             lastname
@@ -18,7 +31,7 @@ export const CREATE_USER = gql`
             gender
             birthdate
             country
+            image
         }
     }
 `;
-
