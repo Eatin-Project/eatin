@@ -33,6 +33,7 @@ export const RecipePage: FC = () => {
     const { data: isRecipeSaved, loading: recipeSavedLoading } =
         useGetUserrecipesByRecipeAndUserQuery({
             variables: { recipeID: Number(id), userID: userID },
+            fetchPolicy: "no-cache",
         });
     const [isSaved, setIsSaved] = useState(false);
     const { data: recommendedRecipes, loading: recommendedRecipesLoading } = useGetSimilarRecipes(

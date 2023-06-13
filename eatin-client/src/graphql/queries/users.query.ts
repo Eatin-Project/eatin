@@ -1,31 +1,33 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_ALL_USERS = gql`
-  query getAllUsers {
-    users {
-      id
-      firstname
-      lastname
-      email
-      phone
-      gender
-      birthdate
-      country
+    query getAllUsers {
+        users {
+            id
+            firstname
+            lastname
+            email
+            phone
+            gender
+            birthdate
+            country
+            image
+        }
     }
-  }
 `;
 
 export const GET_USER_BY_ID = gql`
-  query getUserById($id: String!) {
-    user(id: $id) {
-      id
-      firstname
-      lastname
-      email
-      phone
-      gender
-      birthdate
-      country
+    query getUserById($id: String!) {
+        user(id: $id) {
+            id
+            firstname
+            lastname
+            email
+            phone
+            gender
+            birthdate
+            country
+            image
+        }
     }
-  }
 `;

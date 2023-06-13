@@ -31,6 +31,7 @@ export interface Comments {
     comment_timestap: Date;
     user_first_name?: string;
     user_last_name?: string;
+    user_image?: string;
 }
 
 export interface FilterOptions {

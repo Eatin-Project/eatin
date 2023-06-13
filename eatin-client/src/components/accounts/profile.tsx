@@ -19,6 +19,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import CakeIcon from "@mui/icons-material/Cake";
 import { Separator } from "../../pages/RecipePage/RecipePageRightSection";
+import { getUserProfilePicture } from "../../pages/RecipePage/comments/CommentsSection";
 
 export const Profile: FC = () => {
     const [searchValue, setSearchValue] = useState<string>("");
@@ -58,7 +59,7 @@ export const Profile: FC = () => {
                     <Avatar
                         className="current-user-picture"
                         alt="Your picture"
-                        src="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2022-08/220805-domestic-cat-mjf-1540-382ba2.jpg"
+                        src={getUserProfilePicture(data?.user.image, data?.user.id)}
                         sx={{ width: 150, height: 150 }}
                     />
                     <div className="gender-icon-wrapper">

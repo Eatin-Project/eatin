@@ -10,15 +10,19 @@ import { SearchFab } from "../../../components/ui/SearchBar";
 import { useGetRecipesComments } from "../../../components/hooks/useGetRecipesComments";
 import { useToastNotification } from "../../../components/functions/useToastNotification";
 import { useGetUsersName } from "../../../components/hooks/useGetUsersName";
+import { useGetUserByIdQuery } from "../../../generated/graphql";
 
 interface Props {
     recipeIndex: number;
 }
+
 export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
     const [newCommentVal, setNewCommentVal] = useState<string>("");
     const { notify } = useToastNotification();
     const userID = useGetUsersName();
-
+    const { data } = useGetUserByIdQuery({
+        variables: { id: userID },
+    });
     let addCommentButton: HTMLButtonElement;
     let deleteCommentButton: HTMLButtonElement;
 
@@ -88,7 +92,7 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
                     <Avatar
                         className="current-user-picture"
                         alt="Your picture"
-                        src="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2022-08/220805-domestic-cat-mjf-1540-382ba2.jpg"
+                        src={getUserProfilePicture(data?.user.image, data?.user.id)}
                     />
                     <TextField
                         className="add-new-comment-text"
@@ -162,7 +166,10 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
                                                     <Avatar
                                                         className="commenter-picture"
                                                         alt="Your picture"
-                                                        src="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2022-08/220805-domestic-cat-mjf-1540-382ba2.jpg"
+                                                        src={getUserProfilePicture(
+                                                            comment?.user_image,
+                                                            comment?.user_id,
+                                                        )}
                                                     />
                                                     <div className="comment-info">
                                                         <span className="specific-comment-user">
@@ -191,6 +198,13 @@ export const CommentsSection: FC<Props> = ({ recipeIndex }) => {
             </div>
         </div>
     );
+};
+
+export const getUserProfilePicture = (
+    imageUrl: string | undefined,
+    identifier: string | undefined,
+) => {
+    return !!imageUrl ? imageUrl : "https://api.multiavatar.com/" + identifier + ".svg";
 };
 
 const Scrollable = styled.div`

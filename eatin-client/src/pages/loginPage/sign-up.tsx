@@ -25,6 +25,8 @@ import { ReactComponent as ChefAnimation } from "../../assets/Chef.svg";
 import { ReactComponent as MediumLogo } from "../../assets/MediumLogo.svg";
 import { useUpdateUserRecommendations } from "../../graphql/queries/update_user_recommendations.query";
 import { useToastNotification } from "./../../components/functions/useToastNotification";
+import { UserProfileUpload } from "./UserProfileUpload";
+import { uploadUserProfileImage } from "../../firebase/firebase-service";
 
 const defaultFormFields = {
     firstName: "",
@@ -41,7 +43,8 @@ function SignUp() {
     const [birthDate, setBirthDate] = useState<Date | null>(null);
     const [userId, setUserId] = useState<string>("");
     const [updateRecommendations, setUpdateRecommendations] = useState<Boolean>(false);
-    const [image, setImage] = useState(null);
+    // instead of null use default image
+    const [imageFile, setImageFile] = useState<any>(null);
     const { firstName, lastName, email, password, phone, gender, country } = formFields;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -84,6 +87,11 @@ function SignUp() {
                 country,
             );
             if (userCredential) {
+                let imageUrl = "";
+                if (!!imageFile) {
+                    imageUrl = await uploadUserProfileImage(userCredential.user.uid, imageFile);
+                }
+
                 const user = await createUser({
                     variables: {
                         id: userCredential.user.uid,
@@ -94,6 +102,7 @@ function SignUp() {
                         gender: gender,
                         birthdate: birthDate,
                         country: country,
+                        image: imageUrl,
                     },
                 });
                 setUserId(userCredential.user.uid);
@@ -147,13 +156,6 @@ function SignUp() {
         setFormFields({ ...formFields, country: country });
     };
 
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (!event.target.files?.length) return;
-
-        const files = Array.prototype.slice.call(event.target.files);
-        setImage(files[0]);
-    };
-
     return (
         <Container>
             <Wrapper>
@@ -166,8 +168,9 @@ function SignUp() {
                     <div className="d-flex ms-3 mt-3">
                         <MediumLogo />
                     </div>
-                    <div className="d-flex align-items-center justify-content-center w-100 h-100">
+                    <div className="d-flex align-items-start justify-content-center w-100 h-100">
                         <Form onSubmit={handleSubmit}>
+                            <UserProfileUpload updateImageFile={setImageFile}></UserProfileUpload>
                             <div className="my-3 d-flex">
                                 <FormInput
                                     name="firstName"
@@ -271,9 +274,6 @@ function SignUp() {
                                         />
                                     )}
                                 />
-                            </div>
-                            <div>
-                                <input type="file" accept="image/*" onChange={handleImageChange} />
                             </div>
                             <div className="d-grid mb-2">
                                 <ButtonWrapper

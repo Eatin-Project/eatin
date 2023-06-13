@@ -2,7 +2,6 @@ import "./MediaUpload.css";
 
 import { FileUpload } from "../../components/ui/FileUpload";
 import { FC, useState } from "react";
-import { UploadImagesList } from "./UploadImagesList";
 
 export type Image = {
     url: string;
@@ -41,7 +40,6 @@ export const MediaUpload: FC<Props> = ({ onChange, error, helperText }) => {
                     <div className="image-card">{image.name}</div>
                 </div>
             )}
-            {/* <UploadImagesList images={images} /> */}
         </div>
     );
 };

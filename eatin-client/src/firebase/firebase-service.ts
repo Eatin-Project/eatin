@@ -1,14 +1,14 @@
 import {
-    SettableMetadata,
-    StorageReference,
+    FirebaseStorage,
+    FullMetadata,
+    getDownloadURL,
+    getMetadata,
     getStorage,
     ref,
+    SettableMetadata,
+    StorageReference,
     uploadBytes,
-    getDownloadURL,
-    UploadResult,
-    getMetadata,
-    FullMetadata,
-    FirebaseStorage,
+    UploadResult
 } from "firebase/storage";
 
 // Get a reference to the storage service, which is used to create references in your storage bucket
@@ -19,7 +19,7 @@ const usersProfilePicturesFolderName = "usersProfilePicturesImages";
 // usersProfilePicturesImages/uuid.jpg
 
 function uploadeUserProfilePicture(userId: string, image: Blob | Uint8Array | ArrayBuffer) {
-    // return uploadImage(createRef(usersProfilePicturesFolderName, userId), image);
+    // return _uploadImage(createRef(usersProfilePicturesFolderName, userId), image);
 }
 
 async function uploadeRecipeImages(
@@ -99,6 +99,20 @@ async function getImageUrl(storageRef: StorageReference): Promise<string> {
 function createRef(imageName: string): StorageReference {
     return ref(storage, imageName);
 }
+
+export const uploadUserProfileImage = async (
+    userId: string,
+    image: Blob | Uint8Array | ArrayBuffer,
+    imageIndex = 0,
+) => {
+    const imageName = usersProfilePicturesFolderName + "/" + userId + "-" + imageIndex + 1;
+    const storageRef = createRef(imageName);
+
+    const uploadResult: UploadResult = await uploadBytes(storageRef, image);
+    const uploadedImageRef = createRef(uploadResult.ref.fullPath);
+
+    return await getDownloadURL(uploadedImageRef);
+};
 
 export const uploadImage = async (
     recipeId: number | string,

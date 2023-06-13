@@ -1,7 +1,4 @@
 import "./Navbar.css";
-// import styled from "styled-components";
-// import { useEffect } from "react";
-
 import { Outlet, useNavigate } from "react-router-dom";
 
 import { AppLogo } from "./AppLogo";
@@ -16,7 +13,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, IconButton } from "@mui/material";
 import { useGetUsersName } from "../hooks/useGetUsersName";
-import { useSearch } from "../../context/search-context";
 
 export const Navbar = () => {
     const navigate = useNavigate();
@@ -26,19 +22,6 @@ export const Navbar = () => {
         variables: { id: userID },
     });
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    // const [imageUrl, setUserProfilePictureUrl] = useState("");
-    // useEffect(() => {
-    //     const getImageUrl = async () => {
-    //         try {
-    //             var v = await getUserProfilePictureUrl("bmDO5F0Xd3OasWynppWe7o8w9vD3");
-    //             setUserProfilePictureUrl(v);
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     };
-
-    //     getImageUrl();
-    // }, []);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -53,10 +36,6 @@ export const Navbar = () => {
         handleClose();
     };
 
-    function getUserProfilePicture(userId: string) {
-        // return getUserProfilePictureUrl(userId);
-    }
-
     return (
         <>
             <div className="navbar">
@@ -70,7 +49,6 @@ export const Navbar = () => {
                         <User
                             name={!!data ? data?.user.firstname + " " + data?.user.lastname : ""}
                         />
-                        {/* <CarouselItemImage src={imageUrl}></CarouselItemImage> */}
                     </Button>
                     <div>
                         <IconButton
@@ -99,7 +77,6 @@ export const Navbar = () => {
                                 "aria-labelledby": "basic-button",
                             }}
                         >
-                            {/* <MenuItem onClick={handleClose}>Settings</MenuItem> */}
                             <MenuItem onClick={onLogOutClicked}>Logout</MenuItem>
                         </Menu>
                     </div>
