@@ -56,32 +56,34 @@ export const Profile: FC = () => {
         <div className="profile-section">
             <div className="user-section">
                 <div className="user-section-info">
-                    <Avatar
-                        className="current-user-picture"
-                        alt="Your picture"
-                        src={getUserProfilePicture(data?.user.image, data?.user.id)}
-                        sx={{ width: 150, height: 150 }}
-                    />
-                    <div className="gender-icon-wrapper">
-                        {data?.user.gender === "Female" ? (
-                            <FemaleIcon
-                                className="gender-icon female"
-                                fontSize="large"
-                                color="secondary"
-                            />
-                        ) : data?.user.gender === "Male" ? (
-                            <MaleIcon
-                                className="gender-icon male"
-                                fontSize="large"
-                                color="primary"
-                            />
-                        ) : (
-                            <TransgenderIcon
-                                className="gender-icon trans"
-                                fontSize="large"
-                                color="success"
-                            />
-                        )}
+                    <div className="user-profile-picture">
+                        <Avatar
+                            className="current-user-picture"
+                            alt="Your picture"
+                            src={getUserProfilePicture(data?.user.image, data?.user.id)}
+                            sx={{ width: 150, height: 150 }}
+                        />
+                        <div className="gender-icon-wrapper">
+                            {data?.user.gender === "Female" ? (
+                                <FemaleIcon
+                                    className="gender-icon female"
+                                    fontSize="large"
+                                    color="secondary"
+                                />
+                            ) : data?.user.gender === "Male" ? (
+                                <MaleIcon
+                                    className="gender-icon male"
+                                    fontSize="large"
+                                    color="primary"
+                                />
+                            ) : (
+                                <TransgenderIcon
+                                    className="gender-icon trans"
+                                    fontSize="large"
+                                    color="success"
+                                />
+                            )}
+                        </div>
                     </div>
                     <div className="user-name-title">
                         {data?.user.firstname + " " + data?.user.lastname}
