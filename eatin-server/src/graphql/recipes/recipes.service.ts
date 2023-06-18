@@ -12,6 +12,23 @@ export class RecipesService {
         private recipesRepository: Repository<Recipes>,
     ) {}
 
+    async updateRating(recipe_index: number, rating: number) {
+        const recipe = await this.recipesRepository.findOne({
+            where: { index: recipe_index },
+        });
+
+        if (!recipe) return;
+
+        const newRating =
+            (Number(recipe.rating) * Number(recipe.vote_count) + Number(rating)) /
+            (Number(recipe.vote_count) + 1);
+
+        this.recipesRepository.update(
+            { index: recipe_index },
+            { vote_count: Number(recipe.vote_count) + 1, rating: newRating },
+        );
+    }
+
     create(details: RecipesDTO): Promise<Recipes> {
         return this.recipesRepository.save({
             ...details,
