@@ -17,6 +17,7 @@ export const HomePage: FC = () => {
     const userID = useGetUsersName();
     const { data: newRecipes, loading: newRecipesLoading } = useNewOnEatinRecipesQuery({
         variables: { userID: userID },
+        fetchPolicy: "no-cache",
     });
     const [recommendedRecipes, setRecommendedRecipes] = useState<RecipesSection[]>([]);
     const { data: userRecommendationsResult, loading: userRecommendationsResultLoading } =
